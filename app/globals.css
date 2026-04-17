@@ -1,0 +1,35 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@theme {
+  --color-primary: #98001b;
+  --color-primary-container: #be1e2d;
+  --color-secondary: #7b5800;
+  --color-secondary-container: #fdc34d;
+  --color-tertiary: #094795;
+  --color-background: #fbf9f8;
+  --color-surface: #fbf9f8;
+  --color-on-surface: #1b1c1c;
+  --color-on-surface-variant: #5b403f;
+  
+  --font-headline: var(--font-headline);
+  --font-body: var(--font-body);
+}
+
+@layer base {
+  body {
+    @apply font-body bg-background text-on-surface;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-headline;
+  }
+}
+
+.glass-nav {
+  backdrop-filter: blur(24px);
+}
+
+.hero-gradient {
+  background: linear-gradient(135deg, #98001b 0%, #be1e2d 100%);
+}

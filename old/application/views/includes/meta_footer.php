@@ -1,0 +1,14 @@
+<script type="text/javascript" src="<?php echo base_url('assets/geral/js/jquery.min.js'); ?>"></script>
+    <script type="text/javascript" src="<?php echo base_url('assets/geral/js/bootstrap.min.js'); ?>"></script>
+    <script type="text/javascript" src="<?php echo base_url('assets/geral/js/jquery.easing.1.3.js'); ?>"></script>
+    <script type="text/javascript" src="<?php echo base_url('assets/geral/js/jquery.quicksand.js'); ?>"></script>
+    <script type="text/javascript" src="<?php echo base_url('assets/geral/js/superfish.js'); ?>"></script>
+    <script type="text/javascript" src="<?php echo base_url('assets/geral/js/hoverIntent.js'); ?>"></script>
+    <script type="text/javascript" src="<?php echo base_url('assets/geral/js/jquery.flexslider.js'); ?>"></script>
+    <script type="text/javascript" src="<?php echo base_url('assets/geral/js/jflickrfeed.min.js'); ?>"></script>
+    <script type="text/javascript" src="<?php echo base_url('assets/geral/js/jquery.prettyPhoto.js'); ?>"></script>
+    <script type="text/javascript" src="<?php echo base_url('assets/geral/js/jquery.elastislide.js'); ?>"></script>
+    <script type="text/javascript" src="<?php echo base_url('assets/geral/js/jquery.tweet.js'); ?>"></script>
+    <script type="text/javascript" src="<?php echo base_url('assets/geral/js/smoothscroll.js'); ?>"></script>
+    <script type="text/javascript" src="<?php echo base_url('assets/geral/js/jquery.ui.totop.js'); ?>"></script>
+    <script type="text/javascript" src="<?php echo base_url('assets/geral/js/main.js'); ?>"></script>

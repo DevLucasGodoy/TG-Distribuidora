@@ -1,0 +1,83 @@
+Thursday 9th of August 2018 09:31:17 PM - 189.124.91.14 - other - 0 - Presidente Venceslau - Sao Paulo - Brazil
+Thursday 9th of August 2018 09:31:19 PM - 189.124.91.14 - other - 0 - Presidente Venceslau - Sao Paulo - Brazil
+Thursday 9th of August 2018 09:31:37 PM - 177.47.27.243 - Chrome - 68.0.3440.106 - São Paulo - Sao Paulo - Brazil
+Thursday 9th of August 2018 10:17:23 PM - 143.208.211.133 - Chrome - 66.0.3359.181 - Novo Horizonte - Bahia - Brazil
+Thursday 9th of August 2018 10:32:20 PM - 179.159.58.65 - Chrome - 68.0.3440.106 - Campinas - Sao Paulo - Brazil
+Thursday 9th of August 2018 10:41:34 PM - 179.159.58.65 - Chrome - 68.0.3440.106 - Campinas - Sao Paulo - Brazil
+Thursday 9th of August 2018 11:09:24 PM - 179.186.91.208 - Safari - 604.1 - Joinville - Santa Catarina - Brazil
+Thursday 9th of August 2018 11:32:47 PM - 179.208.123.71 - Safari - 604.1 - São Paulo - Sao Paulo - Brazil
+Friday 10th of August 2018 12:12:48 AM - 177.79.103.65 - Safari - 604.1 - São Paulo - Sao Paulo - Brazil
+Friday 10th of August 2018 02:01:52 AM - 200.97.46.106 - Chrome - 67.0.3396.87 - Vitória - Espirito Santo - Brazil
+Friday 10th of August 2018 02:01:58 AM - 200.97.46.106 - Chrome - 67.0.3396.87 - Vitória - Espirito Santo - Brazil
+Friday 10th of August 2018 05:14:34 AM - 177.42.221.141 - Chrome - 68.0.3440.106 - Salvador - Bahia - Brazil
+Friday 10th of August 2018 06:11:33 AM - 187.39.149.36 - Chrome - 67.0.3396.99 - Piracicaba - Sao Paulo - Brazil
+Friday 10th of August 2018 06:16:32 AM - 179.192.45.41 - Safari - 604.1 - Eunapolis - Bahia - Brazil
+Friday 10th of August 2018 06:17:21 AM - 187.39.149.36 - Chrome - 67.0.3396.99 - Piracicaba - Sao Paulo - Brazil
+Friday 10th of August 2018 06:46:05 AM - 200.96.77.227 - Safari - 604.1 - Tres Coroas - Rio Grande do Sul - Brazil
+Friday 10th of August 2018 07:18:41 AM - 191.187.17.78 - Safari - 604.1 - Betim - Minas Gerais - Brazil
+Friday 10th of August 2018 07:32:46 AM - 186.219.129.237 - Chrome - 67.0.3396.99 - Parobe - Rio Grande do Sul - Brazil
+Friday 10th of August 2018 07:40:10 AM - 177.204.29.15 - other - 0 - Canoas - Rio Grande do Sul - Brazil
+Friday 10th of August 2018 07:53:35 AM - 177.204.29.15 - other - 0 - Canoas - Rio Grande do Sul - Brazil
+Friday 10th of August 2018 08:05:40 AM - 177.202.160.117 - Firefox - 56.0 - Goiânia - Goias - Brazil
+Friday 10th of August 2018 08:16:02 AM - 200.144.31.43 - Chrome - 49.0.2623.112 - São Paulo - Sao Paulo - Brazil
+Friday 10th of August 2018 08:33:28 AM - 187.23.163.185 - Firefox - 61.0 - Indaiatuba - Sao Paulo - Brazil
+Friday 10th of August 2018 08:33:55 AM - 177.156.233.251 - Firefox - 61.0 - Gravataí - Rio Grande do Sul - Brazil
+Friday 10th of August 2018 08:41:08 AM - 187.121.36.146 - Chrome - 64.0.3282.140 - São Paulo - Sao Paulo - Brazil
+Friday 10th of August 2018 08:41:09 AM - 187.121.36.146 - Chrome - 64.0.3282.140 - São Paulo - Sao Paulo - Brazil
+Friday 10th of August 2018 08:46:10 AM - 186.244.6.138 - Chrome - 67.0.3396.99 - Feira de Santana - Bahia - Brazil
+Friday 10th of August 2018 08:47:14 AM - 186.244.6.138 - Chrome - 67.0.3396.99 - Feira de Santana - Bahia - Brazil
+Friday 10th of August 2018 08:50:41 AM - 201.148.117.22 - Chrome - 67.0.3396.99 - Tiete - Sao Paulo - Brazil
+Friday 10th of August 2018 08:52:08 AM - 200.199.139.186 - Chrome - 68.0.3440.106 -  -  - Brazil
+Friday 10th of August 2018 08:53:29 AM - 186.244.6.138 - Chrome - 67.0.3396.99 - Feira de Santana - Bahia - Brazil
+Friday 10th of August 2018 08:54:13 AM - 186.244.6.138 - Chrome - 67.0.3396.99 - Feira de Santana - Bahia - Brazil
+Friday 10th of August 2018 09:04:10 AM - 191.34.81.255 - Chrome - 67.0.3396.99 - Ribeirão Preto - Sao Paulo - Brazil
+Friday 10th of August 2018 09:15:10 AM - 177.2.165.163 - Chrome - 68.0.3440.91 - Gravataí - Rio Grande do Sul - Brazil
+Friday 10th of August 2018 09:15:14 AM - 177.2.165.163 - Chrome - 68.0.3440.91 - Gravataí - Rio Grande do Sul - Brazil
+Friday 10th of August 2018 09:19:16 AM - 201.92.62.254 - Chrome - 68.0.3440.106 - Tapiratiba - Sao Paulo - Brazil
+Friday 10th of August 2018 09:56:45 AM - 189.2.141.98 - Chrome - 65.0.3325.181 - Avare - Sao Paulo - Brazil
+Friday 10th of August 2018 10:18:55 AM - 189.41.27.58 - Chrome - 68.0.3440.106 - Uberlândia - Minas Gerais - Brazil
+Friday 10th of August 2018 10:22:31 AM - 201.6.228.105 - Chrome - 59.0.3071.125 - São Paulo - Sao Paulo - Brazil
+Friday 10th of August 2018 10:23:08 AM - 201.6.228.105 - Chrome - 59.0.3071.125 - São Paulo - Sao Paulo - Brazil
+Friday 10th of August 2018 10:27:17 AM - 201.68.255.139 - Chrome - 67.0.3396.87 - São Paulo - Sao Paulo - Brazil
+Friday 10th of August 2018 10:27:40 AM - 201.68.255.139 - Chrome - 67.0.3396.87 - São Paulo - Sao Paulo - Brazil
+Friday 10th of August 2018 11:09:53 AM - 201.47.200.115 - Chrome - 59.0.3071.125 - Porto Alegre - Rio Grande do Sul - Brazil
+Friday 10th of August 2018 11:13:13 AM - 189.6.235.2 - Safari - 604.1 - Porto Alegre - Rio Grande do Sul - Brazil
+Friday 10th of August 2018 11:35:04 AM - 187.114.124.128 - Chrome - 67.0.3396.99 - Fortaleza - Ceara - Brazil
+Friday 10th of August 2018 11:47:47 AM - 191.220.177.77 - Chrome - 59.0.3071.125 - Porto Alegre - Rio Grande do Sul - Brazil
+Friday 10th of August 2018 11:58:52 AM - 177.18.148.177 - Firefox - 61.0 - Porto Alegre - Rio Grande do Sul - Brazil
+Friday 10th of August 2018 12:50:34 PM - 187.114.124.128 - Chrome - 67.0.3396.99 - Fortaleza - Ceara - Brazil
+Friday 10th of August 2018 12:52:32 PM - 187.114.124.128 - Chrome - 67.0.3396.99 - Fortaleza - Ceara - Brazil
+Friday 10th of August 2018 01:01:30 PM - 187.114.124.128 - Chrome - 67.0.3396.99 - Fortaleza - Ceara - Brazil
+Friday 10th of August 2018 01:02:32 PM - 187.114.124.128 - Chrome - 67.0.3396.99 - Fortaleza - Ceara - Brazil
+Friday 10th of August 2018 01:02:56 PM - 187.114.124.128 - Chrome - 67.0.3396.99 - Fortaleza - Ceara - Brazil
+Friday 10th of August 2018 01:17:17 PM - 177.0.255.172 - Chrome - 68.0.3440.106 - Florianópolis - Santa Catarina - Brazil
+Friday 10th of August 2018 01:35:26 PM - 177.189.198.197 - Safari - 604.1 - Buri - Sao Paulo - Brazil
+Friday 10th of August 2018 02:47:38 PM - 186.207.69.43 - Chrome - 68.0.3440.91 - Sorocaba - Sao Paulo - Brazil
+Friday 10th of August 2018 03:17:06 PM - 187.66.214.218 - Chrome - 68.0.3440.106 - Mogi das Cruzes - Sao Paulo - Brazil
+Friday 10th of August 2018 03:27:30 PM - 177.155.249.62 - Chrome - 68.0.3440.91 - Torres - Rio Grande do Sul - Brazil
+Friday 10th of August 2018 04:51:59 PM - 191.187.17.2 - Chrome - 68.0.3440.106 - Betim - Minas Gerais - Brazil
+Friday 10th of August 2018 04:56:15 PM - 189.4.28.231 - Chrome - 64.0.3282.140 - Curitiba - Parana - Brazil
+Friday 10th of August 2018 04:56:16 PM - 189.4.28.231 - Chrome - 64.0.3282.140 - Curitiba - Parana - Brazil
+Friday 10th of August 2018 06:07:03 PM - 186.252.162.101 - Safari - 604.1 -  -  - Brazil
+Friday 10th of August 2018 07:50:11 PM - 189.34.13.135 - Firefox - 52.0 - Florianópolis - Santa Catarina - Brazil
+Friday 10th of August 2018 10:19:41 PM - 201.37.162.120 - Firefox - 39.0 - Porto Alegre - Rio Grande do Sul - Brazil
+Sunday 12th of August 2018 06:14:30 AM - 189.103.186.209 - Chrome - 68.0.3440.106 - Piracicaba - Sao Paulo - Brazil
+Sunday 12th of August 2018 09:54:50 PM - 179.159.58.123 - Safari - 604.1 - Campinas - Sao Paulo - Brazil
+Monday 13th of August 2018 05:10:56 AM - 177.79.80.236 - Safari - 604.1 -  -  - Brazil
+Monday 13th of August 2018 05:12:59 AM - 177.79.80.236 - Safari - 604.1 -  -  - Brazil
+Monday 13th of August 2018 09:22:39 AM - 177.143.135.211 - Chrome - 68.0.3440.106 - São José dos Campos - Sao Paulo - Brazil
+Monday 13th of August 2018 02:59:53 PM - 189.27.148.38 - Safari - 604.1 - Porto Alegre - Rio Grande do Sul - Brazil
+Monday 13th of August 2018 04:21:19 PM - 177.191.136.11 - Chrome - 68.0.3440.106 - Pitangui - Minas Gerais - Brazil
+Monday 13th of August 2018 07:04:12 PM - 179.197.55.173 - other - 0 - Recife - Pernambuco - Brazil
+Monday 13th of August 2018 07:07:26 PM - 179.197.55.173 - other - 0 - Recife - Pernambuco - Brazil
+Tuesday 14th of August 2018 04:24:26 PM - 189.32.28.148 - Chrome - 64.0.3282.140 - Curitiba - Parana - Brazil
+Tuesday 14th of August 2018 04:25:27 PM - 189.32.28.148 - Chrome - 64.0.3282.140 - Curitiba - Parana - Brazil
+Wednesday 15th of August 2018 11:08:42 AM - 177.47.27.231 - Chrome - 68.0.3440.106 - São Paulo - Sao Paulo - Brazil
+Wednesday 15th of August 2018 05:06:17 PM - 177.102.0.121 - Chrome - 64.0.3282.140 - São Paulo - Sao Paulo - Brazil
+Thursday 16th of August 2018 04:07:24 PM - 187.183.153.133 - Chrome - 68.0.3440.106 - Cuiabá - Mato Grosso - Brazil
+Thursday 16th of August 2018 07:27:43 PM - 177.79.81.229 - Safari - 604.1 -  -  - Brazil
+Friday 17th of August 2018 09:48:33 AM - 186.249.4.9 - other - 0 - Belo Horizonte - Minas Gerais - Brazil
+Friday 17th of August 2018 10:16:57 AM - 201.6.232.80 - Safari - 604.1 - São Paulo - Sao Paulo - Brazil
+Friday 17th of August 2018 11:43:15 AM - 200.251.240.190 - other - 0 -  -  - Brazil
+Thursday 23rd of August 2018 02:42:13 PM - 179.35.56.35 - Chrome - 68.0.3440.106 - Rio de Janeiro - Rio de Janeiro - Brazil
+Thursday 23rd of August 2018 02:42:59 PM - 179.35.56.35 - Chrome - 68.0.3440.106 - Rio de Janeiro - Rio de Janeiro - Brazil

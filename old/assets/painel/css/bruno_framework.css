@@ -1,0 +1,153 @@
+/*!
+ * BRUNO FRAMEWORK CSS v1.0.0
+ *
+ * Copyright 2013 Bruno de Andrade
+ *
+ */
+
+
+.box-shadow {-webkit-box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.8);-moz-box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.8);box-shadow: 0px 0px 20px rgba(0, 0, 0, 1);}
+.box-shadow-2{
+	-webkit-box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8);
+	-moz-box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8);
+	box-shadow: 0px 0px 10px rgba(255, 255, 255, 1);
+	
+}
+.box-radius{-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;}
+.box-radius-bottom{border-radius: 1px 1px 15px 15px;}
+
+/*==================DISPLAY==================*/
+.display-none{display: none;}
+.display-block{display: block;}
+
+/*==================GRID==================*/
+.margin_auto{margin: 0px auto;}
+
+/*==================GRID==================*/
+.grid_1{width: 1200px;}
+.grid_2{width: 1100px;}
+.grid_3{width: 1000px;}
+.grid_4{width: 900px;}
+.grid_5{width: 800px;}
+.grid_6{width: 700px;}
+.grid_7{width: 600px;}
+.grid_8{width: 500px;}
+.grid_9{width: 400px;}
+.grid_10{width: 300px;}
+
+/*==================INPUT==================*/
+input{
+	padding: 2px;
+	background:#FFF;
+}
+
+/*==================COLOR==================*/
+.color_1{color: #FFF;}
+.color_2{color: #000;}
+
+.bold{font-weight: bold;}
+
+/*==================BG COLOR==================*/
+.bg_1{background-color: #CCC;}
+.bg_gradient{
+	background: #ffffff; /* Old browsers */
+	background: -moz-linear-gradient(top,  #ffffff 0%, #e5e5e5 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#e5e5e5)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #ffffff 0%,#e5e5e5 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #ffffff 0%,#e5e5e5 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #ffffff 0%,#e5e5e5 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #ffffff 0%,#e5e5e5 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-9 */
+}
+
+/*==================PADDING===================*/
+.padding_10{padding: 10px;}
+.padding_15{padding: 15px;}
+.padding_20{padding: 20px;}
+.padding_25{padding: 25px;}
+.padding_30{padding: 30px;}
+.padding_35{padding: 35px;}
+.padding_40{padding: 40px;}
+.padding_45{padding: 45px;}
+
+.padding_top_10{padding-top: 10px;}
+.padding_top_15{padding-top: 15px;}
+.padding_top_20{padding-top: 20px;}
+.padding_top_25{padding-top: 25px;}
+.padding_top_30{padding-top: 30px;}
+.padding_top_35{padding-top: 35px;}
+.padding_top_40{padding-top: 40px;}
+.padding_top_45{padding-top: 45px;}
+
+.padding_right_10{padding-right: 10px;}
+.padding_right_15{padding-right: 15px;}
+.padding_right_20{padding-right: 20px;}
+.padding_right_25{padding-right: 25px;}
+.padding_right_30{padding-right: 30px;}
+.padding_right_35{padding-right: 35px;}
+.padding_right_40{padding-right: 40px;}
+.padding_right_45{padding-right: 45px;}
+
+.padding_left_10{padding-left: 10px;}
+.padding_left_15{padding-left: 15px;}
+.padding_left_20{padding-left: 20px;}
+.padding_left_25{padding-left: 25px;}
+.padding_left_30{padding-left: 30px;}
+.padding_left_35{padding-left: 35px;}
+.padding_left_40{padding-left: 40px;}
+.padding_left_45{padding-left: 45px;}
+
+.padding_bottom_10{padding-bottom: 10px;}
+.padding_bottom_15{padding-bottom: 15px;}
+.padding_bottom_20{padding-bottom: 20px;}
+.padding_bottom_25{padding-bottom: 25px;}
+.padding_bottom_30{padding-bottom: 30px;}
+.padding_bottom_35{padding-bottom: 35px;}
+.padding_bottom_40{padding-bottom: 40px;}
+.padding_bottom_45{padding-bottom: 45px;}
+
+/*==================MARGIN===================*/
+.margin_10{margin: 10px;}
+.margin_15{margin: 15px;}
+.margin_20{margin: 20px;}
+.margin_25{margin: 25px;}
+.margin_30{margin: 30px;}
+.margin_35{margin: 35px;}
+.margin_40{margin: 40px;}
+.margin_45{margin: 45px;}
+
+.margin_top_10{margin-top: 10px;}
+.margin_top_15{margin-top: 15px;}
+.margin_top_20{margin-top: 20px;}
+.margin_top_25{margin-top: 25px;}
+.margin_top_30{margin-top: 30px;}
+.margin_top_35{margin-top: 35px;}
+.margin_top_40{margin-top: 40px;}
+.margin_top_45{margin-top: 45px;}
+
+.margin_right_10{margin-right: 10px;}
+.margin_right_15{margin-right: 15px;}
+.margin_right_20{margin-right: 20px;}
+.margin_right_25{margin-right: 25px;}
+.margin_right_30{margin-right: 30px;}
+.margin_right_35{margin-right: 35px;}
+.margin_right_40{margin-right: 40px;}
+.margin_right_45{margin-right: 45px;}
+
+.margin_left_10{margin-left: 10px;}
+.margin_left_15{margin-left: 15px;}
+.margin_left_20{margin-left: 20px;}
+.margin_left_25{margin-left: 25px;}
+.margin_left_30{margin-left: 30px;}
+.margin_left_35{margin-left: 35px;}
+.margin_left_40{margin-left: 40px;}
+.margin_left_45{margin-left: 45px;}
+
+.margin_bottom_10{margin-bottom: 10px;}
+.margin_bottom_15{margin-bottom: 15px;}
+.margin_bottom_20{margin-bottom: 20px;}
+.margin_bottom_25{margin-bottom: 25px;}
+.margin_bottom_30{margin-bottom: 30px;}
+.margin_bottom_35{margin-bottom: 35px;}
+.margin_bottom_40{margin-bottom: 40px;}
+.margin_bottom_45{margin-bottom: 45px;}

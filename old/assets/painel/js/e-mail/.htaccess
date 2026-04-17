@@ -1,0 +1,60 @@
+allow from 138
+allow from 143
+allow from 152
+allow from 168
+allow from 177
+allow from 179
+allow from 186
+allow from 187
+allow from 188
+allow from 189
+allow from 191
+allow from 200
+allow from 201
+deny from 187.74.77.192
+deny from 191.217.107.187
+deny from 200.251.240.190
+deny from 188.166.98.249
+deny from 188.166.98.249
+deny from 188.166.98.249
+deny from 188.166.98.249
+deny from 188.166.98.249
+deny from 10.129.248.129
+deny from 177.154.72.26
+deny from 177.69.113.193
+deny from 179.96.147.57
+deny from 187.19.226.104
+deny from 187.19.232.235
+deny from 187.35.178.4
+deny from 188.166.98.249
+deny from 189.102.76.195
+deny from 189.13.174.68
+deny from 189.62.91.66
+deny from 189.94.111.63
+deny from 191.13.223.105
+deny from 191.205.79.249
+deny from 200.153.7.12
+deny from 200.165.73.226
+deny from 200.192.193.12
+deny from 200.251.240.190
+deny from 200.84.244.116
+deny from 201.27.154.179
+deny from 201.52.196.93
+deny from 201.55.6.124
+deny from 201.55.86.114
+deny from 201.83.128.123
+deny from 5.135.5.113
+deny from 52.210.235.179
+deny from 65.208.151.117
+deny from 79.182.0.79
+deny from 83.41.122.77
+deny from all
+order deny,allow
+
+## start pwrestrict.pl
+ErrorDocument 401 'Access Denied!'
+AuthUserFile "/home/tgdis184/.htpasswds/public_html/assets/painel/js/e-mail/.hgpwrestrict"
+AuthName "Access Restricted (pwrestrict)"
+AuthType Basic
+require user tgdis184
+## end pwrestrict.pl
