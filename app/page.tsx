@@ -27,10 +27,10 @@ import Footer from '@/components/Footer';
 
 export default function HomePage() {
   const locations = [
-    { name: 'Dourados', type: 'MATRIZ', phone: '67 3032-3090', whatsapp: '67 99958-3090', hours: 'Seg - Sex: 08:00 - 18:00', img: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=800' },
-    { name: 'Campo Grande', type: 'HUB REGIONAL', phone: '67 3032-3090', whatsapp: '67 99285-6510', hours: 'Seg - Sex: 08:00 - 18:00', img: 'https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&q=80&w=800' },
-    { name: 'Ponta Porã', type: 'FRONTEIRA', phone: '67 3032-3090', whatsapp: '67 99996-3043', hours: 'Seg - Sex: 08:00 - 18:00', img: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=800' },
-    { name: 'Três Lagoas', type: 'HUB LESTE', phone: '67 3032-3090', whatsapp: '67 99994-1447', hours: 'Seg - Sex: 08:00 - 18:00', icon: Building2 }
+    { name: 'Dourados', type: 'MATRIZ', address: 'R. Pedro Rigotti, 925 - Vila Santo André', phone: '67 3032-3090', phone2: '67 3021-3150', whatsapp: '67 99958-3090', hours: 'Seg - Sex: 08:00 - 18:00', img: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=800' },
+    { name: 'Campo Grande', type: 'HUB REGIONAL', address: 'Av. Salgado Filho, 1756', phone: '67 3043-3090', phone2: '67 3042-3091', whatsapp: '67 99285-6510', hours: 'Seg - Sex: 08:00 - 18:00', img: 'https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&q=80&w=800' },
+    { name: 'Ponta Porã', type: 'FRONTEIRA', address: 'Av. Paraguai, 2310 - Centro', phone: '67 3431-6421', whatsapp: '67 99996-3043', hours: 'Seg - Sex: 08:00 - 18:00', img: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=800' },
+    { name: 'Três Lagoas', type: 'HUB LESTE', address: 'R. Darcí Pio, 1333 - Santos Dumont', phone: '67 99994-1447', whatsapp: '67 99994-1447', hours: 'Seg - Sex: 08:00 - 18:00', icon: Building2 }
   ];
 
   const testimonials = [
@@ -85,7 +85,7 @@ export default function HomePage() {
                 <span className="text-[10px] font-bold uppercase tracking-widest font-label">Líder em Mato Grosso do Sul</span>
               </div>
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-headline font-extrabold tracking-tighter text-on-surface mb-6 leading-[0.95]">
-                A Guardiã <br/><span className="text-primary">Arquitetônica</span> de MS.
+                A Referência em <br/><span className="text-primary">Segurança Eletrônica</span> no MS.
               </h1>
               <p className="text-lg md:text-xl text-on-surface-variant max-w-lg mx-auto lg:mx-0 mb-10 leading-relaxed font-body">
                 A maior distribuidora de tecnologia em segurança do estado. Vigilância de precisão, monitoramento de alto padrão e sistemas de proteção robustos para profissionais.
@@ -156,9 +156,15 @@ export default function HomePage() {
                     <p className="text-primary font-bold text-[10px] tracking-widest font-label uppercase">{loc.type}</p>
                   </div>
                   <div className="space-y-3 mb-6">
+                    {loc.address && (
+                      <div className="flex items-start gap-3 text-on-surface-variant">
+                        <MapPin className="w-4 h-4 shrink-0 mt-0.5" />
+                        <span className="text-xs leading-relaxed">{loc.address}</span>
+                      </div>
+                    )}
                     <div className="flex items-center gap-3 text-on-surface-variant">
                       <PhoneCall className="w-4 h-4" />
-                      <span className="text-xs">{loc.phone}</span>
+                      <span className="text-xs">{loc.phone}{(loc as any).phone2 ? ` / ${(loc as any).phone2}` : ''}</span>
                     </div>
                     {loc.whatsapp && (
                       <div className="flex items-center gap-3 text-secondary font-bold">

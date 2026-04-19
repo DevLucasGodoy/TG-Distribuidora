@@ -18,15 +18,17 @@ interface Location {
   name: string;
   type: string;
   coords: [number, number];
+  address: string;
   phone: string;
+  phone2?: string;
   whatsapp: string;
 }
 
 const locations: Location[] = [
-  { name: 'Dourados', type: 'Matriz', coords: [-22.2235, -54.8064], phone: '67 3032-3090', whatsapp: '67 99958-3090' },
-  { name: 'Campo Grande', type: 'Hub da Capital', coords: [-20.4697, -54.6201], phone: '67 3032-3090', whatsapp: '67 99285-6510' },
-  { name: 'Ponta Porã', type: 'Logística Fronteira', coords: [-22.5361, -55.7258], phone: '67 3032-3090', whatsapp: '67 99996-3043' },
-  { name: 'Três Lagoas', type: 'Expansão Leste', coords: [-20.8494, -51.7042], phone: '67 3032-3090', whatsapp: '67 99994-1447' }
+  { name: 'Dourados', type: 'Matriz', coords: [-22.2235, -54.8064], address: 'R. Pedro Rigotti, 925 - Vila Santo André', phone: '67 3032-3090', phone2: '67 3021-3150', whatsapp: '67 99958-3090' },
+  { name: 'Campo Grande', type: 'Hub da Capital', coords: [-20.4697, -54.6201], address: 'Av. Salgado Filho, 1756', phone: '67 3043-3090', phone2: '67 3042-3091', whatsapp: '67 99285-6510' },
+  { name: 'Ponta Porã', type: 'Logística Fronteira', coords: [-22.5361, -55.7258], address: 'Av. Paraguai, 2310 - Centro', phone: '67 3431-6421', whatsapp: '67 99996-3043' },
+  { name: 'Três Lagoas', type: 'Expansão Leste', coords: [-20.8494, -51.7042], address: 'R. Darcí Pio, 1333 - Santos Dumont', phone: '67 99994-1447', whatsapp: '67 99994-1447' }
 ];
 
 export default function InteractiveMap() {
@@ -48,8 +50,11 @@ export default function InteractiveMap() {
                 <h3 className="font-headline font-bold text-primary text-lg m-0 leading-tight">Unidade {loc.name}</h3>
                 <p className="text-[10px] uppercase tracking-widest text-neutral-500 font-bold mt-1 mb-3">{loc.type}</p>
                 <div className="space-y-1.5 border-t border-neutral-100 pt-3">
+                  <div className="flex items-start gap-2 text-xs">
+                    <span className="font-bold shrink-0">End.:</span> {loc.address}
+                  </div>
                   <div className="flex items-center gap-2 text-xs">
-                    <span className="font-bold">Tel:</span> {loc.phone}
+                    <span className="font-bold">Tel:</span> {loc.phone}{loc.phone2 ? ` / ${loc.phone2}` : ''}
                   </div>
                   <div className="flex items-center gap-2 text-xs">
                     <span className="font-bold text-primary">WhatsApp:</span> {loc.whatsapp}

@@ -22,10 +22,10 @@ const InteractiveMap = dynamic(() => import('@/components/InteractiveMap'), {
 
 export default function ContatoPage() {
   const offices = [
-    { name: 'Dourados', type: 'Matriz', whatsapp: '67 99958-3090', desc: 'Nossa matriz tecnológica, atendendo todo o cone sul com precisão técnica e suporte dedicado.', img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800' },
-    { name: 'Campo Grande', type: 'Hub da Capital', whatsapp: '67 99285-6510', desc: 'Logística estratégica e showroom de alta tecnologia para a capital do Mato Grosso do Sul.', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800' },
-    { name: 'Ponta Porã', type: 'Logística Fronteira', whatsapp: '67 99996-3043', desc: 'Ponto estratégico de distribuição e atendimento regional para a região de fronteira.', img: 'https://images.unsplash.com/photo-1577412647305-991150c7d163?auto=format&fit=crop&q=80&w=800' },
-    { name: 'Três Lagoas', type: 'Expansão Leste', whatsapp: '67 99994-1447', desc: 'Atendimento especializado para a região industrial e costa leste, garantindo agilidade no suporte.', icon: Building2 }
+    { name: 'Dourados', type: 'Matriz', address: 'R. Pedro Rigotti, 925 - Vila Santo André', phone: '67 3032-3090', phone2: '67 3021-3150', whatsapp: '67 99958-3090', desc: 'Nossa matriz tecnológica, atendendo todo o cone sul com precisão técnica e suporte dedicado.', img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800' },
+    { name: 'Campo Grande', type: 'Hub da Capital', address: 'Av. Salgado Filho, 1756', phone: '67 3043-3090', phone2: '67 3042-3091', whatsapp: '67 99285-6510', desc: 'Logística estratégica e showroom de alta tecnologia para a capital do Mato Grosso do Sul.', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800' },
+    { name: 'Ponta Porã', type: 'Logística Fronteira', address: 'Av. Paraguai, 2310 - Centro', phone: '67 3431-6421', whatsapp: '67 99996-3043', desc: 'Ponto estratégico de distribuição e atendimento regional para a região de fronteira.', img: 'https://images.unsplash.com/photo-1577412647305-991150c7d163?auto=format&fit=crop&q=80&w=800' },
+    { name: 'Três Lagoas', type: 'Expansão Leste', address: 'R. Darcí Pio, 1333 - Santos Dumont', phone: '67 99994-1447', whatsapp: '67 99994-1447', desc: 'Atendimento especializado para a região industrial e costa leste, garantindo agilidade no suporte.', icon: Building2 }
   ];
 
   return (
@@ -81,10 +81,18 @@ export default function ContatoPage() {
                     {office.desc}
                   </p>
                   <div className="pt-4 border-t border-neutral-100 space-y-2">
-                    <div className="flex items-center gap-3 text-sm font-medium text-tertiary">
-                      <MapPin className="text-sm w-4 h-4" />
-                      <span>{office.name}, MS</span>
-                    </div>
+                    {(office as any).address && (
+                      <div className="flex items-start gap-3 text-sm font-medium text-tertiary">
+                        <MapPin className="w-4 h-4 shrink-0 mt-0.5" />
+                        <span className="text-xs leading-relaxed">{(office as any).address}, {office.name}/MS</span>
+                      </div>
+                    )}
+                    {(office as any).phone && (
+                      <div className="flex items-center gap-3 text-sm font-medium text-on-surface-variant">
+                        <PhoneCall className="w-4 h-4" />
+                        <span className="text-xs">{(office as any).phone}{(office as any).phone2 ? ` / ${(office as any).phone2}` : ''}</span>
+                      </div>
+                    )}
                     {office.whatsapp && (
                       <div className="flex items-center gap-3 text-sm font-bold text-secondary">
                         <MessageCircle className="w-4 h-4" />
