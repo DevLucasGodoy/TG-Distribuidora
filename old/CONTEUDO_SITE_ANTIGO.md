@@ -60,6 +60,11 @@
 - Centro — Ponta Porã/MS
 - (67) 3431-6421
 
+### Loja  Três Lagoas
+
+Endereço: R. Darcí Pio, 1333 - Santos Dumont, Três Lagoas - MS, 79621-020
+Telefone: (67) 99994-1447
+
 ### Newsletter
 
 - Texto: "Receba nossas novidades em seu e-mail."
