@@ -107,7 +107,8 @@ export default function Footer() {
             </div>
             <div>
               <p className="text-neutral-400 text-[10px] uppercase tracking-widest mb-1">Horário</p>
-              <p className="text-neutral-600 text-xs">Seg — Sex, 08:00 às 18:00</p>
+              <p className="text-neutral-600 text-xs">Seg — Sex, 07:30 às 17:30</p>
+              <p className="text-neutral-600 text-xs">Sáb, 07:30 às 11:30</p>
             </div>
             <div>
               <p className="text-neutral-400 text-[10px] uppercase tracking-widest mb-1">E-mail</p>
