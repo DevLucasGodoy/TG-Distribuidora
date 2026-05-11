@@ -305,7 +305,7 @@ export default function HomePage() {
         </section>
 
         {/* Testimonials Carousel Section */}
-        <section className="py-24 bg-surface-container-high overflow-hidden relative">
+        {/* <section className="py-24 bg-surface-container-high overflow-hidden relative">
           <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-32 -mt-32"></div>
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-secondary/5 rounded-full blur-3xl -ml-32 -mb-32"></div>
 
@@ -389,7 +389,7 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-        </section>
+        </section> */}
       </main>
 
       <Footer />
