@@ -1,17 +1,20 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { motion } from 'motion/react';
-import { 
-  PhoneCall, 
-  Mail, 
-  Clock, 
-  MapPin, 
-  Send, 
+import {
+  PhoneCall,
+  Mail,
+  Clock,
+  MapPin,
+  Send,
   Building2,
-  MessageCircle
+  MessageCircle,
+  CheckCircle,
+  X
 } from 'lucide-react';
 const Navbar = dynamic(() => import('@/components/Navbar'), { ssr: false });
 const Footer = dynamic(() => import('@/components/Footer'), { ssr: false });
@@ -21,6 +24,17 @@ const InteractiveMap = dynamic(() => import('@/components/InteractiveMap'), {
 });
 
 export default function ContatoPage() {
+  const searchParams = useSearchParams();
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  useEffect(() => {
+    if (searchParams.get('success') === 'true') {
+      setShowSuccess(true);
+      const timer = setTimeout(() => setShowSuccess(false), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [searchParams]);
+
   const offices = [
     { name: 'Dourados', type: 'Matriz', address: 'R. Pedro Rigotti, 925 - Vila Santo André', mapsUrl: 'https://maps.google.com/?q=R.+Pedro+Rigotti,+925,+Vila+Santo+André,+Dourados,+MS', phone: '67 3032-3090', phone2: '67 3021-3150', whatsapp: '67 99958-3090', desc: 'Nossa matriz tecnológica, atendendo todo o cone sul com precisão técnica e suporte dedicado.', img: '/lojas/dourados.jpg' },
     { name: 'Campo Grande', type: 'Hub da Capital', address: 'Av. Salgado Filho, 1756', mapsUrl: 'https://maps.google.com/?q=Av.+Salgado+Filho,+1756,+Campo+Grande,+MS', phone: '67 3043-3090', phone2: '67 3042-3091', whatsapp: '67 99285-6510', desc: 'Logística estratégica e showroom de alta tecnologia para a capital do Mato Grosso do Sul.', img: '/lojas/campo-grande.jpg' },
@@ -30,6 +44,28 @@ export default function ContatoPage() {
 
   return (
     <div className="min-h-screen bg-surface selection:bg-primary/20">
+      {showSuccess && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          className="fixed top-4 left-1/2 -translate-x-1/2 z-50"
+        >
+          <div className="flex items-center gap-4 bg-green-50 border border-green-200 rounded-lg px-6 py-4 shadow-lg">
+            <CheckCircle className="w-6 h-6 text-green-600 shrink-0" />
+            <div>
+              <p className="font-bold text-green-900">Mensagem enviada com sucesso!</p>
+              <p className="text-sm text-green-700">Entraremos em contato em até 24 horas úteis.</p>
+            </div>
+            <button
+              onClick={() => setShowSuccess(false)}
+              className="ml-4 text-green-600 hover:text-green-800 transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+        </motion.div>
+      )}
       <Navbar />
 
       <main className="pt-24">
@@ -157,35 +193,41 @@ export default function ContatoPage() {
                   </div>
                   <div>
                     <p className="text-xs font-label uppercase tracking-widest text-on-surface-variant mb-1 font-bold">Horário de Suporte</p>
-                    <p className="font-headline font-bold text-lg">Seg - Sex, 08:00 às 18:00</p>
+                    <div className="space-y-1">
+                      <p className="font-headline font-bold text-lg">Seg - Sex, 07:30 às 17:30</p>
+                      <p className="font-headline font-bold text-lg">Sáb, 07:30 às 11:30</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
             <div className="lg:col-span-7">
-              <form className="space-y-8 p-8 bg-white/50 backdrop-blur-lg rounded-2xl border border-neutral-100 shadow-xl">
+              <form action="https://formsubmit.co/contato@tgdistribuidora.com.br" method="POST" className="space-y-8 p-8 bg-white/50 backdrop-blur-lg rounded-2xl border border-neutral-100 shadow-xl">
+                <input type="hidden" name="_captcha" value="false" />
+                <input type="hidden" name="_next" value="https://tgdistribuidora.com.br/contato?success=true" />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="space-y-2">
                     <label className="text-xs font-label uppercase tracking-widest text-on-surface-variant px-1 font-bold">Nome Completo</label>
-                    <input className="w-full bg-transparent border-0 border-b border-neutral-200 py-3 focus:ring-0 focus:border-primary transition-all" placeholder="Seu nome" type="text"/>
+                    <input name="name" className="w-full bg-transparent border-0 border-b border-neutral-200 py-3 focus:ring-0 focus:border-primary transition-all" placeholder="Seu nome" type="text" required/>
                   </div>
                   <div className="space-y-2">
                     <label className="text-xs font-label uppercase tracking-widest text-on-surface-variant px-1 font-bold">Endereço de E-mail</label>
-                    <input className="w-full bg-transparent border-0 border-b border-neutral-200 py-3 focus:ring-0 focus:border-primary transition-all" placeholder="exemplo@empresa.com.br" type="email"/>
+                    <input name="email" className="w-full bg-transparent border-0 border-b border-neutral-200 py-3 focus:ring-0 focus:border-primary transition-all" placeholder="exemplo@empresa.com.br" type="email" required/>
                   </div>
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-label uppercase tracking-widest text-on-surface-variant px-1 font-bold">Assunto</label>
-                  <select className="w-full bg-transparent border-0 border-b border-neutral-200 py-3 focus:ring-0 focus:border-primary transition-all">
-                    <option>Dúvidas Gerais</option>
-                    <option>Suporte Técnico</option>
-                    <option>Nova Parceria</option>
-                    <option>Disponibilidade de Produto</option>
+                  <select name="subject" className="w-full bg-transparent border-0 border-b border-neutral-200 py-3 focus:ring-0 focus:border-primary transition-all" required>
+                    <option value="">Selecione um assunto...</option>
+                    <option value="Dúvidas Gerais">Dúvidas Gerais</option>
+                    <option value="Suporte Técnico">Suporte Técnico</option>
+                    <option value="Nova Parceria">Nova Parceria</option>
+                    <option value="Disponibilidade de Produto">Disponibilidade de Produto</option>
                   </select>
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-label uppercase tracking-widest text-on-surface-variant px-1 font-bold">Sua Mensagem</label>
-                  <textarea className="w-full bg-transparent border-0 border-b border-neutral-200 py-3 focus:ring-0 focus:border-primary transition-all resize-none" placeholder="Como podemos ajudar você hoje?" rows={4}></textarea>
+                  <textarea name="message" className="w-full bg-transparent border-0 border-b border-neutral-200 py-3 focus:ring-0 focus:border-primary transition-all resize-none" placeholder="Como podemos ajudar você hoje?" rows={4} required></textarea>
                 </div>
                 <button className="w-full py-4 bg-primary text-white font-headline font-bold rounded-lg scale-100 hover:scale-[1.02] active:scale-95 transition-all shadow-lg shadow-primary/20" type="submit">
                   Enviar Mensagem Segura
