@@ -78,27 +78,39 @@ export default function HomePage() {
   const testimonials = [
     {
       id: 1,
-      name: "Ricardo Mendes",
-      role: "Diretor Técnico | SegurTech",
-      text: "A TG Distribuidora é nossa parceira estratégica há mais de 10 anos. A velocidade na entrega e o suporte técnico especializado são diferenciais que não encontramos em nenhum outro lugar.",
-      avatar:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=150",
+      name: "Mauro Silva",
+      role: "Cliente · Dourados",
+      text: "Excelente atendimento na TG Distribuidora de Dourados! Precisei de equipamentos de segurança eletrônica com urgência e encontrei tudo com pronta entrega e preço de atacado. A equipe foi muito atenciosa e me ajudou a escolher os produtos ideais para minha instalação. Ótima opção para quem procura distribuidora de segurança eletrônica em Dourados, com variedade, qualidade e agilidade. Com certeza voltarei a comprar e recomendo para outros instaladores e profissionais da área!",
     },
     {
       id: 2,
-      name: "Ana Cláudia Silva",
-      role: "CEO | Proteção Total",
-      text: "O catálogo de produtos é impressionante. Sempre encontramos as últimas inovações da Hikvision e Intelbras com preços competitivos e garantia de procedência.",
-      avatar:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150",
+      name: "Francisco Freitas",
+      role: "Avaliação Google",
+      text: "Atendimento excelente, ambiente agradável, bom estacionamento, prestação de serviço rápida.",
     },
     {
       id: 3,
-      name: "Marcos Oliveira",
-      role: "Gerente Logístico | MS Vigilância",
-      text: "As quatro unidades estrategicamente localizadas facilitam muito nossa operação. O Portal B2B é intuitivo e agiliza todos os nossos processos de compra.",
-      avatar:
-        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150",
+      name: "Igor Gomes",
+      role: "Avaliação Google",
+      text: "Ótimo atendimento. Tudo para segurança patrimonial.",
+    },
+    {
+      id: 4,
+      name: "William Lara",
+      role: "Avaliação Google",
+      text: "Ótimo atendimento, melhores preços de concertina, cerca elétrica e alarmes da região.",
+    },
+    {
+      id: 5,
+      name: "Carlos Eduardo Miranda Pereira",
+      role: "Avaliação Google",
+      text: "Excelente produtos de primeira linha. Hikvision, Garen e movimento.",
+    },
+    {
+      id: 6,
+      name: "Steno Bernobic",
+      role: "Avaliação Google",
+      text: "Bom atendimento, produto excelente, bons preços. Facilidades em pagamento.",
     },
   ];
 
@@ -305,7 +317,7 @@ export default function HomePage() {
         </section>
 
         {/* Testimonials Carousel Section */}
-        {/* <section className="py-24 bg-surface-container-high overflow-hidden relative">
+        <section className="py-24 bg-surface-container-high overflow-hidden relative">
           <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-32 -mt-32"></div>
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-secondary/5 rounded-full blur-3xl -ml-32 -mb-32"></div>
 
@@ -355,15 +367,12 @@ export default function HomePage() {
                     </p>
 
                     <div className="flex items-center gap-4">
-                      <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-primary/20">
-                        <Image
-                          src={testimonials[currentTestimonial].avatar}
-                          alt={testimonials[currentTestimonial].name}
-                          fill
-                          loading="lazy"
-                          sizes="(max-width: 768px) 64px, 64px"
-                          className="object-cover"
-                        />
+                      <div className="flex items-center justify-center w-16 h-16 rounded-full border-2 border-primary/20 bg-primary/10 text-primary font-headline font-bold text-xl uppercase shrink-0">
+                        {testimonials[currentTestimonial].name
+                          .split(" ")
+                          .slice(0, 2)
+                          .map((n) => n[0])
+                          .join("")}
                       </div>
                       <div>
                         <h4 className="font-headline font-bold text-lg text-on-surface leading-tight">
@@ -389,7 +398,7 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-        </section> */}
+        </section>
       </main>
 
       <Footer />
