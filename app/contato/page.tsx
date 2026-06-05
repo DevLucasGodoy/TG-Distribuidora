@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
@@ -23,7 +23,7 @@ const InteractiveMap = dynamic(() => import('@/components/InteractiveMap'), {
   loading: () => <div className="h-[500px] w-full bg-neutral-100 animate-pulse rounded-2xl flex items-center justify-center font-bold text-neutral-400">Carregando Mapa...</div>
 });
 
-export default function ContatoPage() {
+function SuccessBanner() {
   const searchParams = useSearchParams();
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -35,6 +35,33 @@ export default function ContatoPage() {
     }
   }, [searchParams]);
 
+  if (!showSuccess) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      className="fixed top-4 left-1/2 -translate-x-1/2 z-50"
+    >
+      <div className="flex items-center gap-4 bg-green-50 border border-green-200 rounded-lg px-6 py-4 shadow-lg">
+        <CheckCircle className="w-6 h-6 text-green-600 shrink-0" />
+        <div>
+          <p className="font-bold text-green-900">Mensagem enviada com sucesso!</p>
+          <p className="text-sm text-green-700">Entraremos em contato em até 24 horas úteis.</p>
+        </div>
+        <button
+          onClick={() => setShowSuccess(false)}
+          className="ml-4 text-green-600 hover:text-green-800 transition-colors"
+        >
+          <X className="w-5 h-5" />
+        </button>
+      </div>
+    </motion.div>
+  );
+}
+
+export default function ContatoPage() {
   const offices = [
     { name: 'Dourados', type: 'Matriz', address: 'R. Pedro Rigotti, 925 - Vila Santo André', mapsUrl: 'https://maps.google.com/?q=R.+Pedro+Rigotti,+925,+Vila+Santo+André,+Dourados,+MS', phone: '67 3032-3090', phone2: '67 3021-3150', whatsapp: '67 99958-3090', desc: 'Nossa matriz tecnológica, atendendo todo o cone sul com precisão técnica e suporte dedicado.', img: '/lojas/dourados.jpg' },
     { name: 'Campo Grande', type: 'Hub da Capital', address: 'Av. Salgado Filho, 1756', mapsUrl: 'https://maps.google.com/?q=Av.+Salgado+Filho,+1756,+Campo+Grande,+MS', phone: '67 3043-3090', phone2: '67 3042-3091', whatsapp: '67 99285-6510', desc: 'Logística estratégica e showroom de alta tecnologia para a capital do Mato Grosso do Sul.', img: '/lojas/campo-grande.jpg' },
@@ -44,28 +71,9 @@ export default function ContatoPage() {
 
   return (
     <div className="min-h-screen bg-surface selection:bg-primary/20">
-      {showSuccess && (
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          className="fixed top-4 left-1/2 -translate-x-1/2 z-50"
-        >
-          <div className="flex items-center gap-4 bg-green-50 border border-green-200 rounded-lg px-6 py-4 shadow-lg">
-            <CheckCircle className="w-6 h-6 text-green-600 shrink-0" />
-            <div>
-              <p className="font-bold text-green-900">Mensagem enviada com sucesso!</p>
-              <p className="text-sm text-green-700">Entraremos em contato em até 24 horas úteis.</p>
-            </div>
-            <button
-              onClick={() => setShowSuccess(false)}
-              className="ml-4 text-green-600 hover:text-green-800 transition-colors"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-        </motion.div>
-      )}
+      <Suspense fallback={null}>
+        <SuccessBanner />
+      </Suspense>
       <Navbar />
 
       <main className="pt-24">
