@@ -20,6 +20,18 @@ import {
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ProductModal from "@/components/ProductModal";
+import { products, CATEGORIES, type Category, type Product } from "@/lib/products";
+
+const categoryIcons: Record<Category, React.ElementType> = {
+  CFTV: Video,
+  Alarmes: ShieldCheck,
+  "Controle de Acesso": Lock,
+  Automatização: Zap,
+  "Cabos e Redes": Wifi,
+  "Fontes e Energia": Zap,
+  Acessórios: ShieldCheck,
+};
 
 export default function ProdutosPage() {
   return (
@@ -35,6 +47,7 @@ function ProdutosPageContent() {
   const [activeCategory, setActiveCategory] = React.useState("Todos");
   const [activeBrand, setActiveBrand] = React.useState<string | null>(null);
   const [searchQuery, setSearchQuery] = React.useState("");
+  const [selectedProduct, setSelectedProduct] = React.useState<Product | null>(null);
 
   React.useEffect(() => {
     const brandParam = searchParams.get("brand");
@@ -43,146 +56,9 @@ function ProdutosPageContent() {
     }
   }, [searchParams]);
 
-  const categories = [
+  const categoryFilters = [
     { name: "Todos", icon: Database },
-    { name: "CFTV", icon: Video },
-    { name: "Alarmes", icon: ShieldCheck },
-    { name: "Controle de Acesso", icon: Lock },
-    { name: "Automatização", icon: Zap },
-    { name: "Cabos e Redes", icon: Wifi },
-    { name: "Fontes e Energia", icon: Zap },
-    { name: "Acessórios", icon: ShieldCheck },
-  ];
-
-  const products = [
-    {
-      id: 1,
-      name: "Câmera IP Speed Dome Ultra",
-      category: "CFTV",
-      brand: "Hikvision",
-      desc: "Câmeras IP com zoom óptico 32x, visão noturna laser e rastreamento inteligente com IA.",
-      img: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&q=80&w=600",
-    },
-    {
-      id: 2,
-      name: "Gravador NVR 32 Canais",
-      category: "CFTV",
-      brand: "Hikvision",
-      desc: "Suporte a resolução 4K, reconhecimento facial e compressão inteligente.",
-      img: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=600",
-    },
-    {
-      id: 3,
-      name: "Central de Alarme Inteligente",
-      category: "Alarmes",
-      brand: "JFL",
-      desc: "Gerenciamento via app, 20 zonas de proteção e discadora integrada.",
-      img: "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&q=80&w=600",
-    },
-    {
-      id: 4,
-      name: "Sensor de Presença sem Fio",
-      category: "Alarmes",
-      brand: "JFL",
-      desc: "Detector infravermelho com tecnologia sem fio de longo alcance.",
-      img: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&q=80&w=600",
-    },
-    {
-      id: 5,
-      name: "Fechadura Biométrica Profissional",
-      category: "Controle de Acesso",
-      brand: "AGL",
-      desc: "Abertura por digital, senha, cartão RFID e Bluetooth.",
-      img: "https://images.unsplash.com/photo-1582139329536-e7284fece509?auto=format&fit=crop&q=80&w=600",
-    },
-    {
-      id: 6,
-      name: "Interfone Eletrônico Vídeo",
-      category: "Controle de Acesso",
-      brand: "AGL",
-      desc: "Vídeo porteiro com câmera integrada e comunicação em tempo real.",
-      img: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&q=80&w=600",
-    },
-    {
-      id: 7,
-      name: "Motor para Portão Automático",
-      category: "Automatização",
-      brand: "Garen",
-      desc: "Abertura e fechamento automático com controle remoto e fotocélula.",
-      img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&q=80&w=600",
-    },
-    {
-      id: 8,
-      name: "Motor Residencial para Portão",
-      category: "Automatização",
-      brand: "Rossi",
-      desc: "Automatizador com kits completos de instalação e acessórios.",
-      img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&q=80&w=600",
-    },
-    {
-      id: 9,
-      name: "Cabo Coaxial HD 95% Malha",
-      category: "Cabos e Redes",
-      brand: "MPT Cabos",
-      desc: "Blindagem tripla para transmissões de vídeo em alta definição.",
-      img: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&q=80&w=600",
-    },
-    {
-      id: 10,
-      name: "Cabo de Rede CAT6 Profissional",
-      category: "Cabos e Redes",
-      brand: "Condutti",
-      desc: "Fios e cabos especiais para segurança eletrônica de alta qualidade.",
-      img: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&q=80&w=600",
-    },
-    {
-      id: 11,
-      name: "Fonte Chaveada 12V 10A",
-      category: "Fontes e Energia",
-      brand: "FC Fontes",
-      desc: "Alimentação estabilizada para sistemas CFTV e alarmes.",
-      img: "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&q=80&w=600",
-    },
-    {
-      id: 12,
-      name: "Distribuidor de Energia 8 Canais",
-      category: "Fontes e Energia",
-      brand: "FC Fontes",
-      desc: "Distribuição de energia com proteção contra picos.",
-      img: "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&q=80&w=600",
-    },
-    {
-      id: 13,
-      name: "Haste de Aterramento Industrial",
-      category: "Acessórios",
-      brand: "Confiseg",
-      desc: "Proteção contra surtos com hastes convencionais e cantoneira.",
-      img: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80&w=600",
-    },
-    {
-      id: 14,
-      name: "Base e Suporte para Câmera",
-      category: "Acessórios",
-      brand: "Inove",
-      desc: "Suportes e bases para fixação de câmeras e sensores.",
-      img: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80&w=600",
-    },
-    {
-      id: 15,
-      name: "Trava Elétrica com Fechadura",
-      category: "Controle de Acesso",
-      brand: "Trava Tec",
-      desc: "Sistema de trancamento eletrônico com fechos magnéticos.",
-      img: "https://images.unsplash.com/photo-1582139329536-e7284fece509?auto=format&fit=crop&q=80&w=600",
-    },
-    {
-      id: 16,
-      name: "Cercas Elétricas de Proteção",
-      category: "Acessórios",
-      brand: "Líder",
-      desc: "Proteção perimetral com tecnologia de choque controlado.",
-      img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&q=80&w=600",
-    },
+    ...CATEGORIES.map((name) => ({ name, icon: categoryIcons[name] })),
   ];
 
   const filteredProducts = products.filter((p) => {
@@ -231,31 +107,54 @@ function ProdutosPageContent() {
           </div>
         </section>
 
-        {/* Categories Bar */}
-        <div className="sticky top-[80px] z-40 bg-surface/95 backdrop-blur-md border-b border-neutral-200 shadow-sm px-8">
-          <div className="max-w-7xl mx-auto py-4">
-            <div className="flex flex-wrap items-center gap-4">
-              <div className="flex items-center gap-2 shrink-0">
-                <Filter className="w-5 h-5 text-neutral-500" />
-                <span className="text-xs font-bold font-label text-neutral-600 uppercase tracking-wider">Filtrar</span>
-              </div>
+        {/* Categories Bar — card flutuante com folga abaixo do header */}
+        <div className="sticky top-20 md:top-24 z-40 px-4 md:px-8 pt-4 pb-2 pointer-events-none">
+          <div className="max-w-7xl mx-auto pointer-events-auto bg-white/95 backdrop-blur-md border border-neutral-200 shadow-lg shadow-neutral-900/5 rounded-2xl px-3 md:px-5 py-2.5 flex items-center gap-3">
+            <div className="hidden md:flex items-center gap-2 shrink-0 pr-4 border-r border-neutral-200">
+              <Filter className="w-4 h-4 text-primary" />
+              <span className="text-xs font-bold font-label text-neutral-600 uppercase tracking-wider">
+                Filtrar
+              </span>
+            </div>
 
-              <div className="flex flex-wrap items-center gap-3">
-                {categories.map((cat) => (
+            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
+              {categoryFilters.map((cat) => {
+                const isActive = activeCategory === cat.name;
+                const count =
+                  cat.name === "Todos"
+                    ? products.length
+                    : products.filter((p) => p.category === cat.name).length;
+                return (
                   <button
                     key={cat.name}
                     onClick={() => setActiveCategory(cat.name)}
-                    className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold font-label transition-all duration-200 group ${
-                      activeCategory === cat.name
-                        ? "bg-primary text-white shadow-lg shadow-primary/30"
-                        : "bg-white text-on-surface-variant border border-neutral-200 hover:border-primary hover:bg-primary/5"
+                    className={`relative shrink-0 flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold font-label whitespace-nowrap transition-colors duration-200 ${
+                      isActive
+                        ? "text-white"
+                        : "text-on-surface-variant hover:text-primary"
                     }`}
                   >
-                    <cat.icon className={`w-4 h-4 transition-transform ${activeCategory === cat.name ? "" : "group-hover:scale-110"}`} />
-                    {cat.name.toUpperCase()}
+                    {isActive && (
+                      <motion.span
+                        layoutId="activeCategoryPill"
+                        transition={{ type: "spring", stiffness: 400, damping: 32 }}
+                        className="absolute inset-0 bg-primary rounded-full shadow-lg shadow-primary/30"
+                      />
+                    )}
+                    <cat.icon className="relative z-10 w-4 h-4" />
+                    <span className="relative z-10">{cat.name}</span>
+                    <span
+                      className={`relative z-10 min-w-[20px] text-center px-1.5 py-0.5 rounded-full text-[10px] tabular-nums transition-colors ${
+                        isActive
+                          ? "bg-white/20 text-white"
+                          : "bg-neutral-100 text-neutral-500"
+                      }`}
+                    >
+                      {count}
+                    </span>
                   </button>
-                ))}
-              </div>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -299,7 +198,8 @@ function ProdutosPageContent() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     key={product.id}
-                    className="group bg-white rounded-2xl overflow-hidden border border-neutral-100 shadow-sm hover:shadow-2xl transition-all duration-500"
+                    onClick={() => setSelectedProduct(product)}
+                    className="group bg-white rounded-2xl overflow-hidden border border-neutral-100 shadow-sm hover:shadow-2xl transition-all duration-500 cursor-pointer"
                   >
                     <div className="relative h-56 w-full bg-neutral-50 overflow-hidden">
                       <Image
@@ -325,7 +225,10 @@ function ProdutosPageContent() {
                       <p className="text-sm text-on-surface-variant leading-relaxed mb-6 line-clamp-2">
                         {product.desc}
                       </p>
-                      <button className="w-full py-3 bg-surface-container-low hover:bg-primary hover:text-white text-primary font-bold text-xs uppercase tracking-widest rounded-lg transition-all flex items-center justify-center gap-2">
+                      <button
+                        type="button"
+                        className="w-full py-3 bg-surface-container-low hover:bg-primary hover:text-white text-primary font-bold text-xs uppercase tracking-widest rounded-lg transition-all flex items-center justify-center gap-2"
+                      >
                         Ver Detalhes
                         <ArrowRight className="w-4 h-4" />
                       </button>
@@ -392,6 +295,8 @@ function ProdutosPageContent() {
           </div>
         </section>
       </main>
+
+      <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />
 
       <Footer />
     </div>
