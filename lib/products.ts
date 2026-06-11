@@ -217,7 +217,7 @@ export const products: Product[] = [
   },
   {
     id: 9,
-    name: "Cabo Coaxial HD 95% Malha",
+    name: "CABO LAN UTP CAT5E PT (INT/EXT)305M MPT",
     category: "Cabos e Redes",
     brand: "MPT Cabos",
     desc: "Blindagem tripla para transmissões de vídeo em alta definição.",
