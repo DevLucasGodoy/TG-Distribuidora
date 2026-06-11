@@ -197,13 +197,13 @@ export default function Navbar() {
                   </p>
                   <p className="text-[9px] text-neutral-400 font-body opacity-50">
                     Todos os direitos reservados. Desenvolvido por{" "}
-                    <a
-                      href="https://firstclassdev.com.br"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <Link
+                      href="/first-class-dev"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="underline underline-offset-2"
                     >
                       First Class Dev
-                    </a>
+                    </Link>
                     .
                   </p>
                 </div>

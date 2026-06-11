@@ -137,7 +137,7 @@ export default function Footer() {
           </p>
           <p className="text-neutral-400 text-[10px] font-body uppercase tracking-widest">
             Desenvolvido pela{" "}
-            <Link href="https://firstclassdev.com.br" className="text-primary font-bold" target="_blank" rel="noopener noreferrer">
+            <Link href="/first-class-dev" className="text-primary font-bold hover:underline underline-offset-2">
               First Class Dev
             </Link>
           </p>
