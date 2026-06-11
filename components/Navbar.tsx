@@ -46,7 +46,7 @@ export default function Navbar() {
                   alt="TG Distribuidora"
                   fill
                   sizes="(max-width: 768px) 160px, 192px"
-                  className="object-contain"
+                  className="object-contain object-center md:object-left"
                   src="/logo.png"
                   priority
                 />
