@@ -156,13 +156,15 @@ export default function HomePage() {
                 de proteção robustos para profissionais.
               </p>
               <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center lg:justify-start">
-                <button
+                {/* Botão do catálogo desativado enquanto a página de produtos está oculta.
+                    Para reativar, descomente o bloco abaixo. */}
+                {/* <button
                   onClick={() => (window.location.href = "/produtos")}
                   className="px-8 py-4 bg-primary text-white rounded-lg font-bold text-lg shadow-xl shadow-primary/20 hover:opacity-90 transition-all flex items-center justify-center gap-2"
                 >
                   Explorar Catálogo
                   <ArrowRight className="w-5 h-5" />
-                </button>
+                </button> */}
                 <button
                   onClick={() => (window.location.href = "/contato")}
                   className="px-8 py-4 border border-outline-variant/30 text-primary rounded-lg font-bold text-lg hover:bg-surface-container-low transition-all"

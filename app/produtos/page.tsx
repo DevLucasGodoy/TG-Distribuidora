@@ -4,7 +4,7 @@ import React, { Suspense } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 import {
   ShieldCheck,
   Search,
@@ -34,6 +34,13 @@ const categoryIcons: Record<Category, React.ElementType> = {
 };
 
 export default function ProdutosPage() {
+  // PÁGINA OCULTA POR ENQUANTO: redireciona para a home.
+  // Para reativar o catálogo, remova a linha abaixo e descomente:
+  //   - o item "Produtos" em components/Navbar.tsx
+  //   - o botão "Explorar Catálogo" em app/page.tsx
+  //   - o link "VER PRODUTOS" em app/marcas/page.tsx
+  redirect("/");
+
   return (
     <Suspense fallback={<div className="min-h-screen bg-surface flex items-center justify-center">Carregando...</div>}>
       <ProdutosPageContent />

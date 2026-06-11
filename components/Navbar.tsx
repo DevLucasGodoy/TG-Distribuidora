@@ -15,7 +15,8 @@ export default function Navbar() {
     { label: "Início", href: "/" },
     { label: "Sobre Nós", href: "/sobre" },
     { label: "Marcas Parceiras", href: "/marcas" },
-    { label: "Produtos", href: "/produtos" },
+    // Página de produtos oculta por enquanto — descomente para reativar:
+    // { label: "Produtos", href: "/produtos" },
   ];
 
   return (

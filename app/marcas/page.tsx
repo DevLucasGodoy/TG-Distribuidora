@@ -273,12 +273,14 @@ export default function MarcasPage() {
                     <p className="text-sm text-on-surface-variant leading-relaxed">
                       {partner.desc}
                     </p>
-                    <Link
+                    {/* Botão "Ver Produtos" desativado enquanto a página de produtos está oculta.
+                        Para reativar, descomente o bloco abaixo. */}
+                    {/* <Link
                       href={`/produtos?brand=${encodeURIComponent(partner.name)}`}
                       className="mt-6 inline-flex items-center text-primary font-label text-[10px] font-bold tracking-widest opacity-0 group-hover:opacity-100 transition-opacity hover:text-primary/80"
                     >
                       VER PRODUTOS <ArrowRight className="ml-2 w-3 h-3" />
-                    </Link>
+                    </Link> */}
                   </div>
                 </motion.div>
               ))}
