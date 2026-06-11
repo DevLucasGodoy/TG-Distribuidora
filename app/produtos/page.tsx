@@ -77,8 +77,8 @@ function ProdutosPageContent() {
 
       <main className="pt-24 pb-32">
         {/* Header Section */}
-        <section className="bg-surface-container-low px-8 py-20">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
+        <section className="bg-surface-container-low py-20">
+          <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-12">
             <div className="max-w-2xl text-center md:text-left">
               <span className="text-secondary font-bold tracking-[0.2em] uppercase text-xs mb-4 block">
                 Catálogo de Produtos
@@ -108,8 +108,9 @@ function ProdutosPageContent() {
         </section>
 
         {/* Categories Bar — card flutuante com folga abaixo do header */}
-        <div className="sticky top-20 md:top-24 z-40 px-4 md:px-8 pt-4 pb-2 pointer-events-none">
-          <div className="max-w-7xl mx-auto pointer-events-auto bg-white/95 backdrop-blur-md border border-neutral-200 shadow-lg shadow-neutral-900/5 rounded-2xl px-3 md:px-5 py-2.5 flex items-center gap-3">
+        <div className="sticky top-20 md:top-24 z-40 pt-4 pb-2 pointer-events-none">
+          <div className="max-w-7xl mx-auto px-4 md:px-8 pointer-events-auto">
+          <div className="bg-white/95 backdrop-blur-md border border-neutral-200 shadow-lg shadow-neutral-900/5 rounded-2xl px-3 md:px-5 py-2.5 flex items-center gap-3">
             <div className="hidden md:flex items-center gap-2 shrink-0 pr-4 border-r border-neutral-200">
               <Filter className="w-4 h-4 text-primary" />
               <span className="text-xs font-bold font-label text-neutral-600 uppercase tracking-wider">
@@ -157,11 +158,12 @@ function ProdutosPageContent() {
               })}
             </div>
           </div>
+          </div>
         </div>
 
         {/* Product Grid */}
-        <section className="px-8 mt-12">
-          <div className="max-w-7xl mx-auto">
+        <section className="mt-12">
+          <div className="max-w-7xl mx-auto px-4 md:px-8">
             <div className="flex justify-between items-center mb-10">
               <div className="flex flex-col gap-2">
                 <h2 className="text-xl font-headline font-bold text-on-surface">
@@ -191,7 +193,7 @@ function ProdutosPageContent() {
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
             >
               <AnimatePresence mode="popLayout">
-                {filteredProducts.map((product) => (
+                {filteredProducts.map((product, index) => (
                   <motion.div
                     layout
                     initial={{ opacity: 0, y: 20 }}
@@ -209,6 +211,7 @@ function ProdutosPageContent() {
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                         className="object-cover group-hover:scale-110 transition-transform duration-700"
                         referrerPolicy="no-referrer"
+                        priority={index < 4}
                       />
                       <div className="absolute top-4 left-4">
                         <span className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold font-label uppercase tracking-widest text-primary shadow-sm border border-neutral-100">
@@ -247,8 +250,9 @@ function ProdutosPageContent() {
         </section>
 
         {/* Portal B2B — CTA Contato */}
-        <section className="px-8 mt-32">
-          <div className="max-w-7xl mx-auto bg-primary rounded-[2.5rem] p-12 md:p-24 relative overflow-hidden">
+        <section className="mt-32">
+          <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <div className="bg-primary rounded-[2.5rem] p-12 md:p-24 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl -mr-48 -mt-48" />
             <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="text-white">
@@ -292,6 +296,7 @@ function ProdutosPageContent() {
                 <div className="absolute inset-0 bg-primary/20" />
               </div>
             </div>
+          </div>
           </div>
         </section>
       </main>
