@@ -77,4 +77,4 @@ old/                    # Site PHP legado (referência — não editar)
 
 ## Créditos
 
-Desenvolvido pela [**First Class Dev**](https://www.firstclassdev.com.br) — tecnologia sob medida que faz a sua empresa vender mais e crescer. Conheça a história da empresa na página [/first-class-dev](app/first-class-dev/page.tsx) deste site.
+Desenvolvido pela [**First Class Dev**](https://www.firstclassdev.com.br) — sites que transformam visitantes em clientes. Conheça a história da empresa na página [/first-class-dev](app/first-class-dev/page.tsx) deste site.

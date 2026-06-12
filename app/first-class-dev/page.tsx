@@ -74,19 +74,19 @@ const stats = [
 
 const fronts = [
   {
+    icon: Palette,
+    title: 'Brand',
+    desc: 'Identidade visual, sites, landing pages e lojas onde cada pixel guia o visitante até o contato. É a nossa especialidade: sites que viram máquina de conversão de novos clientes.',
+  },
+  {
     icon: Layers,
     title: 'SaaS',
-    desc: 'Produtos prontos para usar, com assinatura mensal e sem instalação. Onze soluções cobrindo mercados diferentes.',
+    desc: 'Produtos prontos para usar, com assinatura mensal, sem instalação e 7 dias de teste grátis. Onze soluções cobrindo mercados diferentes.',
   },
   {
     icon: Code2,
     title: 'Dev',
     desc: 'Sistemas, portais e aplicações web sob medida, que se encaixam no processo do cliente e escalam com ele.',
-  },
-  {
-    icon: Palette,
-    title: 'Brand',
-    desc: 'Identidade visual, sites, landing pages e lojas pensados para converter: cada pixel guia o visitante até o contato.',
   },
 ];
 
@@ -179,8 +179,9 @@ export default function FirstClassDevPage() {
             >
               O estúdio de tecnologia que transforma o seu site em uma{' '}
               <strong className="text-white">máquina de conversão de novos clientes</strong>. Desde 2021,
-              criamos SaaS, sites, lojas e sistemas sob medida que fazem pequenas e médias empresas
-              venderem mais — no Brasil e no exterior.
+              criamos sites, lojas e landing pages desenhados para vender — rápidos, encontráveis e com
+              cada pixel guiando o visitante até o contato. E quando o desafio vai além do site, nossos
+              SaaS e sistemas sob medida resolvem.
             </motion.p>
 
             {/* Botão em destaque — CTA principal */}
@@ -201,7 +202,7 @@ export default function FirstClassDevPage() {
                 }}
               >
                 <Globe2 className="w-6 h-6" />
-                Conheça a First Class Dev
+                Quero um site assim
                 <ArrowUpRight className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
               </a>
               <a
@@ -428,11 +429,12 @@ export default function FirstClassDevPage() {
                 Produtos próprios
               </span>
               <h2 className="text-4xl md:text-5xl font-headline font-extrabold text-on-surface tracking-tight mb-4">
-                11 SaaS nascidos de problemas reais
+                Não só sites: 11 SaaS nascidos de problemas reais
               </h2>
               <p className="text-xl text-on-surface-variant">
                 Cada um é a prova viva da nossa engenharia — cobrindo mercados diferentes, do financeiro a
-                eventos.
+                eventos. <strong className="text-on-surface">Todos com 7 dias de teste grátis</strong>,
+                sem cartão de crédito.
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -543,7 +545,8 @@ export default function FirstClassDevPage() {
               </a>
             </div>
             <p className="mt-12 text-white/40 text-sm italic">
-              First Class Dev — tecnologia sob medida que faz a sua empresa vender mais e crescer.
+              First Class Dev — o estúdio de tecnologia que transforma o seu site em uma máquina de
+              conversão de novos clientes.
             </p>
           </div>
         </section>
