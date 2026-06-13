@@ -26,6 +26,7 @@ export default function SobrePage() {
               className="w-full h-full object-cover opacity-30 grayscale mix-blend-multiply" 
               src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200"
               fill
+              sizes="100vw"
               referrerPolicy="no-referrer"
               alt="Centro de Distribuição TG"
             />
@@ -76,6 +77,7 @@ export default function SobrePage() {
                   className="w-full h-full object-cover" 
                   src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&q=80&w=1200"
                   fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   referrerPolicy="no-referrer"
                   alt="Equipe Técnica TG"
                 />
@@ -107,6 +109,7 @@ export default function SobrePage() {
                   className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" 
                   src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200"
                   fill
+                  sizes="(max-width: 768px) 100vw, 66vw"
                   referrerPolicy="no-referrer"
                   alt="Infraestrutura Tecnológica"
                 />

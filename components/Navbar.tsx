@@ -15,7 +15,8 @@ export default function Navbar() {
     { label: "Início", href: "/" },
     { label: "Sobre Nós", href: "/sobre" },
     { label: "Marcas Parceiras", href: "/marcas" },
-    { label: "Produtos", href: "/produtos" },
+    // Página de produtos oculta por enquanto — descomente para reativar:
+    // { label: "Produtos", href: "/produtos" },
   ];
 
   return (
@@ -46,7 +47,7 @@ export default function Navbar() {
                   alt="TG Distribuidora"
                   fill
                   sizes="(max-width: 768px) 160px, 192px"
-                  className="object-contain"
+                  className="object-contain object-center md:object-left"
                   src="/logo.png"
                   priority
                 />
@@ -197,13 +198,13 @@ export default function Navbar() {
                   </p>
                   <p className="text-[9px] text-neutral-400 font-body opacity-50">
                     Todos os direitos reservados. Desenvolvido por{" "}
-                    <a
-                      href="https://firstclassdev.com.br"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <Link
+                      href="/first-class-dev"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="underline underline-offset-2"
                     >
                       First Class Dev
-                    </a>
+                    </Link>
                     .
                   </p>
                 </div>

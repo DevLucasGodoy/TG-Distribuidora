@@ -26,6 +26,47 @@
   }
 }
 
+/* Scrollbar personalizada — Firefox */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #98001b #f1edec;
+}
+
+/* Scrollbar personalizada — Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1edec;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #98001b 0%, #be1e2d 100%);
+  border-radius: 8px;
+  border: 2px solid #f1edec;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #be1e2d;
+}
+
+::-webkit-scrollbar-corner {
+  background: #f1edec;
+}
+
+/* Esconde a barra de rolagem (filtros com scroll horizontal) */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
 .glass-nav {
   backdrop-filter: blur(24px);
 }

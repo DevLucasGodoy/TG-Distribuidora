@@ -25,12 +25,12 @@ const InteractiveMap = dynamic(() => import('@/components/InteractiveMap'), {
 
 function SuccessBanner() {
   const searchParams = useSearchParams();
-  const [showSuccess, setShowSuccess] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
+  const showSuccess = !dismissed && searchParams.get('success') === 'true';
 
   useEffect(() => {
     if (searchParams.get('success') === 'true') {
-      setShowSuccess(true);
-      const timer = setTimeout(() => setShowSuccess(false), 5000);
+      const timer = setTimeout(() => setDismissed(true), 5000);
       return () => clearTimeout(timer);
     }
   }, [searchParams]);
@@ -51,7 +51,7 @@ function SuccessBanner() {
           <p className="text-sm text-green-700">Entraremos em contato em até 24 horas úteis.</p>
         </div>
         <button
-          onClick={() => setShowSuccess(false)}
+          onClick={() => setDismissed(true)}
           className="ml-4 text-green-600 hover:text-green-800 transition-colors"
         >
           <X className="w-5 h-5" />
@@ -151,7 +151,7 @@ export default function ContatoPage() {
                   </div>
                   <div className="mt-4 overflow-hidden rounded-lg h-32 relative bg-neutral-50">
                     {office.img ? (
-                      <Image src={office.img} alt={office.name} fill className="object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" referrerPolicy="no-referrer" />
+                      <Image src={office.img} alt={office.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw" className="object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700" referrerPolicy="no-referrer" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
                         <Building2 className="w-10 h-10 text-neutral-200" />
