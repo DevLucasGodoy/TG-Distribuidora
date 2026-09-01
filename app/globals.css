@@ -1,19 +1,29 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Tokens do tema (Tailwind 4 — não existe tailwind.config).
+   ATENÇÃO: classe cujo token não estiver declarado aqui é descartada em
+   silêncio no build. Usou `bg-algo-novo` no JSX? Declare `--color-algo-novo`
+   nesta lista, senão o estilo simplesmente não aparece. */
 @theme {
   --color-primary: #98001b;
   --color-primary-container: #be1e2d;
   --color-secondary: #7b5800;
   --color-secondary-container: #fdc34d;
+  --color-on-secondary-container: #271900;
   --color-tertiary: #094795;
   --color-background: #fbf9f8;
   --color-surface: #fbf9f8;
+  --color-surface-container-low: #f6f3f2;
+  --color-surface-container-high: #ebe7e6;
   --color-on-surface: #1b1c1c;
   --color-on-surface-variant: #5b403f;
-  
+  --color-outline-variant: #d8c2c0;
+
   --font-headline: var(--font-headline);
   --font-body: var(--font-body);
+  /* Rótulos/eyebrows usam a mesma família do corpo (Inter). */
+  --font-label: var(--font-body);
 }
 
 @layer base {

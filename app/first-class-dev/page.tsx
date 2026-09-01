@@ -12,10 +12,21 @@ const serif = Instrument_Serif({
 });
 const mono = Space_Mono({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-mono" });
 
+const fcdDescription =
+  "First Class Dev — o estúdio de tecnologia que transforma o seu site em uma máquina de conversão de novos clientes. Sites, SaaS e sistemas sob medida desde 2021.";
+
 export const metadata: Metadata = {
-  title: "First Class Dev | Quem desenvolveu este site",
-  description:
-    "First Class Dev — o estúdio de tecnologia que transforma o seu site em uma máquina de conversão de novos clientes. Sites, SaaS e sistemas sob medida desde 2021.",
+  // `absolute` ignora o template "%s | TG Distribuidora" do layout raiz:
+  // esta página tem identidade própria.
+  title: { absolute: "First Class Dev | Quem desenvolveu este site" },
+  description: fcdDescription,
+  alternates: { canonical: "/first-class-dev" },
+  openGraph: {
+    title: "First Class Dev | Quem desenvolveu este site",
+    description: fcdDescription,
+    url: "/first-class-dev",
+    type: "website",
+  },
 };
 
 export default function FirstClassDevPage() {

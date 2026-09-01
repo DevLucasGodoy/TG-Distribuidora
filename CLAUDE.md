@@ -36,6 +36,11 @@ so client-only mistakes (see gotchas) fail the build, not just runtime.
 - Pages are client components (`"use client"`) because they use Motion and hooks.
 - Match the existing file's Tailwind token vocabulary (`bg-surface`, `text-on-surface`,
   `text-primary`, etc.) — these are custom theme tokens, not stock Tailwind colors.
+  **Todo token precisa estar declarado no bloco `@theme` de `app/globals.css`.** Sem
+  `tailwind.config`, uma classe cujo token não existe é descartada em silêncio: sem erro,
+  sem aviso, o estilo simplesmente não aparece. Ao inventar `bg-algo-novo`, declare
+  `--color-algo-novo` antes. Para conferir se uma classe está viva:
+  `grep -r "\.bg-algo-novo" .next/static --include=*.css` depois de um build.
 - Page data (products, brands, units, testimonials) is hardcoded as in-file arrays. There
   is no CMS/database. Edit the array in the relevant page/component.
 
@@ -55,6 +60,29 @@ so client-only mistakes (see gotchas) fail the build, not just runtime.
 - **Images:** `next.config.ts` allows any remote host (`hostname: '**'`). Many product/brand
   images are hotlinked external URLs.
 
+## SEO / AEO
+
+- `lib/seo.ts` — **fonte única** de URL, descrição, unidades (endereço, telefone,
+  coordenadas), marcas e dos builders de JSON-LD. Mudou endereço/telefone/horário?
+  Muda aqui e o dado estruturado acompanha.
+- `app/robots.ts` → /robots.txt · `app/sitemap.ts` → /sitemap.xml (metadata routes do
+  Next). **Não** crie `public/robots.txt` / `public/sitemap.xml` — o arquivo estático
+  venceria a rota. Página nova? Registre em `ROUTES` no `app/sitemap.ts`.
+- Nunca use `Disallow: /_next/` no robots: as páginas são client components e o
+  Googlebot precisa do JS para enxergar o conteúdo.
+- **Metadata por rota:** as páginas são `"use client"` e por isso não podem exportar
+  `metadata`. O padrão aqui é um `layout.tsx` server component na pasta da rota
+  (`app/produtos/layout.tsx` etc.) exportando `metadata` + o `<script
+  type="application/ld+json">`. Copie um existente ao criar página nova.
+- O layout raiz define `title.template = '%s | TG Distribuidora'`; páginas com
+  identidade própria usam `title: { absolute: '...' }` (ver `app/first-class-dev`).
+- JSON-LD fica no `<body>`, não em um `<head>` manual (App Router não suporta).
+- **FAQ:** a lista `FAQ` em `lib/seo.ts` alimenta ao mesmo tempo o acordeão visível
+  (`components/FaqSection.tsx`, em `/contato`) e o schema `FAQPage`. Nunca acrescente
+  pergunta ao schema sem que ela apareça na tela — o Google penaliza. `FaqSection` usa
+  import estático (não `dynamic`/`ssr: false`) e mantém as respostas montadas com altura
+  colapsada, para o texto sair no HTML pré-renderizado.
+
 ## Files worth knowing
 
 - `app/layout.tsx` — metadata, OpenGraph, fonts. `NEXT_PUBLIC_SITE_URL` overrides the base URL.
@@ -64,6 +92,8 @@ so client-only mistakes (see gotchas) fail the build, not just runtime.
 
 ## Notes
 
-- `.env.example` lists legacy AI-Studio vars (`GEMINI_API_KEY`, `APP_URL`) that the app does
-  **not** use. The only real env var is `NEXT_PUBLIC_SITE_URL` (optional).
+- Env vars (ambas opcionais, ambas em `.env.example`): `NEXT_PUBLIC_SITE_URL` (URL canônica,
+  usada por metadata/robots/sitemap) e `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` (código do
+  Google Search Console). As vars antigas de AI Studio (`GEMINI_API_KEY`, `APP_URL`) foram
+  removidas — o app nunca as usou.
 - Deploy target is `output: 'standalone'`.

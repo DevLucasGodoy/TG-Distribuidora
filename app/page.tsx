@@ -165,9 +165,12 @@ export default function HomePage() {
                   Explorar Catálogo
                   <ArrowRight className="w-5 h-5" />
                 </button> */}
+                {/* Borda em opacidade cheia: o `/30` anterior foi escrito contra um
+                    token inexistente (a classe era descartada no build), então nunca
+                    chegou a ser calibrado — a 30% o contorno ficaria invisível. */}
                 <button
                   onClick={() => (window.location.href = "/contato")}
-                  className="px-8 py-4 border border-outline-variant/30 text-primary rounded-lg font-bold text-lg hover:bg-surface-container-low transition-all"
+                  className="px-8 py-4 border border-outline-variant text-primary rounded-lg font-bold text-lg hover:bg-surface-container-low transition-all"
                 >
                   Entrar em Contato
                 </button>

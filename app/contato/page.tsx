@@ -16,9 +16,12 @@ import {
   CheckCircle,
   X
 } from 'lucide-react';
+// Import estático de propósito: o texto do FAQ precisa sair no HTML
+// pré-renderizado para o Google e os bots de IA lerem sem executar JS.
+import FaqSection from '@/components/FaqSection';
 const Navbar = dynamic(() => import('@/components/Navbar'), { ssr: false });
 const Footer = dynamic(() => import('@/components/Footer'), { ssr: false });
-const InteractiveMap = dynamic(() => import('@/components/InteractiveMap'), { 
+const InteractiveMap = dynamic(() => import('@/components/InteractiveMap'), {
   ssr: false,
   loading: () => <div className="h-[500px] w-full bg-neutral-100 animate-pulse rounded-2xl flex items-center justify-center font-bold text-neutral-400">Carregando Mapa...</div>
 });
@@ -244,6 +247,10 @@ export default function ContatoPage() {
             </div>
           </div>
         </section>
+
+        {/* Perguntas Frequentes — conteúdo espelhado no JSON-LD FAQPage
+            declarado em app/contato/layout.tsx. */}
+        <FaqSection />
       </main>
 
       <Footer />
