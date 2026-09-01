@@ -2,14 +2,24 @@
 
 import React from "react";
 import Image from "next/image";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Phone } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
+import { ScrollProgress } from "@/components/Motion";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  // Barra encolhe e ganha sombra depois dos primeiros pixels de rolagem.
+  const [isScrolled, setIsScrolled] = React.useState(false);
   const pathname = usePathname();
+
+  React.useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const navItems = [
     { label: "Início", href: "/" },
@@ -21,13 +31,26 @@ export default function Navbar() {
 
   return (
     <nav className="fixed top-0 w-full z-50 pointer-events-none">
+      {/* Progresso de leitura da página */}
+      <ScrollProgress />
+
       {/* Main Top Bar */}
-      <div className="relative z-50 w-full bg-white/90 backdrop-blur-md shadow-sm border-b border-neutral-100 pointer-events-auto">
-        <div className="relative flex justify-between items-center px-4 md:px-8 py-4 max-w-7xl mx-auto h-20 md:h-24">
+      <div
+        className={`relative z-50 w-full backdrop-blur-md border-b pointer-events-auto transition-[background-color,box-shadow,border-color] duration-500 ${
+          isScrolled
+            ? "bg-white/95 shadow-lg shadow-neutral-900/5 border-neutral-200"
+            : "bg-white/90 shadow-sm border-neutral-100"
+        }`}
+      >
+        <div
+          className={`relative flex justify-between items-center px-4 md:px-8 py-4 max-w-7xl mx-auto transition-[height] duration-500 ease-out ${
+            isScrolled ? "h-16 md:h-20" : "h-20 md:h-24"
+          }`}
+        >
           {/* Mobile Menu Icon (Left on Mobile) */}
           <div className="md:hidden flex items-center w-12">
             <button
-              className="text-on-surface p-2 hover:bg-neutral-100 rounded-full transition-all active:scale-90"
+              className="tap-target text-on-surface p-2 hover:bg-neutral-100 rounded-full transition-all active:scale-90 flex items-center justify-center"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label={isMenuOpen ? "Fechar menu" : "Abrir menu"}
             >
@@ -73,12 +96,32 @@ export default function Navbar() {
 
           {/* Action Button (Right) */}
           <div className="flex items-center gap-4 w-12 md:w-auto justify-end">
-            <Link
-              href="/contato"
-              className="hidden sm:block bg-primary text-white px-6 py-2.5 rounded-lg font-bold hover:scale-95 active:scale-90 transition-all shadow-xl shadow-primary/25"
+            {/* No celular o botão de texto não cabe: vira atalho de ligação. */}
+            <a
+              href="tel:+556730323090"
+              aria-label="Ligar para a TG Distribuidora"
+              className="tap-target sm:hidden flex items-center justify-center rounded-full text-primary hover:bg-primary/10 transition-colors active:scale-90"
             >
-              Fale Conosco
-            </Link>
+              <Phone className="w-5 h-5" />
+            </a>
+
+            <motion.div
+              whileHover={{ y: -2, scale: 1.03 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 380, damping: 20 }}
+              className="hidden sm:block"
+            >
+              <Link
+                href="/contato"
+                className="group relative block bg-primary text-white px-6 py-2.5 rounded-lg font-bold shadow-xl shadow-primary/25 overflow-hidden"
+              >
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 bg-white/25 skew-x-12 opacity-0 group-hover:opacity-100 group-hover:animate-shimmer"
+                />
+                <span className="relative">Fale Conosco</span>
+              </Link>
+            </motion.div>
           </div>
         </div>
       </div>
@@ -107,7 +150,7 @@ export default function Navbar() {
               <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none" />
               <div className="absolute bottom-0 left-0 w-48 h-48 bg-secondary/5 rounded-full blur-3xl -ml-24 -mb-24 pointer-events-none" />
 
-              <div className="relative flex justify-between items-center p-8 border-b border-neutral-100 bg-white/80 backdrop-blur-sm z-10">
+              <div className="relative flex justify-between items-center p-6 sm:p-8 border-b border-neutral-100 bg-white/80 backdrop-blur-sm z-10">
                 <div className="relative h-8 w-32">
                   <Image
                     alt="TG Distribuidora"
@@ -120,13 +163,13 @@ export default function Navbar() {
                 </div>
                 <button
                   onClick={() => setIsMenuOpen(false)}
-                  className="p-2.5 bg-neutral-100/80 hover:bg-neutral-200 rounded-full transition-all active:scale-90 shadow-sm border border-neutral-200"
+                  className="tap-target flex items-center justify-center p-2.5 bg-neutral-100/80 hover:bg-neutral-200 rounded-full transition-all active:scale-90 shadow-sm border border-neutral-200"
                 >
                   <X className="w-5 h-5 text-primary" />
                 </button>
               </div>
 
-              <div className="relative flex flex-col p-8 gap-1 flex-grow overflow-y-auto bg-white/30 backdrop-blur-xs">
+              <div className="relative flex flex-col p-6 sm:p-8 gap-1 flex-grow overflow-y-auto bg-white/30 backdrop-blur-xs">
                 {navItems.map((item, i) => (
                   <motion.div
                     key={item.label}
@@ -177,7 +220,7 @@ export default function Navbar() {
                 </motion.div>
               </div>
 
-              <div className="relative p-12 bg-neutral-50/90 border-t border-neutral-100">
+              <div className="relative p-8 sm:p-12 bg-neutral-50/90 border-t border-neutral-100">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center relative overflow-hidden group">
                     <div className="w-2.5 h-2.5 rounded-full bg-primary animate-ping absolute" />

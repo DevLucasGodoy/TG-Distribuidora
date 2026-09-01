@@ -22,6 +22,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductModal from "@/components/ProductModal";
 import { products, CATEGORIES, type Category, type Product } from "@/lib/products";
+import { Reveal, Stagger, StaggerItem } from "@/components/Motion";
 
 const categoryIcons: Record<Category, React.ElementType> = {
   CFTV: Video,
@@ -84,9 +85,9 @@ function ProdutosPageContent() {
 
       <main className="pt-24 pb-32">
         {/* Header Section */}
-        <section className="bg-surface-container-low py-20">
-          <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-12">
-            <div className="max-w-2xl text-center md:text-left">
+        <section className="bg-surface-container-low py-12 md:py-20">
+          <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row justify-between items-center gap-8 md:gap-12">
+            <Reveal className="max-w-2xl text-center md:text-left">
               <span className="text-secondary font-bold tracking-[0.2em] uppercase text-xs mb-4 block">
                 Catálogo de Produtos
               </span>
@@ -98,8 +99,8 @@ function ProdutosPageContent() {
                 técnico dedicado. O portfólio completo para instaladores
                 profissionais.
               </p>
-            </div>
-            <div className="w-full max-w-md">
+            </Reveal>
+            <Reveal className="w-full max-w-md" direction="left" delay={0.1}>
               <div className="relative group">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400 group-focus-within:text-primary transition-colors" />
                 <input
@@ -110,7 +111,7 @@ function ProdutosPageContent() {
                   className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white border border-neutral-100 shadow-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                 />
               </div>
-            </div>
+            </Reveal>
           </div>
         </section>
 
@@ -249,7 +250,7 @@ function ProdutosPageContent() {
             </motion.div>
 
             {filteredProducts.length === 0 && (
-              <div className="py-32 text-center text-on-surface-variant italic">
+              <div className="py-16 md:py-32 text-center text-on-surface-variant italic">
                 Nenhum produto encontrado nesta categoria ou busca.
               </div>
             )}
@@ -257,34 +258,34 @@ function ProdutosPageContent() {
         </section>
 
         {/* Portal B2B — CTA Contato */}
-        <section className="mt-32">
+        <section className="mt-20 md:mt-32">
           <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="bg-primary rounded-[2.5rem] p-12 md:p-24 relative overflow-hidden">
+          <div className="bg-primary rounded-3xl md:rounded-[2.5rem] p-7 sm:p-12 md:p-24 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl -mr-48 -mt-48" />
-            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
               <div className="text-white">
                 <h2 className="text-4xl md:text-5xl font-headline font-black tracking-tighter mb-8 leading-tight">
                   Quer se tornar um <br />
                   <span className="text-secondary-container">Parceiro ?</span>
                 </h2>
-                <ul className="space-y-4 mb-10">
+                <Stagger as="ul" className="space-y-4 mb-10">
                   {[
                     "Estoque em tempo real em todas as unidades",
                     "Preços negociados para revenda e instalação",
                     "Suporte técnico priorizado 24/7",
                     "Linha de crédito e faturamento direto",
                   ].map((item, i) => (
-                    <li key={i} className="flex items-center gap-3">
+                    <StaggerItem as="li" key={i} className="flex items-center gap-3">
                       <ShieldCheck className="w-5 h-5 shrink-0 text-secondary-container" />
                       <span className="text-lg font-body opacity-90">
                         {item}
                       </span>
-                    </li>
+                    </StaggerItem>
                   ))}
-                </ul>
+                </Stagger>
                 <Link
                   href="/contato"
-                  className="inline-flex items-center gap-3 px-10 py-5 bg-white text-primary rounded-xl font-bold text-lg hover:bg-secondary-container transition-all"
+                  className="inline-flex items-center gap-3 px-7 sm:px-10 py-4 sm:py-5 bg-white text-primary rounded-xl font-bold text-lg hover:bg-secondary-container transition-all"
                 >
                   <MessageCircle className="w-5 h-5" />
                   Entre em Contato

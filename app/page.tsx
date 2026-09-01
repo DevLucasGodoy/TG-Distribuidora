@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import {
   ArrowRight,
   ShieldCheck,
@@ -24,6 +24,7 @@ import {
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Reveal, Stagger, StaggerItem, CountUp } from "@/components/Motion";
 
 export default function HomePage() {
   const locations = [
@@ -115,16 +116,32 @@ export default function HomePage() {
   ];
 
   const [currentTestimonial, setCurrentTestimonial] = React.useState(0);
+  // Direção da troca: define de que lado o depoimento entra e sai.
+  const [direction, setDirection] = React.useState(1);
+  const [autoPlay, setAutoPlay] = React.useState(true);
 
-  const nextTestimonial = () => {
-    setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
-  };
+  const goTo = React.useCallback(
+    (index: number, dir: number) => {
+      setDirection(dir);
+      setCurrentTestimonial(
+        (index + testimonials.length) % testimonials.length,
+      );
+    },
+    [testimonials.length],
+  );
 
-  const prevTestimonial = () => {
-    setCurrentTestimonial(
-      (prev) => (prev - 1 + testimonials.length) % testimonials.length,
-    );
-  };
+  const nextTestimonial = () => goTo(currentTestimonial + 1, 1);
+  const prevTestimonial = () => goTo(currentTestimonial - 1, -1);
+
+  // Avanço automático, pausado quando o cursor está sobre o carrossel.
+  React.useEffect(() => {
+    if (!autoPlay) return;
+    const timer = setInterval(() => {
+      setDirection(1);
+      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
+    }, 7000);
+    return () => clearInterval(timer);
+  }, [autoPlay, testimonials.length]);
 
   return (
     <div className="min-h-screen bg-surface selection:bg-primary/20">
@@ -132,30 +149,46 @@ export default function HomePage() {
 
       <main className="pt-20">
         {/* Hero Section */}
-        <section className="relative min-h-[600px] md:min-h-[800px] flex items-center overflow-hidden bg-surface py-12 md:py-0">
-          <div className="max-w-7xl mx-auto px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+        <section className="relative md:min-h-[800px] flex items-center overflow-hidden bg-surface py-10 md:py-0">
+          {/* Halos decorativos que respiram atrás do conteúdo */}
+          <div
+            aria-hidden="true"
+            className="absolute -top-24 -left-24 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-float pointer-events-none"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute bottom-0 right-0 w-[28rem] h-[28rem] bg-secondary/5 rounded-full blur-3xl animate-float pointer-events-none"
+            style={{ animationDelay: "-3s" }}
+          />
+
+          <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-center">
+            <Stagger
               className="lg:col-span-6 z-10 text-center lg:text-left"
+              step={0.12}
             >
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container mb-6">
-                <ShieldCheck className="w-4 h-4" />
-                <span className="text-[10px] font-bold uppercase tracking-widest font-label">
-                  Líder em Mato Grosso do Sul
-                </span>
-              </div>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-headline font-extrabold tracking-tighter text-on-surface mb-6 leading-[0.95]">
-                A Referência em <br />
-                <span className="text-primary">Segurança Eletrônica</span> no
-                MS.
-              </h1>
-              <p className="text-lg md:text-xl text-on-surface-variant max-w-lg mx-auto lg:mx-0 mb-10 leading-relaxed font-body">
-                A maior distribuidora de tecnologia em segurança do estado.
-                Vigilância de precisão, monitoramento de alto padrão e sistemas
-                de proteção robustos para profissionais.
-              </p>
-              <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center lg:justify-start">
+              <StaggerItem>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container mb-6">
+                  <ShieldCheck className="w-4 h-4" />
+                  <span className="text-[10px] font-bold uppercase tracking-widest font-label">
+                    Líder em Mato Grosso do Sul
+                  </span>
+                </div>
+              </StaggerItem>
+              <StaggerItem>
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-headline font-extrabold tracking-tighter text-on-surface mb-6 leading-[0.95]">
+                  A Referência em <br />
+                  <span className="text-primary">Segurança Eletrônica</span> no
+                  MS.
+                </h1>
+              </StaggerItem>
+              <StaggerItem>
+                <p className="text-base sm:text-lg md:text-xl text-on-surface-variant max-w-lg mx-auto lg:mx-0 mb-10 leading-relaxed font-body">
+                  A maior distribuidora de tecnologia em segurança do estado.
+                  Vigilância de precisão, monitoramento de alto padrão e
+                  sistemas de proteção robustos para profissionais.
+                </p>
+              </StaggerItem>
+              <StaggerItem className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center lg:justify-start">
                 {/* Botão do catálogo desativado enquanto a página de produtos está oculta.
                     Para reativar, descomente o bloco abaixo. */}
                 {/* <button
@@ -168,18 +201,22 @@ export default function HomePage() {
                 {/* Borda em opacidade cheia: o `/30` anterior foi escrito contra um
                     token inexistente (a classe era descartada no build), então nunca
                     chegou a ser calibrado — a 30% o contorno ficaria invisível. */}
-                <button
+                <motion.button
                   onClick={() => (window.location.href = "/contato")}
-                  className="px-8 py-4 border border-outline-variant text-primary rounded-lg font-bold text-lg hover:bg-surface-container-low transition-all"
+                  whileHover={{ y: -3, scale: 1.03 }}
+                  whileTap={{ scale: 0.96 }}
+                  transition={{ type: "spring", stiffness: 360, damping: 20 }}
+                  className="px-8 py-4 border border-outline-variant text-primary rounded-lg font-bold text-lg hover:bg-surface-container-low hover:border-primary transition-colors"
                 >
                   Entrar em Contato
-                </button>
-              </div>
-            </motion.div>
+                </motion.button>
+              </StaggerItem>
+            </Stagger>
 
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.92 }}
               animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
               className="lg:col-span-6 relative h-[400px] md:h-[600px] w-full hidden sm:block"
             >
               <div className="absolute top-10 right-0 w-[80%] h-[80%] rounded-2xl overflow-hidden shadow-2xl z-0">
@@ -193,8 +230,20 @@ export default function HomePage() {
                   priority
                 />
               </div>
-              <div className="absolute bottom-0 left-0 w-[90%] sm:w-[70%] p-6 bg-white/60 backdrop-blur-xl rounded-2xl border border-white/20 shadow-2xl z-20">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute bottom-0 left-0 w-[90%] sm:w-[70%] p-6 bg-white/60 backdrop-blur-xl rounded-2xl border border-white/20 shadow-2xl z-20 animate-float"
+              >
                 <div className="flex items-center gap-2 mb-2 text-primary">
+                  <span className="relative flex w-2.5 h-2.5">
+                    <span
+                      aria-hidden="true"
+                      className="absolute inline-flex w-full h-full rounded-full bg-primary/60 animate-pulse-ring"
+                    />
+                    <span className="relative inline-flex w-2.5 h-2.5 rounded-full bg-primary" />
+                  </span>
                   <Activity className="w-5 h-5" />
                   <span className="font-bold tracking-tighter font-headline uppercase text-sm">
                     Status em tempo real
@@ -207,15 +256,15 @@ export default function HomePage() {
                   Soluções de reconhecimento por IA e imagem térmica de última
                   geração para pronta entrega B2B.
                 </p>
-              </div>
+              </motion.div>
             </motion.div>
           </div>
         </section>
 
         {/* Locations Section */}
-        <section className="py-24 bg-surface-container-low">
-          <div className="max-w-7xl mx-auto px-8">
-            <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+        <section className="py-14 md:py-24 bg-surface-container-low">
+          <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+            <Reveal className="flex flex-col md:flex-row justify-between items-end mb-10 md:mb-16 gap-6">
               <div>
                 <h2 className="text-4xl font-headline font-black tracking-tighter mb-4">
                   Presença Estratégica
@@ -227,17 +276,22 @@ export default function HomePage() {
                 </p>
               </div>
               <div className="h-[2px] flex-grow bg-neutral-200 mx-8 hidden md:block mb-4"></div>
-              <div className="p-4 bg-white rounded-full flex items-center justify-center shadow-sm">
+              <motion.div
+                whileHover={{ rotate: 12, scale: 1.08 }}
+                transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                aria-hidden="true"
+                className="hidden md:flex p-4 bg-white rounded-full items-center justify-center shadow-sm"
+              >
                 <MapPin className="text-primary w-6 h-6" />
-              </div>
-            </div>
+              </motion.div>
+            </Reveal>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Stagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {locations.map((loc, i) => (
-                <motion.div
+                <StaggerItem
                   key={i}
-                  whileHover={{ y: -8 }}
-                  className="group relative bg-white p-6 rounded-2xl overflow-hidden border border-neutral-100 shadow-sm"
+                  lift={8}
+                  className="group relative bg-white p-6 rounded-2xl overflow-hidden border border-neutral-100 shadow-sm hover:shadow-xl hover:shadow-neutral-200/60 transition-shadow duration-500"
                 >
                   <div className="absolute top-0 left-0 w-full h-1 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
                   <div className="mb-6">
@@ -294,80 +348,99 @@ export default function HomePage() {
                       <Building2 className="w-10 h-10 text-neutral-300" />
                     )}
                   </div>
-                </motion.div>
+                </StaggerItem>
               ))}
-            </div>
+            </Stagger>
           </div>
         </section>
 
         {/* Stats Counter Section */}
-        <section className="py-16 bg-primary text-white">
-          <div className="max-w-7xl mx-auto px-8 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <section className="py-12 md:py-16 bg-primary text-white relative overflow-hidden">
+          {/* Halo lento atrás dos números */}
+          <div
+            aria-hidden="true"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[40rem] bg-white/5 rounded-full blur-3xl animate-float pointer-events-none"
+          />
+          <Stagger className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-8 text-center relative z-10">
             {[
               { val: "15+", label: "Anos de Experiência" },
               { val: "500+", label: "Parceiros Ativos" },
               { val: "3k+", label: "Produtos em Estoque" },
               { val: "24/7", label: "Suporte Técnico" },
             ].map((stat, i) => (
-              <div key={i}>
-                <div className="text-4xl font-black font-headline mb-1">
-                  {stat.val}
-                </div>
+              <StaggerItem key={i}>
+                <CountUp
+                  value={stat.val}
+                  className="block text-4xl font-black font-headline mb-1 tabular-nums"
+                />
                 <div className="text-xs uppercase tracking-widest font-label opacity-70">
                   {stat.label}
                 </div>
-              </div>
+              </StaggerItem>
             ))}
-          </div>
+          </Stagger>
         </section>
 
         {/* Testimonials Carousel Section */}
-        <section className="py-24 bg-surface-container-high overflow-hidden relative">
+        <section className="py-14 md:py-24 bg-surface-container-high overflow-hidden relative">
           <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-32 -mt-32"></div>
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-secondary/5 rounded-full blur-3xl -ml-32 -mb-32"></div>
 
-          <div className="max-w-7xl mx-auto px-8 relative z-10">
-            <div className="text-center mb-16">
+          <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 relative z-10">
+            <Reveal className="text-center mb-10 md:mb-16">
               <span className="text-primary font-bold tracking-[0.2em] uppercase text-xs mb-4 block">
                 Depoimentos
               </span>
               <h2 className="text-4xl md:text-5xl font-headline font-black tracking-tighter text-on-surface">
                 Vozes de Quem Confia
               </h2>
-            </div>
+            </Reveal>
 
-            <div className="relative max-w-4xl mx-auto">
-              <div className="absolute top-1/2 -left-4 md:-left-16 -translate-y-1/2 z-20">
+            {/* O avanço automático pausa enquanto o cursor está sobre o bloco. */}
+            <div
+              className="relative max-w-4xl mx-auto"
+              onMouseEnter={() => setAutoPlay(false)}
+              onMouseLeave={() => setAutoPlay(true)}
+            >
+              {/* No celular as setas sairiam por cima do texto: viram uma
+                  linha de controles abaixo, junto dos indicadores. */}
+              <div className="hidden md:block absolute top-1/2 -left-16 -translate-y-1/2 z-20">
                 <button
                   onClick={prevTestimonial}
+                  aria-label="Depoimento anterior"
                   className="p-3 rounded-full bg-white shadow-xl text-primary hover:bg-primary hover:text-white transition-all active:scale-90 border border-neutral-100"
                 >
                   <ChevronLeft className="w-6 h-6" />
                 </button>
               </div>
-              <div className="absolute top-1/2 -right-4 md:-right-16 -translate-y-1/2 z-20">
+              <div className="hidden md:block absolute top-1/2 -right-16 -translate-y-1/2 z-20">
                 <button
                   onClick={nextTestimonial}
+                  aria-label="Próximo depoimento"
                   className="p-3 rounded-full bg-white shadow-xl text-primary hover:bg-primary hover:text-white transition-all active:scale-90 border border-neutral-100"
                 >
                   <ChevronRight className="w-6 h-6" />
                 </button>
               </div>
 
-              <div className="bg-white rounded-3xl p-8 md:p-16 shadow-2xl shadow-neutral-200/50 border border-neutral-100 relative">
-                <div className="absolute top-8 right-8 text-primary/10">
-                  <Quote className="w-32 h-32 rotate-180" />
+              <div className="bg-white rounded-2xl md:rounded-3xl p-6 sm:p-10 md:p-16 shadow-2xl shadow-neutral-200/50 border border-neutral-100 relative">
+                <div className="absolute top-6 right-6 md:top-8 md:right-8 text-primary/10">
+                  <Quote className="w-20 h-20 md:w-32 md:h-32 rotate-180" />
                 </div>
 
                 <div className="relative z-10">
-                  <motion.div
-                    key={currentTestimonial}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                  >
-                    <p className="text-xl md:text-2xl text-on-surface-variant font-body leading-relaxed mb-10 italic">
+                  {/* mode="wait": o depoimento anterior sai antes do próximo entrar,
+                      e a direção acompanha o botão clicado. */}
+                  <AnimatePresence mode="wait" custom={direction} initial={false}>
+                    <motion.div
+                      key={currentTestimonial}
+                      custom={direction}
+                      initial={{ opacity: 0, x: direction * 40 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: direction * -40 }}
+                      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                    <p className="text-base sm:text-lg md:text-2xl text-on-surface-variant font-body leading-relaxed mb-8 md:mb-10 italic">
                       &quot;{testimonials[currentTestimonial].text}&quot;
                     </p>
 
@@ -388,18 +461,45 @@ export default function HomePage() {
                         </p>
                       </div>
                     </div>
-                  </motion.div>
+                    </motion.div>
+                  </AnimatePresence>
                 </div>
               </div>
 
-              <div className="flex justify-center gap-3 mt-12">
-                {testimonials.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setCurrentTestimonial(i)}
-                    className={`h-2 rounded-full transition-all duration-300 ${i === currentTestimonial ? "w-12 bg-primary" : "w-2 bg-neutral-300"}`}
-                  />
-                ))}
+              <div className="flex items-center justify-center gap-4 mt-8 md:mt-12">
+                <button
+                  onClick={prevTestimonial}
+                  aria-label="Depoimento anterior"
+                  className="tap-target md:hidden p-2.5 rounded-full bg-white shadow-lg text-primary active:scale-90 border border-neutral-100 flex items-center justify-center"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+
+                <div className="flex justify-center gap-1">
+                  {testimonials.map((_, i) => (
+                    // O botão tem 40px de altura para o toque; o traço visível
+                    // é o <span> interno.
+                    <button
+                      key={i}
+                      aria-label={`Ver depoimento ${i + 1}`}
+                      aria-current={i === currentTestimonial}
+                      onClick={() => goTo(i, i > currentTestimonial ? 1 : -1)}
+                      className="group h-10 px-1.5 flex items-center"
+                    >
+                      <span
+                        className={`block h-2 rounded-full transition-all duration-300 group-hover:bg-primary/60 ${i === currentTestimonial ? "w-10 md:w-12 bg-primary" : "w-2 bg-neutral-300"}`}
+                      />
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  onClick={nextTestimonial}
+                  aria-label="Próximo depoimento"
+                  className="tap-target md:hidden p-2.5 rounded-full bg-white shadow-lg text-primary active:scale-90 border border-neutral-100 flex items-center justify-center"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
               </div>
             </div>
           </div>

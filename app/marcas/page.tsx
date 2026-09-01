@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import {
   ArrowRight,
   ShieldCheck,
@@ -18,6 +18,7 @@ import {
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Reveal, Stagger, StaggerItem, Parallax } from "@/components/Motion";
 
 export default function MarcasPage() {
   const [activeFilter, setActiveFilter] = React.useState("Todos");
@@ -145,7 +146,7 @@ export default function MarcasPage() {
       <main className="pt-24">
         {/* Hero Section */}
         <section className="relative py-12 md:py-24 overflow-hidden">
-          <div className="max-w-7xl mx-auto px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -158,7 +159,7 @@ export default function MarcasPage() {
                 Marcas que <br />
                 <span className="text-primary">Protegem o Futuro.</span>
               </h1>
-              <p className="text-lg text-on-surface-variant max-w-xl mx-auto lg:mx-0 leading-relaxed">
+              <p className="text-base sm:text-lg text-on-surface-variant max-w-xl mx-auto lg:mx-0 leading-relaxed">
                 Nossa rede de parceiros é composta pelos líderes globais em
                 tecnologia de monitoramento, controle de acesso e redes.
                 Garantimos procedência e suporte técnico especializado para cada
@@ -181,7 +182,7 @@ export default function MarcasPage() {
                   alt="Câmeras de monitoramento profissionais"
                 />
               </div>
-              <div className="absolute -bottom-6 -left-6 bg-secondary-container p-6 rounded-lg shadow-xl max-w-[200px]">
+              <div className="absolute -bottom-6 -left-6 bg-secondary-container p-6 rounded-lg shadow-xl max-w-[200px] animate-float">
                 <p className="text-on-secondary-container font-headline font-bold text-3xl leading-none">
                   100%
                 </p>
@@ -194,27 +195,38 @@ export default function MarcasPage() {
         </section>
 
         {/* Partners Grid */}
-        <section className="py-24 bg-surface-container-low">
-          <div className="max-w-7xl mx-auto px-8">
-            <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+        <section className="py-14 md:py-24 bg-surface-container-low">
+          <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+            <Reveal className="flex flex-col md:flex-row justify-between items-end mb-10 md:mb-16 gap-8">
               <div className="max-w-2xl">
                 <h2 className="text-3xl font-headline font-bold text-on-surface mb-4">
                   Nossa Curadoria Técnica
                 </h2>
                 <div className="flex flex-wrap gap-2 mb-6">
-                  {categories.map((cat) => (
-                    <button
-                      key={cat}
-                      onClick={() => setActiveFilter(cat)}
-                      className={`px-4 py-2 rounded-full text-xs font-bold font-label transition-all duration-300 ${
-                        activeFilter === cat
-                          ? "bg-primary text-white shadow-lg shadow-primary/20"
-                          : "bg-white text-on-surface-variant border border-neutral-100 hover:border-primary/30"
-                      }`}
-                    >
-                      {cat.toUpperCase()}
-                    </button>
-                  ))}
+                  {categories.map((cat) => {
+                    const isActive = activeFilter === cat;
+                    return (
+                      <button
+                        key={cat}
+                        onClick={() => setActiveFilter(cat)}
+                        className={`relative px-4 py-2 rounded-full text-xs font-bold font-label transition-colors duration-300 ${
+                          isActive
+                            ? "text-white"
+                            : "bg-white text-on-surface-variant border border-neutral-100 hover:border-primary/30 hover:text-primary"
+                        }`}
+                      >
+                        {/* Pílula que desliza entre as categorias */}
+                        {isActive && (
+                          <motion.span
+                            layoutId="activeBrandCategory"
+                            transition={{ type: "spring", stiffness: 400, damping: 32 }}
+                            className="absolute inset-0 bg-primary rounded-full shadow-lg shadow-primary/20"
+                          />
+                        )}
+                        <span className="relative z-10">{cat.toUpperCase()}</span>
+                      </button>
+                    );
+                  })}
                 </div>
                 <p className="text-on-surface-variant">
                   Trabalhamos exclusivamente com fabricantes que definem os
@@ -227,24 +239,32 @@ export default function MarcasPage() {
                   DISTRIBUIDOR AUTORIZADO
                 </span>
               </div>
-            </div>
+            </Reveal>
 
             <motion.div
               layout
               className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6"
             >
+              {/* popLayout: os cards que saem do filtro deixam de ocupar espaço
+                  enquanto animam, então os restantes reposicionam sem salto. */}
+              <AnimatePresence mode="popLayout">
               {filteredPartners.map((partner, i) => (
                 <motion.div
                   layout
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   key={partner.name}
                   whileHover={{ y: -10, scale: 1.02 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  className="group bg-white rounded-xl border border-neutral-100 hover:shadow-2xl transition-all duration-500 cursor-pointer overflow-hidden"
+                  transition={{
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 24,
+                    delay: Math.min(i * 0.04, 0.4),
+                  }}
+                  className="group bg-white rounded-xl border border-neutral-100 hover:shadow-2xl transition-shadow duration-500 cursor-pointer overflow-hidden"
                 >
-                  <div className="h-40 w-full bg-gradient-to-br from-neutral-50 to-neutral-100 flex items-center justify-center relative overflow-hidden grayscale group-hover:grayscale-0 transition-all">
+                  <div className="h-32 sm:h-40 w-full bg-gradient-to-br from-neutral-50 to-neutral-100 flex items-center justify-center relative overflow-hidden grayscale group-hover:grayscale-0 transition-all">
                     {partner.img ? (
                       <Image
                         src={partner.img}
@@ -261,7 +281,7 @@ export default function MarcasPage() {
                       </div>
                     )}
                   </div>
-                  <div className="p-8">
+                  <div className="p-6 sm:p-8">
                     <div className="mb-2">
                       <span className="text-[10px] font-bold font-label tracking-widest text-primary bg-primary/5 px-2 py-1 rounded">
                         {partner.category.toUpperCase()}
@@ -284,12 +304,13 @@ export default function MarcasPage() {
                   </div>
                 </motion.div>
               ))}
+              </AnimatePresence>
               {activeFilter === "Todos" && (
                 <motion.div
                   layout
                   whileHover={{ y: -10, scale: 1.02 }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  className="group bg-white p-8 rounded-xl border border-neutral-100 hover:shadow-2xl transition-all duration-500 flex flex-col justify-center items-center text-center cursor-pointer"
+                  className="group bg-white p-6 sm:p-8 rounded-xl border border-neutral-100 hover:shadow-2xl transition-all duration-500 flex flex-col justify-center items-center text-center cursor-pointer"
                 >
                   <MoreHorizontal className="w-10 h-10 text-neutral-300 mb-4 group-hover:text-primary transition-colors" />
                   <h3 className="text-lg font-headline font-bold mb-1">
@@ -305,14 +326,16 @@ export default function MarcasPage() {
         </section>
 
         {/* Why Partners Section */}
-        <section className="py-32 relative">
-          <div className="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-2 gap-20">
+        <section className="py-16 md:py-32 relative">
+          <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20">
             <div className="space-y-12">
-              <h2 className="text-4xl font-headline font-extrabold tracking-tight">
-                Por que ser um parceiro{" "}
-                <span className="text-primary">TG Distribuidora?</span>
-              </h2>
-              <div className="space-y-8">
+              <Reveal>
+                <h2 className="text-4xl font-headline font-extrabold tracking-tight">
+                  Por que ser um parceiro{" "}
+                  <span className="text-primary">TG Distribuidora?</span>
+                </h2>
+              </Reveal>
+              <Stagger className="space-y-8" step={0.12}>
                 {[
                   {
                     title: "Homologação Técnica",
@@ -336,25 +359,25 @@ export default function MarcasPage() {
                     color: "text-secondary",
                   },
                 ].map((item, i) => (
-                  <div key={i} className="flex gap-6">
+                  <StaggerItem key={i} className="group flex gap-6">
                     <div
-                      className={`w-12 h-12 rounded ${item.bg} flex items-center justify-center flex-shrink-0`}
+                      className={`w-12 h-12 rounded ${item.bg} flex items-center justify-center flex-shrink-0 transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-6`}
                     >
                       <item.icon className={`w-6 h-6 ${item.color}`} />
                     </div>
                     <div>
-                      <h4 className="font-headline font-bold text-lg mb-2">
+                      <h4 className="font-headline font-bold text-lg mb-2 transition-colors group-hover:text-primary">
                         {item.title}
                       </h4>
                       <p className="text-on-surface-variant leading-relaxed">
                         {item.desc}
                       </p>
                     </div>
-                  </div>
+                  </StaggerItem>
                 ))}
-              </div>
+              </Stagger>
             </div>
-            <div className="relative h-[480px]">
+            <Parallax className="relative h-[300px] sm:h-[400px] md:h-[480px]" distance={36}>
               <Image
                 className="rounded-xl shadow-2xl w-full h-full object-cover"
                 src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=1200"
@@ -363,13 +386,13 @@ export default function MarcasPage() {
                 referrerPolicy="no-referrer"
                 alt="Suporte Técnico Especializado"
               />
-              <div className="absolute top-10 -right-4 bg-tertiary text-white px-6 py-4 rounded-lg shadow-2xl flex items-center gap-3">
+              <div className="absolute top-10 -right-4 bg-tertiary text-white px-6 py-4 rounded-lg shadow-2xl flex items-center gap-3 animate-float">
                 <Shield className="w-5 h-5" />
                 <div className="text-[10px] font-bold font-label tracking-widest uppercase">
                   Padrão de Segurança Nível 5
                 </div>
               </div>
-            </div>
+            </Parallax>
           </div>
         </section>
       </main>

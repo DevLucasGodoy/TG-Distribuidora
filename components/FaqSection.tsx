@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Plus } from 'lucide-react';
 import { FAQ } from '@/lib/seo';
+import { Reveal } from '@/components/Motion';
 
 // Acordeão de perguntas frequentes. O conteúdo vem de FAQ em lib/seo.ts —
 // a mesma lista que alimenta o JSON-LD FAQPage em app/contato/layout.tsx.
@@ -15,10 +16,10 @@ export default function FaqSection() {
     <section
       id="faq"
       aria-labelledby="faq-titulo"
-      className="px-8 py-24 bg-neutral-50 border-t border-neutral-100"
+      className="px-5 sm:px-6 lg:px-8 py-14 md:py-24 bg-neutral-50 border-t border-neutral-100"
     >
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-14">
+        <Reveal className="text-center mb-14">
           <span className="text-primary font-bold tracking-[0.2em] uppercase text-xs mb-4 block">
             Dúvidas Frequentes
           </span>
@@ -32,7 +33,7 @@ export default function FaqSection() {
             Respostas rápidas sobre unidades, horários, marcas e parcerias. Não
             achou o que procurava? Fale com a gente pelo formulário acima.
           </p>
-        </div>
+        </Reveal>
 
         <div className="divide-y divide-neutral-200 border-y border-neutral-200">
           {FAQ.map((item, i) => {

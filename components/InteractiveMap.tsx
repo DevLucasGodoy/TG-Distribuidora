@@ -34,7 +34,7 @@ const locations: Location[] = [
 
 export default function InteractiveMap() {
   return (
-    <div className="h-[500px] w-full rounded-2xl overflow-hidden shadow-2xl border border-neutral-100 z-0">
+    <div className="h-[320px] sm:h-[420px] md:h-[500px] w-full rounded-2xl overflow-hidden shadow-2xl border border-neutral-100 z-0">
       <MapContainer 
         center={[-21.5, -53.5] as any} 
         zoom={6} 

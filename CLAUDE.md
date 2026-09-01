@@ -83,10 +83,43 @@ so client-only mistakes (see gotchas) fail the build, not just runtime.
   import estático (não `dynamic`/`ssr: false`) e mantém as respostas montadas com altura
   colapsada, para o texto sair no HTML pré-renderizado.
 
+## Responsivo / escala mobile
+
+- **A raiz encolhe no celular** (`app/globals.css`, `@layer base`): 14px até 479px,
+  15px até 767px, 16px do md pra cima. Como as utilidades do Tailwind são em rem,
+  texto **e** espaçamento diminuem juntos — é o botão de "zoom" do site. Quer a
+  página inteira mais compacta no telefone? Mexa aí, não classe por classe.
+- Por isso `input`, `select` e `textarea` levam `font-size: 16px` fixo no mobile:
+  abaixo disso o Safari do iPhone dá zoom ao focar o campo.
+- Padding de container é `px-5 sm:px-6 lg:px-8` (não `px-8` seco) e as seções usam
+  `py-14 md:py-24` / `py-16 md:py-32`. Siga esse par ao criar seção nova.
+- `body { overflow-x: clip }` segura os halos decorativos que passam da borda —
+  `clip` e não `hidden`, senão o `position: sticky` da barra de filtros quebra.
+- `.tap-target` força 44×44px em controle de ícone no mobile (hambúrguer, setas do
+  carrossel, sociais, voltar-ao-topo). Não use em pílula de filtro nem em bullet de
+  paginação — nesses, aumente a área com padding no botão e deixe o traço num `span`.
+
+## Animação
+
+- `components/Motion.tsx` — primitivas compartilhadas: `Reveal` (entra ao aparecer na
+  viewport), `Stagger` + `StaggerItem` (entrada escalonada, `lift` faz o hover),
+  `CountUp` (números que contam, aceita "15+", "3k+", "24/7"), `Parallax` e
+  `ScrollProgress` (barra de leitura, montada dentro do `Navbar`). **Use estas peças
+  em vez de repetir `initial/animate` solto** — todas honram `prefers-reduced-motion`.
+- Efeito decorativo puro é CSS em `app/globals.css`: `.animate-float`,
+  `.animate-gradient-pan`, `.animate-shimmer` (precisa de `overflow-hidden` no pai),
+  `.animate-pulse-ring`, `.animate-marquee` (conteúdo duplicado 2×), `.hover-lift`,
+  `.link-underline`. O bloco `@media (prefers-reduced-motion: reduce)` no fim do
+  arquivo desliga todas — acrescentou animação nova ali? Registre no bloco também.
+- `CountUp` serve o número **zerado** no HTML e corrige no efeito, de propósito: é o
+  mesmo markup com ou sem `prefers-reduced-motion`, então não diverge na hidratação.
+
 ## Files worth knowing
 
 - `app/layout.tsx` — metadata, OpenGraph, fonts. `NEXT_PUBLIC_SITE_URL` overrides the base URL.
-- `components/Footer.tsx` — units list + social links (Instagram/Facebook/LinkedIn/WhatsApp).
+- `components/Footer.tsx` — rodapé: faixa de CTA (WhatsApp/telefone), navegação, contato,
+  cards de unidade e botão "voltar ao topo". As unidades vêm de `UNITS` em `lib/seo.ts`
+  (não duplique endereço/telefone aqui); telefone E.164 é formatado por `formatPhone`.
 - `app/page.tsx` — home; testimonials carousel array lives here.
 - `old/` — legacy PHP/CodeIgniter site, reference only. Do not edit.
 

@@ -19,11 +19,12 @@ import {
 // Import estático de propósito: o texto do FAQ precisa sair no HTML
 // pré-renderizado para o Google e os bots de IA lerem sem executar JS.
 import FaqSection from '@/components/FaqSection';
+import { Reveal, Stagger, StaggerItem } from '@/components/Motion';
 const Navbar = dynamic(() => import('@/components/Navbar'), { ssr: false });
 const Footer = dynamic(() => import('@/components/Footer'), { ssr: false });
 const InteractiveMap = dynamic(() => import('@/components/InteractiveMap'), {
   ssr: false,
-  loading: () => <div className="h-[500px] w-full bg-neutral-100 animate-pulse rounded-2xl flex items-center justify-center font-bold text-neutral-400">Carregando Mapa...</div>
+  loading: () => <div className="h-[320px] sm:h-[420px] md:h-[500px] w-full bg-neutral-100 animate-pulse rounded-2xl flex items-center justify-center font-bold text-neutral-400">Carregando Mapa...</div>
 });
 
 function SuccessBanner() {
@@ -81,43 +82,57 @@ export default function ContatoPage() {
 
       <main className="pt-24">
         {/* Hero Section */}
-        <section className="relative px-8 py-12 md:py-24 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center md:items-end">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="lg:col-span-7 text-center lg:text-left"
-          >
-            <span className="text-primary font-bold tracking-[0.2em] uppercase text-xs mb-4 block">Entre em Contato</span>
-            <h1 className="font-headline text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tighter text-on-surface leading-[0.95] mb-8">
-              O Hub da Rede <br/>de Segurança.
-            </h1>
-            <p className="text-lg md:text-xl text-on-surface-variant max-w-xl mx-auto lg:mx-0 leading-relaxed">
-              Conectando tecnologia de segurança premium com instaladores especializados em todo o Centro-Sul do Brasil. Fale com nossos guardiões arquitetônicos hoje mesmo.
-            </p>
-          </motion.div>
-          <div className="lg:col-span-5 flex flex-col items-center lg:items-end">
-            <div className="bg-neutral-100 p-6 md:p-8 rounded-xl w-full max-w-sm text-center lg:text-right">
+        <section className="relative px-5 sm:px-6 lg:px-8 py-10 md:py-24 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-center md:items-end">
+          <Stagger className="lg:col-span-7 text-center lg:text-left" step={0.12}>
+            <StaggerItem>
+              <span className="text-primary font-bold tracking-[0.2em] uppercase text-xs mb-4 block">Entre em Contato</span>
+            </StaggerItem>
+            <StaggerItem>
+              <h1 className="font-headline text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tighter text-on-surface leading-[0.95] mb-8">
+                O Hub da Rede <br/>de Segurança.
+              </h1>
+            </StaggerItem>
+            <StaggerItem>
+              <p className="text-base sm:text-lg md:text-xl text-on-surface-variant max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                Conectando tecnologia de segurança premium com instaladores especializados em todo o Centro-Sul do Brasil. Fale com nossos guardiões arquitetônicos hoje mesmo.
+              </p>
+            </StaggerItem>
+          </Stagger>
+          <Reveal className="lg:col-span-5 flex flex-col items-center lg:items-end" direction="left" delay={0.2}>
+            <motion.div
+              whileHover={{ y: -4 }}
+              transition={{ type: 'spring', stiffness: 320, damping: 20 }}
+              className="bg-neutral-100 p-6 md:p-8 rounded-xl w-full max-w-sm text-center lg:text-right"
+            >
               <p className="text-sm font-label text-on-surface-variant uppercase tracking-widest mb-2 font-bold">Linha Principal</p>
               <a className="text-2xl md:text-3xl font-headline font-extrabold text-primary hover:text-primary-container transition-colors" href="tel:6730323090">
                 67 3032-3090
               </a>
-            </div>
-          </div>
+            </motion.div>
+          </Reveal>
         </section>
 
         {/* Offices Grid */}
-        <section className="px-8 py-16 bg-surface-container-low">
+        <section className="px-5 sm:px-6 lg:px-8 py-10 md:py-16 bg-surface-container-low">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-3xl font-headline font-bold mb-12 flex items-center gap-4">
-              <span className="w-12 h-[2px] bg-primary"></span>
-              Sedes Regionais
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Reveal>
+              <h2 className="text-2xl sm:text-3xl font-headline font-bold mb-8 md:mb-12 flex items-center gap-4">
+                <motion.span
+                  initial={{ scaleX: 0 }}
+                  whileInView={{ scaleX: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                  className="w-12 h-[2px] bg-primary origin-left"
+                />
+                Sedes Regionais
+              </h2>
+            </Reveal>
+            <Stagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {offices.map((office, i) => (
-                <motion.div 
+                <StaggerItem
                   key={i}
-                  whileHover={{ y: -8 }}
-                  className="group bg-white p-6 rounded-xl flex flex-col h-full hover:shadow-2xl transition-all duration-500"
+                  lift={8}
+                  className="group bg-white p-6 rounded-xl flex flex-col h-full hover:shadow-2xl transition-shadow duration-500"
                 >
                   <div className="flex justify-between items-start mb-8">
                     <span className="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-tighter">{office.type}</span>
@@ -161,36 +176,38 @@ export default function ContatoPage() {
                       </div>
                     )}
                   </div>
-                </motion.div>
+                </StaggerItem>
               ))}
-            </div>
+            </Stagger>
           </div>
         </section>
 
         {/* Interactive Map Section */}
-        <section className="px-8 pb-24 max-w-7xl mx-auto">
-          <div className="text-center mb-12">
+        <section className="px-5 sm:px-6 lg:px-8 pb-14 md:pb-24 max-w-7xl mx-auto">
+          <Reveal className="text-center mb-12">
             <h2 className="text-3xl font-headline font-black tracking-tighter mb-4">Mapeamento da Rede</h2>
             <p className="text-on-surface-variant max-w-2xl mx-auto">
               Visualização geográfica das nossas unidades estratégicas no Mato Grosso do Sul.
             </p>
-          </div>
-          <InteractiveMap />
+          </Reveal>
+          <Reveal scale={0.97} distance={40}>
+            <InteractiveMap />
+          </Reveal>
         </section>
 
         {/* Contact Form */}
-        <section className="px-8 py-32 max-w-7xl mx-auto relative overflow-hidden">
+        <section className="px-5 sm:px-6 lg:px-8 py-16 md:py-32 max-w-7xl mx-auto relative overflow-hidden">
           <div className="absolute -top-24 -right-24 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
           <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-tertiary/5 rounded-full blur-3xl"></div>
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 relative z-10">
-            <div className="lg:col-span-5">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-16 relative z-10">
+            <Reveal className="lg:col-span-5" direction="right" distance={40}>
               <h2 className="text-4xl font-headline font-extrabold mb-6 tracking-tight">Mensagem Direta</h2>
               <p className="text-on-surface-variant leading-relaxed mb-12">
                 Se você procura suporte técnico ou deseja tornar-se um instalador parceiro, nossa equipe está pronta para responder em até 24 horas úteis.
               </p>
               <div className="space-y-8">
-                <div className="flex items-start gap-6">
-                  <div className="w-12 h-12 rounded-xl bg-neutral-100 flex items-center justify-center shrink-0">
+                <div className="group flex items-start gap-6">
+                  <div className="w-12 h-12 rounded-xl bg-neutral-100 flex items-center justify-center shrink-0 transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-6">
                     <Mail className="text-primary w-6 h-6" />
                   </div>
                   <div>
@@ -198,8 +215,8 @@ export default function ContatoPage() {
                     <p className="font-headline font-bold text-lg">contato@tgdistribuidora.com.br</p>
                   </div>
                 </div>
-                <div className="flex items-start gap-6">
-                  <div className="w-12 h-12 rounded-xl bg-neutral-100 flex items-center justify-center shrink-0">
+                <div className="group flex items-start gap-6">
+                  <div className="w-12 h-12 rounded-xl bg-neutral-100 flex items-center justify-center shrink-0 transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-6">
                     <Clock className="text-primary w-6 h-6" />
                   </div>
                   <div>
@@ -211,8 +228,8 @@ export default function ContatoPage() {
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="lg:col-span-7">
+            </Reveal>
+            <Reveal className="lg:col-span-7" direction="left" distance={40} delay={0.1}>
               <form action="https://formsubmit.co/contato@tgdistribuidora.com.br" method="POST" className="space-y-8 p-8 bg-white/50 backdrop-blur-lg rounded-2xl border border-neutral-100 shadow-xl">
                 <input type="hidden" name="_captcha" value="false" />
                 <input type="hidden" name="_next" value="https://tgdistribuidora.com.br/contato?success=true" />
@@ -240,11 +257,21 @@ export default function ContatoPage() {
                   <label className="text-xs font-label uppercase tracking-widest text-on-surface-variant px-1 font-bold">Sua Mensagem</label>
                   <textarea name="message" className="w-full bg-transparent border-0 border-b border-neutral-200 py-3 focus:ring-0 focus:border-primary transition-all resize-none" placeholder="Como podemos ajudar você hoje?" rows={4} required></textarea>
                 </div>
-                <button className="w-full py-4 bg-primary text-white font-headline font-bold rounded-lg scale-100 hover:scale-[1.02] active:scale-95 transition-all shadow-lg shadow-primary/20" type="submit">
-                  Enviar Mensagem Segura
-                </button>
+                <motion.button
+                  whileHover={{ y: -2, scale: 1.02 }}
+                  whileTap={{ scale: 0.97 }}
+                  transition={{ type: 'spring', stiffness: 360, damping: 20 }}
+                  className="group relative w-full py-4 bg-primary text-white font-headline font-bold rounded-lg overflow-hidden shadow-lg shadow-primary/20"
+                  type="submit"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 bg-white/25 skew-x-12 opacity-0 group-hover:opacity-100 group-hover:animate-shimmer"
+                  />
+                  <span className="relative">Enviar Mensagem Segura</span>
+                </motion.button>
               </form>
-            </div>
+            </Reveal>
           </div>
         </section>
 

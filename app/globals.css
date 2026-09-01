@@ -29,10 +29,54 @@
 @layer base {
   body {
     @apply font-body bg-background text-on-surface;
+    /* `clip` em vez de `hidden`: corta o estouro horizontal (halos, cards
+       rotacionados) sem quebrar o `position: sticky` da barra de filtros. */
+    overflow-x: clip;
   }
-  
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-headline;
+  }
+
+  /* ------------------------------------------------------------------
+     Escala tipográfica no celular
+     ------------------------------------------------------------------
+     As utilidades do Tailwind (texto E espaçamento) são em rem, então
+     baixar a raiz encolhe a página inteira de forma proporcional — é o
+     jeito de "reduzir o zoom" sem reescrever classe por classe.
+     Só o mobile muda; do md (768px) para cima segue 16px.
+     ------------------------------------------------------------------ */
+  @media (max-width: 479px) {
+    html {
+      font-size: 14px;
+    }
+  }
+
+  @media (min-width: 480px) and (max-width: 767px) {
+    html {
+      font-size: 15px;
+    }
+  }
+
+  /* Campo com fonte < 16px faz o Safari do iPhone dar zoom ao focar.
+     Valor absoluto de propósito: não pode acompanhar a raiz reduzida. */
+  @media (max-width: 767px) {
+    input,
+    select,
+    textarea {
+      font-size: 16px;
+    }
+  }
+
+}
+
+/* Alvo de toque de 44px (WCAG 2.5.8) para controles que ficariam pequenos
+   com a raiz reduzida. Aplique em ícone-botão, seta de carrossel, social —
+   NÃO em pílula de filtro ou bullet de paginação, que têm forma própria. */
+@media (max-width: 767px) {
+  .tap-target {
+    min-height: 44px;
+    min-width: 44px;
   }
 }
 
@@ -83,4 +127,116 @@ html {
 
 .hero-gradient {
   background: linear-gradient(135deg, #98001b 0%, #be1e2d 100%);
+}
+
+/* ==================================================================
+   Animações utilitárias
+   ------------------------------------------------------------------
+   Efeitos puramente decorativos (CSS). Movimento ligado a scroll ou a
+   estado do React fica em components/Motion.tsx. Tudo aqui é desligado
+   pelo bloco prefers-reduced-motion no fim do arquivo.
+   ================================================================== */
+
+@keyframes tg-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes tg-gradient-pan {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+@keyframes tg-shimmer {
+  0% { transform: translateX(-120%); }
+  100% { transform: translateX(220%); }
+}
+
+@keyframes tg-pulse-ring {
+  0% { transform: scale(0.85); opacity: 0.7; }
+  70% { transform: scale(1.6); opacity: 0; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+@keyframes tg-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* Flutuação lenta — cards e selos sobrepostos. */
+.animate-float {
+  animation: tg-float 6s ease-in-out infinite;
+}
+
+/* Gradiente que corre na horizontal — filetes e barras de destaque. */
+.animate-gradient-pan {
+  background-size: 200% 100%;
+  animation: tg-gradient-pan 6s linear infinite;
+}
+
+/* Brilho que cruza o elemento. Requer overflow-hidden no pai. */
+.animate-shimmer {
+  animation: tg-shimmer 2.6s ease-in-out infinite;
+}
+
+/* Halo pulsante — usado atrás do ícone de telefone/WhatsApp. */
+.animate-pulse-ring {
+  animation: tg-pulse-ring 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Faixa infinita. O conteúdo precisa estar duplicado (2×) no HTML. */
+.animate-marquee {
+  animation: tg-marquee 32s linear infinite;
+}
+.marquee-paused:hover .animate-marquee {
+  animation-play-state: paused;
+}
+
+/* Elevação padrão de card no hover. */
+.hover-lift {
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hover-lift:hover {
+  transform: translateY(-6px);
+}
+
+/* Sublinhado que cresce da esquerda no hover. */
+.link-underline {
+  position: relative;
+}
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.link-underline:hover::after {
+  transform: scaleX(1);
+}
+
+/* Respeita quem pediu menos movimento no sistema operacional. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-gradient-pan,
+  .animate-shimmer,
+  .animate-pulse-ring,
+  .animate-marquee {
+    animation: none !important;
+  }
+  .hover-lift:hover {
+    transform: none;
+  }
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
 }
