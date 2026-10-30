@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter, Manrope } from 'next/font/google';
 import './globals.css';
+import { ListaOrcamentoProvider } from '@/components/loja/ListaOrcamento';
 import {
   SITE_URL,
   SITE_NAME,
@@ -115,7 +116,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             __html: jsonLdGraph([organizationSchema, websiteSchema]),
           }}
         />
-        {children}
+        <ListaOrcamentoProvider>{children}</ListaOrcamentoProvider>
       </body>
     </html>
   );

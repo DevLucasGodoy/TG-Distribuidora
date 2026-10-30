@@ -66,6 +66,7 @@ const navLinks = [
   { label: "Início", href: "/" },
   { label: "Sobre Nós", href: "/sobre" },
   { label: "Marcas Parceiras", href: "/marcas" },
+  { label: "Produtos", href: "/produtos" },
   { label: "Contato", href: "/contato" },
   { label: "Perguntas Frequentes", href: "/contato#faq" },
 ];
@@ -130,18 +131,19 @@ export default function Footer() {
 
       {/* Faixa de chamada — WhatsApp + telefone */}
       <Reveal as="section" className="border-b border-neutral-200 bg-white">
-        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-8 md:py-10 flex flex-col lg:flex-row items-center justify-between gap-8">
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-6 md:py-10 flex flex-col lg:flex-row items-center justify-between gap-5 md:gap-8">
           <div className="text-center lg:text-left">
-            <h3 className="font-headline font-black text-2xl md:text-3xl tracking-tighter text-on-surface">
+            <h3 className="font-headline font-black text-xl md:text-3xl tracking-tighter text-on-surface">
               Precisa de um orçamento hoje?
             </h3>
-            <p className="text-on-surface-variant text-sm mt-2 max-w-md">
+            <p className="hidden sm:block text-on-surface-variant text-sm mt-2 max-w-md">
               Pronta entrega em quatro unidades no MS, preço de atacado e suporte
               técnico para instaladores.
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
+          {/* No celular os dois botões dividem a linha. */}
+          <div className="grid grid-cols-2 sm:flex sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full lg:w-auto">
             <motion.a
               href={WHATSAPP_URL}
               target="_blank"
@@ -149,7 +151,7 @@ export default function Footer() {
               whileHover={{ y: -3 }}
               whileTap={{ scale: 0.96 }}
               transition={{ type: "spring", stiffness: 320, damping: 20 }}
-              className="relative inline-flex items-center justify-center gap-3 px-6 sm:px-7 py-3.5 rounded-xl bg-primary text-white font-bold shadow-lg shadow-primary/25 overflow-hidden group"
+              className="relative inline-flex items-center justify-center gap-2 sm:gap-3 px-3 sm:px-7 py-3 sm:py-3.5 rounded-xl bg-primary text-white text-sm sm:text-base font-bold shadow-lg shadow-primary/25 overflow-hidden group"
             >
               {/* brilho que cruza o botão no hover */}
               <span
@@ -163,13 +165,14 @@ export default function Footer() {
                 />
                 <MessageCircle className="relative w-5 h-5" />
               </span>
-              Falar no WhatsApp
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              <span className="sm:hidden">WhatsApp</span>
+              <span className="hidden sm:inline">Falar no WhatsApp</span>
+              <ArrowRight className="hidden sm:block w-4 h-4 transition-transform group-hover:translate-x-1" />
             </motion.a>
 
             <a
               href={`tel:${SITE_PHONE}`}
-              className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3.5 rounded-xl border border-neutral-200 text-on-surface font-bold hover:border-primary hover:text-primary transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-3 sm:px-7 py-3 sm:py-3.5 rounded-xl border border-neutral-200 text-on-surface text-sm sm:text-base font-bold whitespace-nowrap hover:border-primary hover:text-primary transition-colors"
             >
               <PhoneCall className="w-4 h-4" />
               {formatPhone(SITE_PHONE)}
@@ -179,10 +182,10 @@ export default function Footer() {
       </Reveal>
 
       {/* Colunas principais */}
-      <Stagger className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pt-10 md:pt-14 pb-8 md:pb-10 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10">
-        {/* Marca */}
-        <StaggerItem className="md:col-span-4 flex flex-col gap-4">
-          <Link href="/" className="relative h-10 w-40 block">
+      <Stagger className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pt-6 md:pt-14 pb-6 md:pb-10 grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-10">
+        {/* Marca — no celular, logo e redes na mesma linha, sem o texto */}
+        <StaggerItem className="md:col-span-4 flex flex-row md:flex-col items-center md:items-start justify-between gap-4">
+          <Link href="/" className="relative h-9 w-28 md:h-10 md:w-40 block shrink-0">
             <Image
               alt="TG Distribuidora"
               fill
@@ -191,12 +194,12 @@ export default function Footer() {
               src="/logo.png"
             />
           </Link>
-          <p className="text-neutral-500 text-xs font-body leading-relaxed max-w-sm">
+          <p className="hidden md:block text-neutral-500 text-xs font-body leading-relaxed max-w-sm">
             A maior distribuidora de tecnologia em segurança do Mato Grosso do
             Sul. CFTV, alarmes, controle de acesso, automatização de portões e
             energia solar — revenda autorizada Hikvision, Intelbras e Dahua.
           </p>
-          <div className="flex gap-3 mt-1">
+          <div className="flex gap-2 md:gap-3 md:mt-1">
             {socials.map(({ label, href, Icon }) => (
               <motion.a
                 key={label}
@@ -216,16 +219,16 @@ export default function Footer() {
         </StaggerItem>
 
         {/* Navegação */}
-        <StaggerItem className="md:col-span-3 flex flex-col gap-4">
+        <StaggerItem className="md:col-span-3 flex flex-col gap-2 md:gap-4 pt-5 md:pt-0 border-t md:border-0 border-neutral-200">
           <h4 className="text-primary font-bold text-xs uppercase tracking-wider font-label">
             Navegação
           </h4>
-          <ul className="flex flex-col gap-2.5">
+          <ul className="grid grid-cols-2 md:flex md:flex-col gap-x-4 md:gap-2.5">
             {navLinks.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="group inline-flex items-center gap-2 py-1 text-neutral-600 text-sm hover:text-primary transition-colors"
+                  className="group inline-flex items-center gap-2 py-1.5 md:py-1 text-neutral-600 text-sm hover:text-primary transition-colors"
                 >
                   <span className="w-0 group-hover:w-3 h-[1px] bg-primary transition-all duration-300" />
                   <span className="link-underline">{link.label}</span>
@@ -236,18 +239,18 @@ export default function Footer() {
         </StaggerItem>
 
         {/* Fale conosco */}
-        <StaggerItem className="md:col-span-5 flex flex-col gap-4">
+        <StaggerItem className="md:col-span-5 flex flex-col gap-3 md:gap-4 pt-5 md:pt-0 border-t md:border-0 border-neutral-200">
           <h4 className="text-primary font-bold text-xs uppercase tracking-wider font-label">
             Fale Conosco
           </h4>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-4 md:gap-5">
             <div>
               <p className="text-neutral-400 text-[10px] uppercase tracking-widest mb-1">
                 Linha Principal
               </p>
               <a
                 href={`tel:${SITE_PHONE}`}
-                className="flex items-center gap-2 text-neutral-800 font-bold text-lg hover:text-primary transition-colors"
+                className="flex items-center gap-2 text-neutral-800 font-bold text-base md:text-lg whitespace-nowrap hover:text-primary transition-colors"
               >
                 <PhoneCall className="text-primary w-4 h-4" />
                 {formatPhone(SITE_PHONE)}
@@ -263,7 +266,7 @@ export default function Footer() {
               </p>
               <p className="text-neutral-600 text-xs pl-5">Sáb, 07:30 às 11:30</p>
             </div>
-            <div className="sm:col-span-2">
+            <div className="col-span-2">
               <p className="text-neutral-400 text-[10px] uppercase tracking-widest mb-1">
                 E-mail
               </p>
@@ -280,16 +283,51 @@ export default function Footer() {
       </Stagger>
 
       {/* Unidades — dados vindos de lib/seo.ts (fonte única) */}
-      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-12">
-        <div className="flex items-center gap-4 mb-6">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pb-6 md:pb-12">
+        <div className="flex items-center gap-4 mb-3 md:mb-6">
           <h4 className="text-primary font-bold text-xs uppercase tracking-wider font-label whitespace-nowrap">
             Nossas Unidades
           </h4>
           <span className="h-[1px] flex-grow bg-neutral-200" />
         </div>
 
+        {/* Celular: uma linha por unidade, com mapa e ligação no polegar. */}
+        <ul className="md:hidden divide-y divide-neutral-200 rounded-xl border border-neutral-200 bg-white">
+          {UNITS.map((unit) => (
+            <li key={unit.city} className="flex items-center gap-2 pl-4 pr-2 py-2">
+              <div className="min-w-0 flex-1">
+                <p className="flex items-center gap-2 text-sm font-bold text-neutral-800">
+                  {unit.city}
+                  {unit.isHQ && (
+                    <span className="text-[9px] font-bold uppercase tracking-widest text-primary bg-primary/10 px-1.5 py-0.5 rounded-full">
+                      Matriz
+                    </span>
+                  )}
+                </p>
+                <p className="text-[11px] text-neutral-500 truncate">{unit.street}</p>
+              </div>
+              <a
+                href={mapsUrl(unit.street, unit.city)}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Ver a unidade de ${unit.city} no mapa`}
+                className="tap-target flex items-center justify-center w-10 h-10 rounded-full text-neutral-500 hover:text-primary hover:bg-primary/10"
+              >
+                <MapPin className="w-4 h-4" />
+              </a>
+              <a
+                href={`tel:${unit.phone}`}
+                aria-label={`Ligar para ${unit.city}: ${formatPhone(unit.phone)}`}
+                className="tap-target flex items-center justify-center w-10 h-10 rounded-full text-primary bg-primary/10"
+              >
+                <PhoneCall className="w-4 h-4" />
+              </a>
+            </li>
+          ))}
+        </ul>
+
         <Stagger
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
+          className="hidden md:grid grid-cols-2 lg:grid-cols-4 gap-4"
           step={0.07}
         >
           {UNITS.map((unit) => (
@@ -340,7 +378,7 @@ export default function Footer() {
 
       {/* Barra inferior */}
       <div className="border-t border-neutral-200">
-        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row justify-between items-center gap-2">
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pt-4 pb-20 sm:pb-5 md:py-5 flex flex-col sm:flex-row justify-between items-center gap-1.5 md:gap-2">
           {/* O ano é resolvido no build; suppressHydrationWarning evita
               divergência se a página prerenderizada virar o ano no cliente. */}
           <p

@@ -7,12 +7,16 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import { ScrollProgress } from "@/components/Motion";
+import { BotaoLista } from "@/components/loja/ListaOrcamento";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   // Barra encolhe e ganha sombra depois dos primeiros pixels de rolagem.
   const [isScrolled, setIsScrolled] = React.useState(false);
   const pathname = usePathname();
+  // "Produtos" continua aceso dentro da página de um produto.
+  const ativo = (href: string) =>
+    href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
 
   React.useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 24);
@@ -25,8 +29,7 @@ export default function Navbar() {
     { label: "Início", href: "/" },
     { label: "Sobre Nós", href: "/sobre" },
     { label: "Marcas Parceiras", href: "/marcas" },
-    // Página de produtos oculta por enquanto — descomente para reativar:
-    // { label: "Produtos", href: "/produtos" },
+    { label: "Produtos", href: "/produtos" },
   ];
 
   return (
@@ -84,18 +87,19 @@ export default function Navbar() {
               <Link
                 key={item.label}
                 href={item.href}
-                className={`text-sm font-headline font-bold tracking-tight transition-all duration-300 relative group overflow-hidden ${pathname === item.href ? "text-primary" : "text-neutral-600 hover:text-primary"}`}
+                className={`text-sm font-headline font-bold tracking-tight transition-all duration-300 relative group overflow-hidden ${ativo(item.href) ? "text-primary" : "text-neutral-600 hover:text-primary"}`}
               >
                 {item.label}
                 <span
-                  className={`absolute bottom-0 left-0 w-full h-0.5 bg-primary transition-transform duration-300 ${pathname === item.href ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`}
+                  className={`absolute bottom-0 left-0 w-full h-0.5 bg-primary transition-transform duration-300 ${ativo(item.href) ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`}
                 />
               </Link>
             ))}
           </div>
 
           {/* Action Button (Right) */}
-          <div className="flex items-center gap-4 w-12 md:w-auto justify-end">
+          <div className="flex items-center gap-1 sm:gap-4 justify-end">
+            <BotaoLista />
             {/* No celular o botão de texto não cabe: vira atalho de ligação. */}
             <a
               href="tel:+556730323090"
@@ -180,17 +184,17 @@ export default function Navbar() {
                     <Link
                       href={item.href}
                       onClick={() => setIsMenuOpen(false)}
-                      className={`group flex items-center justify-between py-5 text-2xl font-headline font-bold transition-all border-b border-neutral-50 ${pathname === item.href ? "text-primary" : "text-neutral-600 hover:text-primary"}`}
+                      className={`group flex items-center justify-between py-5 text-2xl font-headline font-bold transition-all border-b border-neutral-50 ${ativo(item.href) ? "text-primary" : "text-neutral-600 hover:text-primary"}`}
                     >
                       <span className="relative">
                         {item.label}
                         <span
-                          className={`absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-300 ${pathname === item.href ? "w-full" : "w-0 group-hover:w-full"}`}
+                          className={`absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-300 ${ativo(item.href) ? "w-full" : "w-0 group-hover:w-full"}`}
                         />
                       </span>
                       <motion.div
-                        animate={{ x: pathname === item.href ? 5 : 0 }}
-                        className={`opacity-0 transition-all ${pathname === item.href ? "opacity-100 text-primary" : "group-hover:opacity-100"}`}
+                        animate={{ x: ativo(item.href) ? 5 : 0 }}
+                        className={`opacity-0 transition-all ${ativo(item.href) ? "opacity-100 text-primary" : "group-hover:opacity-100"}`}
                       >
                         <div className="w-2 h-2 rounded-full bg-current" />
                       </motion.div>

@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import {
   ArrowRight,
@@ -189,15 +190,13 @@ export default function HomePage() {
                 </p>
               </StaggerItem>
               <StaggerItem className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center lg:justify-start">
-                {/* Botão do catálogo desativado enquanto a página de produtos está oculta.
-                    Para reativar, descomente o bloco abaixo. */}
-                {/* <button
-                  onClick={() => (window.location.href = "/produtos")}
+                <Link
+                  href="/produtos"
                   className="px-8 py-4 bg-primary text-white rounded-lg font-bold text-lg shadow-xl shadow-primary/20 hover:opacity-90 transition-all flex items-center justify-center gap-2"
                 >
                   Explorar Catálogo
                   <ArrowRight className="w-5 h-5" />
-                </button> */}
+                </Link>
                 {/* Borda em opacidade cheia: o `/30` anterior foi escrito contra um
                     token inexistente (a classe era descartada no build), então nunca
                     chegou a ser calibrado — a 30% o contorno ficaria invisível. */}

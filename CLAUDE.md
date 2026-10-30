@@ -41,8 +41,32 @@ so client-only mistakes (see gotchas) fail the build, not just runtime.
   sem aviso, o estilo simplesmente não aparece. Ao inventar `bg-algo-novo`, declare
   `--color-algo-novo` antes. Para conferir se uma classe está viva:
   `grep -r "\.bg-algo-novo" .next/static --include=*.css` depois de um build.
-- Page data (products, brands, units, testimonials) is hardcoded as in-file arrays. There
-  is no CMS/database. Edit the array in the relevant page/component.
+- Page data (brands, units, testimonials) is hardcoded as in-file arrays. Edit the array in
+  the relevant page/component. **Exceção: o catálogo** — ver "Loja (/produtos)" abaixo.
+
+## Loja (/produtos)
+
+O catálogo vem da vitrine do **Syncro** (o sistema que lê o WinThor da TG), não de array
+local. Desenho adaptado do Vercel Commerce (github.com/vercel/commerce, MIT): categorias na
+coluna, grade, busca, página do produto com galeria, e **lista de orçamento** no lugar do
+carrinho — a TG não vende pelo site; a lista vai para o WhatsApp do vendedor da vez na
+filial que o visitante escolher.
+
+- `lib/vitrine.ts` — única porta para o Syncro (tipos, fetch, formatação, slug da URL).
+- `app/produtos/page.tsx` — catálogo, client, busca do navegador (`?q`, `?depto`, `?secao`).
+- `app/produtos/[produto]/page.tsx` — server component (SEO + schema `Product`), cache de
+  5 min. URL `/produtos/<código>-<slug>`; só o código importa.
+- `components/loja/ListaOrcamento.tsx` — provider (montado no `app/layout.tsx`), painel
+  lateral e botão da navbar. Guarda em `localStorage`; teto de 50 itens (o Syncro recusa mais).
+- Preço, estoque e o que aparece são decididos no Syncro, sem deploy aqui. Preço `null` →
+  "Consulte o preço". O preço a prazo é **acréscimo**: nunca riscar nem escrever "de/por".
+  Estoque sai só em faixa (em estoque / últimas unidades / sem estoque), nunca número.
+- Env: `NEXT_PUBLIC_SYNCRO_URL` + `NEXT_PUBLIC_SYNCRO_CHAVE` (ver `.env.example`). A chave é
+  pública por desenho, presa ao domínio cadastrado no Syncro — `localhost` só funciona com
+  uma chave cadastrada para `http://localhost:<porta>`. Sem as duas, a loja diz
+  "catálogo indisponível" e o resto do site segue.
+- O WhatsApp abre numa janela aberta **dentro do clique**, antes do `await`: depois dele o
+  navegador do celular trata como pop-up e bloqueia.
 
 ## Gotchas (learned the hard way)
 

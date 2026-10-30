@@ -23,7 +23,17 @@ import { Reveal, Stagger, StaggerItem, Parallax } from "@/components/Motion";
 export default function MarcasPage() {
   const [activeFilter, setActiveFilter] = React.useState("Todos");
 
-  const partners = [
+  // `fundo`: a cor do fundo do PRÓPRIO logo (lida nos cantos da imagem). O
+  // quadro do card usa a mesma cor, e o logo emenda sem aparecer o retângulo.
+  // `destaque`: sobe a marca para a faixa grande acima da grade.
+  const partners: {
+    name: string;
+    category: string;
+    desc: string;
+    img: string;
+    fundo?: string;
+    destaque?: boolean;
+  }[] = [
     {
       name: "Hikvision",
       category: "CFTV",
@@ -53,12 +63,16 @@ export default function MarcasPage() {
       category: "Automatização",
       desc: "Motores para portão, centrais de comando, controles remotos, cremalheiras e fotocélulas.",
       img: "https://alphadigi.com.br/wp-content/uploads/2025/04/garem.jpg",
+      fundo: "#ffffff",
+      destaque: true,
     },
     {
       name: "Rossi",
       category: "Automatização",
       desc: "Motores de portão, automatizadores residenciais, kits completos e acessórios.",
       img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSieVtHvqRxCFt93va20P1pDkHntS_bTCpfIA&s",
+      fundo: "#02407d",
+      destaque: true,
     },
     {
       name: "MPT Cabos",
@@ -134,9 +148,12 @@ export default function MarcasPage() {
     "Proteção Perimetral",
   ];
 
+  // As marcas em destaque já têm faixa própria acima; na grade elas só
+  // aparecem quando o filtro é a categoria delas.
+  const featured = partners.filter((p) => p.destaque);
   const filteredPartners =
     activeFilter === "Todos"
-      ? partners
+      ? partners.filter((p) => !p.destaque)
       : partners.filter((p) => p.category === activeFilter);
 
   return (
@@ -197,6 +214,57 @@ export default function MarcasPage() {
         {/* Partners Grid */}
         <section className="py-14 md:py-24 bg-surface-container-low">
           <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+            {/* Marcas em destaque — Garen e Rossi */}
+            <Reveal className="mb-14 md:mb-20">
+              <div className="flex items-center gap-4 mb-6">
+                <span className="text-primary font-label tracking-[0.2em] text-xs font-bold uppercase whitespace-nowrap">
+                  Marcas em destaque
+                </span>
+                <span className="h-px flex-grow bg-neutral-200" />
+              </div>
+              <Stagger className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
+                {featured.map((p) => (
+                  <StaggerItem
+                    key={p.name}
+                    lift={6}
+                    className="group relative bg-white rounded-2xl md:rounded-3xl border border-neutral-100 shadow-sm hover:shadow-2xl transition-shadow duration-500 overflow-hidden flex flex-col sm:flex-row"
+                  >
+                    <div
+                      className="relative sm:w-[44%] h-48 sm:h-auto sm:min-h-[260px] shrink-0 flex items-center justify-center overflow-hidden"
+                      style={{ backgroundColor: p.fundo ?? "#ffffff" }}
+                    >
+                      <Image
+                        src={p.img}
+                        alt={`Logo ${p.name}`}
+                        width={320}
+                        height={320}
+                        className="w-3/4 max-w-[240px] h-auto object-contain transition-transform duration-700 group-hover:scale-105"
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
+                    <div className="flex-1 flex flex-col p-6 sm:p-8">
+                      <span className="self-start text-[10px] font-bold font-label tracking-widest text-on-secondary-container bg-secondary-container px-2.5 py-1 rounded">
+                        {p.category.toUpperCase()}
+                      </span>
+                      <h3 className="mt-3 text-2xl md:text-3xl font-headline font-black tracking-tight text-on-surface">
+                        {p.name}
+                      </h3>
+                      <p className="mt-2 text-sm md:text-base text-on-surface-variant leading-relaxed">
+                        {p.desc}
+                      </p>
+                      <Link
+                        href={`/produtos?q=${encodeURIComponent(p.name)}`}
+                        className="mt-6 sm:mt-auto sm:pt-6 inline-flex items-center gap-2 self-start text-sm font-bold text-primary group/link"
+                      >
+                        Ver produtos {p.name}
+                        <ArrowRight className="w-4 h-4 transition-transform group-hover/link:translate-x-1" />
+                      </Link>
+                    </div>
+                  </StaggerItem>
+                ))}
+              </Stagger>
+            </Reveal>
+
             <Reveal className="flex flex-col md:flex-row justify-between items-end mb-10 md:mb-16 gap-8">
               <div className="max-w-2xl">
                 <h2 className="text-3xl font-headline font-bold text-on-surface mb-4">
@@ -264,14 +332,20 @@ export default function MarcasPage() {
                   }}
                   className="group bg-white rounded-xl border border-neutral-100 hover:shadow-2xl transition-shadow duration-500 cursor-pointer overflow-hidden"
                 >
-                  <div className="h-32 sm:h-40 w-full bg-gradient-to-br from-neutral-50 to-neutral-100 flex items-center justify-center relative overflow-hidden grayscale group-hover:grayscale-0 transition-all">
+                  {/* Fundo do quadro = fundo do logo (branco quando não informado):
+                      a maioria dos logos é JPG com fundo branco, e o degradê cinza
+                      antigo deixava o retângulo da imagem à mostra. */}
+                  <div
+                    className="h-32 sm:h-40 w-full flex items-center justify-center relative overflow-hidden border-b border-neutral-100"
+                    style={{ backgroundColor: partner.fundo ?? "#ffffff" }}
+                  >
                     {partner.img ? (
                       <Image
                         src={partner.img}
                         alt={partner.name}
                         width={200}
                         height={120}
-                        className="h-24 w-auto object-contain transition-transform duration-500 group-hover:scale-110"
+                        className="max-h-24 max-w-[75%] w-auto h-auto object-contain transition-transform duration-500 group-hover:scale-110"
                         loading="lazy"
                         referrerPolicy="no-referrer"
                       />
