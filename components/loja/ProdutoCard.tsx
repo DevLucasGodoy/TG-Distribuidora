@@ -110,7 +110,7 @@ export default function ProdutoCard({
           alt={item.descricao}
           fill
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-          className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
+          className="object-contain p-4 group-hover:scale-105"
           priority={prioridade}
         />
         {item.emPromocao && (

@@ -4,7 +4,7 @@ import React from "react";
 import FotoProduto from "@/components/loja/FotoProduto";
 import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
-import { ChevronLeft, ChevronRight, ClipboardList, Check, MapPin, ShieldCheck } from "lucide-react";
+import { ChevronLeft, ChevronRight, ClipboardList, Check, MapPin, Maximize2, ShieldCheck, X } from "lucide-react";
 import {
   tituloProduto,
   type FormatoPreco,
@@ -241,15 +241,36 @@ function InformacoesTecnicas({
   );
 }
 
-/** Galeria — foto grande com setas e miniaturas embaixo (como no Commerce). */
+/**
+ * Galeria — foto grande com setas e miniaturas embaixo (como no Commerce).
+ * Tocar na foto abre a tela cheia, para ler etiqueta, conector e acabamento.
+ */
 function Galeria({ imagens, alt }: { imagens: (string | null)[]; alt: string }) {
   const [i, setI] = React.useState(0);
+  const [ampliada, setAmpliada] = React.useState(false);
   const total = imagens.length;
-  const ir = (d: number) => setI((atual) => (atual + d + total) % total);
+  const ir = React.useCallback((d: number) => setI((atual) => (atual + d + total) % total), [total]);
+  const temFoto = !!imagens[i];
 
   return (
     <div>
       <div className="relative aspect-square rounded-2xl bg-neutral-50 overflow-hidden">
+        {temFoto && (
+          <button
+            type="button"
+            onClick={() => setAmpliada(true)}
+            aria-label="Ampliar foto"
+            className="absolute inset-0 z-10 cursor-zoom-in"
+          />
+        )}
+        {temFoto && (
+          <span
+            aria-hidden
+            className="pointer-events-none absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/90 border border-neutral-200 shadow-sm flex items-center justify-center text-on-surface"
+          >
+            <Maximize2 className="w-4 h-4" />
+          </span>
+        )}
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={i}
@@ -270,7 +291,7 @@ function Galeria({ imagens, alt }: { imagens: (string | null)[]; alt: string }) 
           </motion.div>
         </AnimatePresence>
         {total > 1 && (
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center rounded-full bg-white/90 backdrop-blur border border-neutral-200 shadow-sm">
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center rounded-full bg-white/90 backdrop-blur border border-neutral-200 shadow-sm">
             <button
               type="button"
               onClick={() => ir(-1)}
@@ -311,6 +332,95 @@ function Galeria({ imagens, alt }: { imagens: (string | null)[]; alt: string }) 
             </li>
           ))}
         </ul>
+      )}
+      {ampliada && (
+        <FotoAmpliada
+          imagens={imagens}
+          i={i}
+          alt={alt}
+          ir={ir}
+          fechar={() => setAmpliada(false)}
+        />
+      )}
+    </div>
+  );
+}
+
+/** Foto em tela cheia, fundo branco. Esc fecha; setas do teclado trocam a foto. */
+function FotoAmpliada({
+  imagens,
+  i,
+  alt,
+  ir,
+  fechar,
+}: {
+  imagens: (string | null)[];
+  i: number;
+  alt: string;
+  ir: (d: number) => void;
+  fechar: () => void;
+}) {
+  const total = imagens.length;
+  React.useEffect(() => {
+    const tecla = (e: KeyboardEvent) => {
+      if (e.key === "Escape") fechar();
+      else if (e.key === "ArrowLeft" && total > 1) ir(-1);
+      else if (e.key === "ArrowRight" && total > 1) ir(1);
+    };
+    const overflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", tecla);
+    return () => {
+      document.body.style.overflow = overflow;
+      window.removeEventListener("keydown", tecla);
+    };
+  }, [fechar, ir, total]);
+
+  return (
+    <div role="dialog" aria-modal="true" aria-label={alt} className="fixed inset-0 z-[100] bg-white">
+      <div className="absolute inset-0 p-4 sm:p-12" onClick={fechar}>
+        <div className="relative w-full h-full">
+          <FotoProduto
+            key={imagens[i] ?? i}
+            src={imagens[i]}
+            alt={total > 1 ? `${alt} — foto ${i + 1} de ${total}` : alt}
+            fill
+            sizes="100vw"
+            className="object-contain"
+          />
+        </div>
+      </div>
+      <button
+        type="button"
+        onClick={fechar}
+        aria-label="Fechar"
+        autoFocus
+        className="tap-target absolute top-4 right-4 w-11 h-11 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-on-surface"
+      >
+        <X className="w-5 h-5" />
+      </button>
+      {total > 1 && (
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center rounded-full bg-white border border-neutral-200 shadow-sm">
+          <button
+            type="button"
+            onClick={() => ir(-1)}
+            aria-label="Foto anterior"
+            className="tap-target w-11 h-11 flex items-center justify-center text-on-surface hover:text-primary"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <span className="text-xs font-bold tabular-nums text-neutral-400 px-1">
+            {i + 1}/{total}
+          </span>
+          <button
+            type="button"
+            onClick={() => ir(1)}
+            aria-label="Próxima foto"
+            className="tap-target w-11 h-11 flex items-center justify-center text-on-surface hover:text-primary"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </div>
       )}
     </div>
   );
