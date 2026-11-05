@@ -27,16 +27,26 @@ export default function SobrePage() {
       <main className="pt-24">
         {/* Hero Section */}
         <section className="relative min-h-[380px] md:h-[600px] flex items-center overflow-hidden bg-surface-container-low py-14 md:py-0">
+          {/* Fachada esticada na largura toda, atrás do texto. A foto é vertical
+              (celular): o recorte horizontal mira a faixa do prédio. */}
           <div className="absolute inset-0 z-0">
-            <Image 
-              className="w-full h-full object-cover opacity-30 grayscale mix-blend-multiply" 
-              src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200"
+            <Image
+              className="object-cover"
+              style={{ objectPosition: 'center 45%' }}
+              src="/sobre/fachada.webp"
               fill
               sizes="100vw"
-              referrerPolicy="no-referrer"
-              alt="Centro de Distribuição TG"
+              priority
+              alt="Fachada da TG Distribuidora"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-surface via-surface/80 to-transparent"></div>
+            <div
+              aria-hidden="true"
+              className="absolute inset-0"
+              style={{
+                backgroundImage:
+                  'linear-gradient(to right, var(--color-surface) 0%, color-mix(in srgb, var(--color-surface) 85%, transparent) 45%, color-mix(in srgb, var(--color-surface) 10%, transparent) 100%)',
+              }}
+            ></div>
           </div>
           <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 w-full">
             <Stagger className="max-w-2xl text-center md:text-left" step={0.12}>
@@ -49,7 +59,7 @@ export default function SobrePage() {
                 </h1>
               </StaggerItem>
               <StaggerItem>
-                <p className="text-base sm:text-lg md:text-xl text-on-surface-variant leading-relaxed mb-8 border-l-4 border-primary pl-6 mx-auto md:mx-0">
+                <p className="text-base sm:text-lg md:text-xl text-on-surface-variant leading-relaxed border-l-4 border-primary pl-6 mx-auto md:mx-0 text-left max-w-xl">
                   Unindo tecnologia de classe mundial às demandas regionais com uma equipe de mais de 150 profissionais especializados.
                 </p>
               </StaggerItem>
@@ -90,11 +100,11 @@ export default function SobrePage() {
               <div className="group aspect-square bg-neutral-200 rounded-2xl overflow-hidden shadow-2xl relative z-10">
                 <Image
                   className="w-full h-full object-cover transition-transform duration-[1200ms] group-hover:scale-105"
-                  src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&q=80&w=1200"
+                  src="/sobre/diretoria.webp"
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  referrerPolicy="no-referrer"
-                  alt="Equipe Técnica TG"
+                  style={{ objectPosition: 'center 30%' }}
+                  alt="Direção da TG Distribuidora em frente ao painel da marca"
                 />
               </div>
               <div className="absolute -top-10 -left-10 w-48 h-48 bg-secondary/10 rounded-full blur-3xl animate-float"></div>
@@ -124,12 +134,12 @@ export default function SobrePage() {
             <Stagger className="grid grid-cols-1 md:grid-cols-12 gap-6" step={0.12}>
               <StaggerItem className="md:col-span-8 group relative overflow-hidden rounded-2xl h-[400px] bg-neutral-900">
                 <Image 
-                  className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" 
-                  src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200"
+                  className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:scale-105 transition-transform duration-700"
+                  src="/sobre/equipe.webp"
                   fill
                   sizes="(max-width: 768px) 100vw, 66vw"
-                  referrerPolicy="no-referrer"
-                  alt="Infraestrutura Tecnológica"
+                  style={{ objectPosition: 'center 40%' }}
+                  alt="Equipe da TG Distribuidora em treinamento Garen"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-transparent"></div>
                 <div className="absolute bottom-0 left-0 p-6 sm:p-9 md:p-12">

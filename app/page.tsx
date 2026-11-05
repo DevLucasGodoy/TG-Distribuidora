@@ -7,7 +7,6 @@ import { motion, AnimatePresence } from "motion/react";
 import {
   ArrowRight,
   ShieldCheck,
-  Activity,
   MapPin,
   PhoneCall,
   Clock,
@@ -148,9 +147,9 @@ export default function HomePage() {
     <div className="min-h-screen bg-surface selection:bg-primary/20">
       <Navbar />
 
-      <main className="pt-20">
-        {/* Hero Section */}
-        <section className="relative md:min-h-[800px] flex items-center overflow-hidden bg-surface py-10 md:py-0">
+      <main className="pt-24 md:pt-28 lg:pt-20">
+        {/* Hero Section — empilhado até o lg; lado a lado só no desktop */}
+        <section className="relative lg:min-h-[800px] flex items-center overflow-hidden bg-surface py-8 md:py-12 lg:py-0">
           {/* Halos decorativos que respiram atrás do conteúdo */}
           <div
             aria-hidden="true"
@@ -171,22 +170,22 @@ export default function HomePage() {
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container mb-6">
                   <ShieldCheck className="w-4 h-4" />
                   <span className="text-[10px] font-bold uppercase tracking-widest font-label">
-                    Líder em Mato Grosso do Sul
+                    Distribuidora em Mato Grosso do Sul
                   </span>
                 </div>
               </StaggerItem>
               <StaggerItem>
                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-headline font-extrabold tracking-tighter text-on-surface mb-6 leading-[0.95]">
-                  A Referência em <br />
-                  <span className="text-primary">Segurança Eletrônica</span> no
-                  MS.
+                  Tudo em <br />
+                  <span className="text-primary">Segurança Eletrônica</span>{" "}
+                  para quem instala.
                 </h1>
               </StaggerItem>
               <StaggerItem>
                 <p className="text-base sm:text-lg md:text-xl text-on-surface-variant max-w-lg mx-auto lg:mx-0 mb-10 leading-relaxed font-body">
-                  A maior distribuidora de tecnologia em segurança do estado.
-                  Vigilância de precisão, monitoramento de alto padrão e
-                  sistemas de proteção robustos para profissionais.
+                  CFTV, alarmes, controle de acesso, portões automáticos, cabos e
+                  energia solar. Revenda autorizada Hikvision, Intelbras e Dahua,
+                  com pronta entrega em quatro unidades no estado.
                 </p>
               </StaggerItem>
               <StaggerItem className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center lg:justify-start">
@@ -216,16 +215,18 @@ export default function HomePage() {
               initial={{ opacity: 0, scale: 0.92 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-              className="lg:col-span-6 relative h-[400px] md:h-[600px] w-full hidden sm:block"
+              className="lg:col-span-6 relative h-[300px] sm:h-[380px] md:h-[440px] lg:h-[600px] w-full max-w-3xl mx-auto lg:max-w-none"
             >
-              <div className="absolute top-10 right-0 w-[80%] h-[80%] rounded-2xl overflow-hidden shadow-2xl z-0">
+              {/* Empilhado: foto na largura toda, cartão sobreposto no pé.
+                  Desktop: foto recuada à direita, cartão saindo pela esquerda. */}
+              <div className="absolute top-0 inset-x-0 h-[82%] lg:top-10 lg:left-auto lg:right-0 lg:w-[80%] lg:h-[80%] rounded-2xl overflow-hidden shadow-2xl z-0">
                 <Image
-                  alt="Tecnologia de Segurança Avançada"
+                  alt="Equipe da TG Distribuidora"
                   className="w-full h-full object-cover"
-                  src="https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&q=80&w=1200"
+                  src="/sobre/equipe.webp"
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
-                  referrerPolicy="no-referrer"
+                  style={{ objectPosition: "center 62%" }}
                   priority
                 />
               </div>
@@ -233,27 +234,20 @@ export default function HomePage() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                className="absolute bottom-0 left-0 w-[90%] sm:w-[70%] p-6 bg-white/60 backdrop-blur-xl rounded-2xl border border-white/20 shadow-2xl z-20 animate-float"
+                className="absolute bottom-0 left-3 sm:left-6 lg:left-0 w-[88%] sm:w-[60%] lg:w-[70%] p-4 sm:p-6 bg-white/80 backdrop-blur-xl rounded-2xl border border-white/20 shadow-2xl z-20 animate-float text-left"
               >
                 <div className="flex items-center gap-2 mb-2 text-primary">
-                  <span className="relative flex w-2.5 h-2.5">
-                    <span
-                      aria-hidden="true"
-                      className="absolute inline-flex w-full h-full rounded-full bg-primary/60 animate-pulse-ring"
-                    />
-                    <span className="relative inline-flex w-2.5 h-2.5 rounded-full bg-primary" />
-                  </span>
-                  <Activity className="w-5 h-5" />
+                  <MapPin className="w-5 h-5" />
                   <span className="font-bold tracking-tighter font-headline uppercase text-sm">
-                    Status em tempo real
+                    4 unidades no MS
                   </span>
                 </div>
                 <h3 className="text-xl md:text-2xl font-black font-headline text-on-surface mb-2 leading-none">
-                  Monitoramento Ultra-HD
+                  Orçamento pelo WhatsApp
                 </h3>
                 <p className="text-xs md:text-sm text-on-surface-variant font-body">
-                  Soluções de reconhecimento por IA e imagem térmica de última
-                  geração para pronta entrega B2B.
+                  Monte a lista no catálogo e um vendedor da unidade mais perto
+                  responde com preço e prazo.
                 </p>
               </motion.div>
             </motion.div>

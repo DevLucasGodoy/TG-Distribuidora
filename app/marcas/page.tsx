@@ -32,7 +32,11 @@ export default function MarcasPage() {
     desc: string;
     img: string;
     fundo?: string;
+    /** Logo com muita margem no próprio arquivo fica miúdo no quadro: amplia. */
+    escala?: number;
     destaque?: boolean;
+    /** Imagem é foto (não logo recortado): preenche o quadro, e o cartão ocupa a linha toda. */
+    capa?: boolean;
   }[] = [
     {
       name: "Hikvision",
@@ -45,18 +49,21 @@ export default function MarcasPage() {
       category: "Alarmes",
       desc: "Centrais de alarme, sensores de presença, sensores sem fio, sirenes e controles.",
       img: "https://jflalarmes.com.br/wp-content/uploads/2024/01/cropped-Favicon.png",
+      fundo: "#fdb913",
     },
     {
       name: "AGL",
       category: "Controle de Acesso",
       desc: "Interfones, vídeo porteiros, fechaduras elétricas e kits de porteiro eletrônico.",
       img: "https://yt3.googleusercontent.com/P0E4UMelWJfvAIR0nhdTF50Xw7fGUWVtpUJcabuyCJNV-VzSB-tvBwKVWdufBXmXfEEUpZ7Y=s900-c-k-c0x00ffffff-no-rj",
+      escala: 1.25,
     },
     {
       name: "IPEC",
       category: "Alarmes",
       desc: "Centrais de alarme, sensores, controles remotos e carregadores.",
       img: "https://yt3.googleusercontent.com/HoS_6E-4ThHx08h9-80056tIqC_fC9nLGpMSvshFuldlcKzr2t0BzOmllCUtPMbIdrkK6llr=s900-c-k-c0x00ffffff-no-rj",
+      escala: 1.6,
     },
     {
       name: "Garen",
@@ -79,24 +86,28 @@ export default function MarcasPage() {
       category: "Cabos e Redes",
       desc: "Cabos coaxiais, cabos CFTV e cabos de rede de alta qualidade.",
       img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSncYz5grHLKqk1YmA1860ZY4pFj1gbkto7jA&s",
+      escala: 1.6,
     },
     {
       name: "FC Fontes",
       category: "Fontes e Energia",
       desc: "Fontes chaveadas, fontes para CFTV e distribuidores de energia.",
       img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdOejqWYarPw7Pyx_lhuHILeYmgr7z1DJ73w&s",
+      escala: 1.5,
     },
     {
       name: "Inove",
       category: "Acessórios",
       desc: "Hastes de aterramento, bases e suportes para sistemas de segurança.",
       img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfnSK6CmlvtYC2XF1imDSjZFpHmt0Oj9n9YA&s",
+      fundo: "#2b2b2b",
     },
     {
       name: "Condutti",
       category: "Cabos e Redes",
       desc: "Distribuição de fios e cabos especiais para setores de segurança eletrônica.",
       img: "https://falasegura.com.br/content/images/2025/08/Condutti_logo-baixa-1024x724.jpg",
+      fundo: "#4fba49",
     },
     {
       name: "Continente Motores",
@@ -129,10 +140,13 @@ export default function MarcasPage() {
       img: "",
     },
     {
-      name: "Corteseg",
+      name: "Cortseg",
       category: "Proteção Perimetral",
       desc: "Concertinas e soluções de proteção perimetral para segurança de perímetro.",
-      img: "",
+      img: "/marcas/cortseg.webp",
+      fundo: "#d1d4d5",
+      destaque: true,
+      capa: true,
     },
   ];
 
@@ -191,12 +205,11 @@ export default function MarcasPage() {
               <div className="aspect-square rounded-xl overflow-hidden shadow-2xl rotate-3 scale-95 hover:rotate-0 hover:scale-100 transition-transform duration-700 relative">
                 <Image
                   className="w-full h-full object-cover"
-                  src="https://images.unsplash.com/photo-1589935447067-5531094415d1?auto=format&fit=crop&q=80&w=1200"
+                  src="/marcas/garen-rossi.webp"
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   loading="eager"
-                  referrerPolicy="no-referrer"
-                  alt="Câmeras de monitoramento profissionais"
+                  alt="Garen e Rossi, marcas distribuídas pela TG"
                 />
               </div>
               <div className="absolute -bottom-6 -left-6 bg-secondary-container p-6 rounded-lg shadow-xl max-w-[200px] animate-float">
@@ -227,20 +240,30 @@ export default function MarcasPage() {
                   <StaggerItem
                     key={p.name}
                     lift={6}
-                    className="group relative bg-white rounded-2xl md:rounded-3xl border border-neutral-100 shadow-sm hover:shadow-2xl transition-shadow duration-500 overflow-hidden flex flex-col sm:flex-row"
+                    className={`group relative bg-white rounded-2xl md:rounded-3xl border border-neutral-100 shadow-sm hover:shadow-2xl transition-shadow duration-500 overflow-hidden flex flex-col sm:flex-row ${p.capa ? "md:col-span-2" : ""}`}
                   >
                     <div
-                      className="relative sm:w-[44%] h-48 sm:h-auto sm:min-h-[260px] shrink-0 flex items-center justify-center overflow-hidden"
+                      className={`relative ${p.capa ? "sm:w-[55%] h-52 sm:min-h-[300px]" : "sm:w-[44%] h-48 sm:min-h-[260px]"} sm:h-auto shrink-0 flex items-center justify-center overflow-hidden`}
                       style={{ backgroundColor: p.fundo ?? "#ffffff" }}
                     >
-                      <Image
-                        src={p.img}
-                        alt={`Logo ${p.name}`}
-                        width={320}
-                        height={320}
-                        className="w-3/4 max-w-[240px] h-auto object-contain transition-transform duration-700 group-hover:scale-105"
-                        referrerPolicy="no-referrer"
-                      />
+                      {p.capa ? (
+                        <Image
+                          src={p.img}
+                          alt={`Logo ${p.name}`}
+                          fill
+                          sizes="(max-width: 640px) 100vw, 55vw"
+                          className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        />
+                      ) : (
+                        <Image
+                          src={p.img}
+                          alt={`Logo ${p.name}`}
+                          width={320}
+                          height={320}
+                          className="w-3/4 max-w-[240px] h-auto object-contain transition-transform duration-700 group-hover:scale-105"
+                          referrerPolicy="no-referrer"
+                        />
+                      )}
                     </div>
                     <div className="flex-1 flex flex-col p-6 sm:p-8">
                       <span className="self-start text-[10px] font-bold font-label tracking-widest text-on-secondary-container bg-secondary-container px-2.5 py-1 rounded">
@@ -311,7 +334,7 @@ export default function MarcasPage() {
 
             <motion.div
               layout
-              className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6"
             >
               {/* popLayout: os cards que saem do filtro deixam de ocupar espaço
                   enquanto animam, então os restantes reposicionam sem salto. */}
@@ -340,15 +363,25 @@ export default function MarcasPage() {
                     style={{ backgroundColor: partner.fundo ?? "#ffffff" }}
                   >
                     {partner.img ? (
-                      <Image
-                        src={partner.img}
-                        alt={partner.name}
-                        width={200}
-                        height={120}
-                        className="max-h-24 max-w-[75%] w-auto h-auto object-contain transition-transform duration-500 group-hover:scale-110"
-                        loading="lazy"
-                        referrerPolicy="no-referrer"
-                      />
+                      /* Caixa fixa para todo logo: o largo enche a largura, o
+                         quadrado enche a altura, e todos ocupam o mesmo espaço. */
+                      <div
+                        className="relative h-20 sm:h-24"
+                        style={{
+                          width: "60%",
+                          transform: partner.escala ? `scale(${partner.escala})` : undefined,
+                        }}
+                      >
+                        <Image
+                          src={partner.img}
+                          alt={partner.name}
+                          fill
+                          sizes="(max-width: 640px) 70vw, 240px"
+                          className="object-contain transition-transform duration-500 group-hover:scale-110"
+                          loading="lazy"
+                          referrerPolicy="no-referrer"
+                        />
+                      </div>
                     ) : (
                       <div className="text-[11px] font-bold text-neutral-300 font-label tracking-wide text-center px-4">
                         LOGO EM BREVE
@@ -405,29 +438,29 @@ export default function MarcasPage() {
             <div className="space-y-12">
               <Reveal>
                 <h2 className="text-4xl font-headline font-extrabold tracking-tight">
-                  Por que ser um parceiro{" "}
+                  Por que ser parceiro da{" "}
                   <span className="text-primary">TG Distribuidora?</span>
                 </h2>
               </Reveal>
               <Stagger className="space-y-8" step={0.12}>
                 {[
                   {
-                    title: "Homologação Técnica",
-                    desc: "Não somos apenas vendedores. Nossos engenheiros testam cada equipamento antes de entrar no portfólio.",
+                    title: "Marcas originais, com nota",
+                    desc: "Revenda autorizada Hikvision, Intelbras, Dahua, Garen, Rossi e outras: produto com nota fiscal e garantia do fabricante.",
                     icon: ShieldCheck,
                     bg: "bg-primary/10",
                     color: "text-primary",
                   },
                   {
-                    title: "Suporte Nível Especialista",
-                    desc: "Acesso direto ao suporte técnico de fábrica e treinamento exclusivo para instaladores parceiros.",
+                    title: "Atendimento de quem entende",
+                    desc: "O vendedor da sua unidade ajuda a escolher o equipamento e confere a compatibilidade antes de fechar o orçamento.",
                     icon: PhoneCall,
                     bg: "bg-tertiary/10",
                     color: "text-tertiary",
                   },
                   {
-                    title: "Estoque Estratégico",
-                    desc: "Pronta entrega para as principais lines, garantindo que seu projeto não sofra atrasos logísticos.",
+                    title: "Pronta entrega no MS",
+                    desc: "Estoque em Dourados, Campo Grande, Ponta Porã e Três Lagoas, para a sua obra não parar esperando material.",
                     icon: Shield,
                     bg: "bg-secondary/10",
                     color: "text-secondary",
@@ -454,16 +487,16 @@ export default function MarcasPage() {
             <Parallax className="relative h-[300px] sm:h-[400px] md:h-[480px]" distance={36}>
               <Image
                 className="rounded-xl shadow-2xl w-full h-full object-cover"
-                src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=1200"
+                src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&q=80&w=1200"
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 referrerPolicy="no-referrer"
-                alt="Suporte Técnico Especializado"
+                alt="Aperto de mão entre parceiros de negócio"
               />
               <div className="absolute top-10 -right-4 bg-tertiary text-white px-6 py-4 rounded-lg shadow-2xl flex items-center gap-3 animate-float">
                 <Shield className="w-5 h-5" />
                 <div className="text-[10px] font-bold font-label tracking-widest uppercase">
-                  Padrão de Segurança Nível 5
+                  Revenda autorizada
                 </div>
               </div>
             </Parallax>
