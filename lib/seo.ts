@@ -29,6 +29,8 @@ export type Unit = {
   city: string;
   postalCode?: string;
   phone: string;
+  /** WhatsApp de vendas da unidade, E.164 (os mesmos números de /contato). */
+  whatsapp: string;
   lat: number;
   lng: number;
   isHQ?: boolean;
@@ -40,6 +42,7 @@ export const UNITS: Unit[] = [
     street: 'R. Pedro Rigotti, 925 - Vila Santo André',
     city: 'Dourados',
     phone: '+556730323090',
+    whatsapp: '+5567999583090',
     lat: -22.2235,
     lng: -54.8064,
     isHQ: true,
@@ -49,6 +52,7 @@ export const UNITS: Unit[] = [
     street: 'Av. Salgado Filho, 1756',
     city: 'Campo Grande',
     phone: '+556730433090',
+    whatsapp: '+5567992856510',
     lat: -20.4697,
     lng: -54.6201,
   },
@@ -57,6 +61,7 @@ export const UNITS: Unit[] = [
     street: 'Av. Paraguai, 2310 - Centro',
     city: 'Ponta Porã',
     phone: '+556734316421',
+    whatsapp: '+5567999963043',
     lat: -22.5361,
     lng: -55.7258,
   },
@@ -65,6 +70,7 @@ export const UNITS: Unit[] = [
     street: 'R. Darcí Pio, 1333 - Santos Dumont',
     city: 'Três Lagoas',
     phone: '+5567999941447',
+    whatsapp: '+5567999941447',
     lat: -20.8494,
     lng: -51.7042,
   },

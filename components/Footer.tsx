@@ -80,6 +80,11 @@ function formatPhone(e164: string) {
   return `(${ddd}) ${rest.slice(0, split)}-${rest.slice(split)}`;
 }
 
+function whatsappUrl(e164: string, city: string) {
+  const texto = `Olá! Vim pelo site e quero falar com a unidade de ${city}.`;
+  return `https://wa.me/${e164.replace(/\D/g, "")}?text=${encodeURIComponent(texto)}`;
+}
+
 function mapsUrl(street: string, city: string) {
   return `https://maps.google.com/?q=${encodeURIComponent(`${street}, ${city}, MS`)}`;
 }
@@ -143,7 +148,7 @@ export default function Footer() {
           </div>
 
           {/* No celular os dois botões dividem a linha. */}
-          <div className="grid grid-cols-2 sm:flex sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full lg:w-auto">
+          <div className="grid grid-cols-2 sm:flex sm:flex-row sm:justify-center items-stretch sm:items-center gap-2 sm:gap-3 w-full lg:w-auto">
             <motion.a
               href={WHATSAPP_URL}
               target="_blank"
@@ -182,24 +187,25 @@ export default function Footer() {
       </Reveal>
 
       {/* Colunas principais */}
-      <Stagger className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pt-6 md:pt-14 pb-6 md:pb-10 grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-10">
-        {/* Marca — no celular, logo e redes na mesma linha, sem o texto */}
-        <StaggerItem className="md:col-span-4 flex flex-row md:flex-col items-center md:items-start justify-between gap-4">
-          <Link href="/" className="relative h-9 w-28 md:h-10 md:w-40 block shrink-0">
+      <Stagger className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pt-6 md:pt-12 pb-6 md:pb-10 grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-10 md:items-start">
+        {/* Marca — no celular, logo e redes na mesma linha, sem o texto.
+            No desktop, tudo encostado no topo (sem justify-between esticando). */}
+        <StaggerItem className="md:col-span-4 flex flex-row md:flex-col items-center md:items-start justify-between md:justify-start gap-4 md:gap-5">
+          <Link href="/" className="relative h-10 w-28 md:h-14 md:w-44 block shrink-0">
             <Image
               alt="TG Distribuidora"
               fill
-              sizes="160px"
+              sizes="176px"
               className="object-contain object-left"
               src="/logo.png"
             />
           </Link>
-          <p className="hidden md:block text-neutral-500 text-xs font-body leading-relaxed max-w-sm">
-            A maior distribuidora de tecnologia em segurança do Mato Grosso do
-            Sul. CFTV, alarmes, controle de acesso, automatização de portões e
-            energia solar — revenda autorizada Hikvision, Intelbras e Dahua.
+          <p className="hidden md:block text-neutral-500 text-sm font-body leading-relaxed max-w-sm">
+            Distribuidora de segurança eletrônica em Mato Grosso do Sul: CFTV,
+            alarmes, controle de acesso, automatização de portões e energia
+            solar. Revenda autorizada Hikvision, Intelbras e Dahua.
           </p>
-          <div className="flex gap-2 md:gap-3 md:mt-1">
+          <div className="flex gap-2 md:gap-3">
             {socials.map(({ label, href, Icon }) => (
               <motion.a
                 key={label}
@@ -219,16 +225,18 @@ export default function Footer() {
         </StaggerItem>
 
         {/* Navegação */}
-        <StaggerItem className="md:col-span-3 flex flex-col gap-2 md:gap-4 pt-5 md:pt-0 border-t md:border-0 border-neutral-200">
+        <StaggerItem className="md:col-span-4 flex flex-col gap-2 md:gap-3 pt-5 md:pt-0 border-t md:border-0 border-neutral-200">
           <h4 className="text-primary font-bold text-xs uppercase tracking-wider font-label">
             Navegação
           </h4>
-          <ul className="grid grid-cols-2 md:flex md:flex-col gap-x-4 md:gap-2.5">
+          {/* Duas colunas também no desktop: seis links em pilha deixavam a
+              coluna mais alta que as outras e abriam um vão no rodapé. */}
+          <ul className="grid grid-cols-2 gap-x-6 gap-y-0.5">
             {navLinks.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="group inline-flex items-center gap-2 py-1.5 md:py-1 text-neutral-600 text-sm hover:text-primary transition-colors"
+                  className="group inline-flex items-center gap-2 py-1.5 text-neutral-600 text-sm whitespace-nowrap hover:text-primary transition-colors"
                 >
                   <span className="w-0 group-hover:w-3 h-[1px] bg-primary transition-all duration-300" />
                   <span className="link-underline">{link.label}</span>
@@ -239,11 +247,11 @@ export default function Footer() {
         </StaggerItem>
 
         {/* Fale conosco */}
-        <StaggerItem className="md:col-span-5 flex flex-col gap-3 md:gap-4 pt-5 md:pt-0 border-t md:border-0 border-neutral-200">
+        <StaggerItem className="md:col-span-4 flex flex-col gap-3 md:gap-4 pt-5 md:pt-0 border-t md:border-0 border-neutral-200">
           <h4 className="text-primary font-bold text-xs uppercase tracking-wider font-label">
             Fale Conosco
           </h4>
-          <div className="grid grid-cols-2 gap-x-4 gap-y-4 md:gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 xl:grid-cols-2 gap-x-6 gap-y-4 md:gap-y-5">
             <div>
               <p className="text-neutral-400 text-[10px] uppercase tracking-widest mb-1">
                 Linha Principal
@@ -266,7 +274,7 @@ export default function Footer() {
               </p>
               <p className="text-neutral-600 text-xs pl-5">Sáb, 07:30 às 11:30</p>
             </div>
-            <div className="col-span-2">
+            <div className="sm:col-span-2 md:col-span-1 xl:col-span-2">
               <p className="text-neutral-400 text-[10px] uppercase tracking-widest mb-1">
                 E-mail
               </p>
@@ -318,9 +326,18 @@ export default function Footer() {
               <a
                 href={`tel:${unit.phone}`}
                 aria-label={`Ligar para ${unit.city}: ${formatPhone(unit.phone)}`}
-                className="tap-target flex items-center justify-center w-10 h-10 rounded-full text-primary bg-primary/10"
+                className="tap-target flex items-center justify-center w-10 h-10 rounded-full text-neutral-500 hover:text-primary hover:bg-primary/10"
               >
                 <PhoneCall className="w-4 h-4" />
+              </a>
+              <a
+                href={whatsappUrl(unit.whatsapp, unit.city)}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`WhatsApp de ${unit.city}: ${formatPhone(unit.whatsapp)}`}
+                className="tap-target flex items-center justify-center w-10 h-10 rounded-full text-primary bg-primary/10"
+              >
+                <IconWhatsApp />
               </a>
             </li>
           ))}
@@ -334,7 +351,7 @@ export default function Footer() {
             <StaggerItem
               key={unit.city}
               lift={5}
-              className="group relative bg-white border border-neutral-200 rounded-xl p-5 overflow-hidden hover:border-primary/40 hover:shadow-lg hover:shadow-neutral-200/60 transition-colors"
+              className="group relative flex flex-col bg-white border border-neutral-200 rounded-xl p-5 overflow-hidden hover:border-primary/40 hover:shadow-lg hover:shadow-neutral-200/60 transition-colors"
             >
               <span
                 aria-hidden="true"
@@ -371,6 +388,20 @@ export default function Footer() {
                 <PhoneCall className="w-3 h-3 shrink-0" />
                 {formatPhone(unit.phone)}
               </a>
+              {/* WhatsApp como botão no pé do cartão: os quatro ficam na mesma
+                  altura, e o número só aparece se for diferente do telefone. */}
+              <a
+                href={whatsappUrl(unit.whatsapp, unit.city)}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`WhatsApp de ${unit.city}: ${formatPhone(unit.whatsapp)}`}
+                className="mt-auto pt-4"
+              >
+                <span className="flex items-center justify-center gap-2 rounded-lg bg-primary/10 text-primary text-xs font-bold py-2.5 hover:bg-primary hover:text-white transition-colors">
+                  <IconWhatsApp />
+                  {unit.whatsapp === unit.phone ? "WhatsApp" : formatPhone(unit.whatsapp)}
+                </span>
+              </a>
             </StaggerItem>
           ))}
         </Stagger>
@@ -378,15 +409,18 @@ export default function Footer() {
 
       {/* Barra inferior */}
       <div className="border-t border-neutral-200">
-        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pt-4 pb-20 sm:pb-5 md:py-5 flex flex-col sm:flex-row justify-between items-center gap-1.5 md:gap-2">
+        {/* Celular: alinhado à esquerda e com recuo à direita para o botão
+            "voltar ao topo" (fixo no canto) — antes um pb-20 abria um vão
+            enorme só para o botão não cobrir o texto centralizado. */}
+        <div className="max-w-7xl mx-auto pl-5 pr-20 sm:px-6 lg:px-8 py-3 md:py-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 md:gap-2">
           {/* O ano é resolvido no build; suppressHydrationWarning evita
               divergência se a página prerenderizada virar o ano no cliente. */}
           <p
             suppressHydrationWarning
-            className="text-neutral-400 text-[10px] font-body uppercase tracking-widest text-center sm:text-left"
+            className="text-neutral-400 text-[10px] font-body uppercase tracking-widest"
           >
-            © {new Date().getFullYear()} TG Distribuidora — Todos os direitos
-            reservados.
+            © {new Date().getFullYear()} TG Distribuidora
+            <span className="hidden sm:inline"> — Todos os direitos reservados.</span>
           </p>
           <p className="text-neutral-400 text-[10px] font-body uppercase tracking-widest">
             Desenvolvido pela{" "}
