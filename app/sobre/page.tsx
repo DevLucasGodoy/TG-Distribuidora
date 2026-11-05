@@ -132,17 +132,48 @@ export default function SobrePage() {
               <p className="text-base sm:text-lg md:text-xl text-on-surface-variant">Os pilares arquitetônicos que sustentam cada transação e relacionamento na TG Distribuidora.</p>
             </Reveal>
             <Stagger className="grid grid-cols-1 md:grid-cols-12 gap-6" step={0.12}>
-              <StaggerItem className="md:col-span-8 group relative overflow-hidden rounded-2xl h-[400px] bg-neutral-900">
+              <StaggerItem className="md:col-span-8 group relative overflow-hidden rounded-2xl h-[460px] md:h-[400px] bg-neutral-950">
                 <Image 
-                  className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:scale-105 transition-transform duration-700"
+                  className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:scale-105 transition-transform duration-700 motion-safe:hidden"
                   src="/sobre/equipe.webp"
                   fill
                   sizes="(max-width: 768px) 100vw, 66vw"
                   style={{ objectPosition: 'center 40%' }}
                   alt="Equipe da TG Distribuidora em treinamento Garen"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-transparent"></div>
-                <div className="absolute bottom-0 left-0 p-6 sm:p-9 md:p-12">
+                {/* Vinheta da marca (vídeo vertical) centrada na metade direita, com o
+                    texto centrado na vertical na esquerda. A máscara dissolve as bordas do vídeo no preto do cartão:
+                    sem ela aparecia o recorte do quadro e o logo invadia o texto.
+                    No celular o vídeo fica no alto do cartão, menor, e o texto embaixo:
+                    ocupando o cartão inteiro o logo encostava no "Pilar 01".
+                    Quem pediu menos movimento no sistema vê a foto da equipe. */}
+                {/* Fundo animado: o mesmo vídeo, ampliado e desfocado, no cartão inteiro
+                    (efeito "ambiente"). A luz e as faíscas da vinheta se espalham pelo
+                    preto em vez de pararem na borda do quadro. O degradê da esquerda
+                    segura a leitura do texto. */}
+                <video
+                  className="absolute inset-0 w-full h-full object-cover scale-125 blur-2xl opacity-60 saturate-150 motion-reduce:hidden"
+                  src="/sobre/marca-2.mp4"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  aria-hidden="true"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-neutral-950/85 via-neutral-950/40 to-neutral-950/10 motion-reduce:hidden"></div>
+                <video
+                  className="absolute top-0 left-[10%] w-[80%] h-[62%] md:left-auto md:right-[5%] md:w-[40%] md:h-full object-cover motion-reduce:hidden [mask-image:linear-gradient(to_right,transparent,black_18%,black_82%,transparent),linear-gradient(to_bottom,transparent,black_12%,black_82%,transparent)] [mask-composite:intersect] [-webkit-mask-composite:source-in]"
+                  src="/sobre/marca-2.mp4"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  aria-hidden="true"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-transparent md:motion-safe:hidden"></div>
+                <div className="absolute bottom-0 left-0 p-6 sm:p-9 md:p-12 md:motion-safe:top-0 md:motion-safe:w-1/2 md:motion-safe:flex md:motion-safe:flex-col md:motion-safe:justify-center">
                   <span className="text-secondary-container font-label tracking-widest text-sm mb-4 block uppercase font-bold">Pilar 01</span>
                   <h3 className="text-4xl font-headline font-bold text-white mb-4">Confiabilidade</h3>
                   <p className="text-neutral-300 text-lg max-w-lg">Parcerias sólidas construídas sobre 20 anos de consistência e precisão logística.</p>
