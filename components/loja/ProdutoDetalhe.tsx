@@ -15,6 +15,13 @@ import { Preco, SeloDisponibilidade, SeloItem } from "@/components/loja/ProdutoC
 
 const nomeCategoria = (s: string | null) => (s ? tituloProduto(s) : null);
 
+/**
+ * A foto já chega do Syncro comprimida (WebP, até 1600px). Reotimizar com o
+ * padrão 75 do Next comprimia de novo e borrava etiqueta e conector. Precisa
+ * estar em `images.qualities` do next.config, senão o Next recusa.
+ */
+const FOTO_GRANDE_QUALIDADE = 90;
+
 export default function ProdutoDetalhe({
   produto,
   formato,
@@ -140,7 +147,8 @@ export default function ProdutoDetalhe({
             </div>
           )}
 
-          <div className="py-6 space-y-4">
+          {/* No fim da coluna (mt-auto): no desktop o botão fecha o quadro, alinhado à base da foto. */}
+          <div className="mt-auto pt-6 space-y-4">
             <Quantidade valor={qtd} unidade={produto.unidade} onChange={setQtd} grande />
             <div className="flex flex-col sm:flex-row gap-3">
               <button
@@ -285,6 +293,7 @@ function Galeria({ imagens, alt }: { imagens: (string | null)[]; alt: string }) 
               alt={total > 1 ? `${alt} — foto ${i + 1} de ${total}` : alt}
               fill
               sizes="(max-width: 1024px) 100vw, 58vw"
+              quality={FOTO_GRANDE_QUALIDADE}
               className="object-contain p-6"
               priority={i === 0}
             />
@@ -386,6 +395,7 @@ function FotoAmpliada({
             alt={total > 1 ? `${alt} — foto ${i + 1} de ${total}` : alt}
             fill
             sizes="100vw"
+            quality={FOTO_GRANDE_QUALIDADE}
             className="object-contain"
           />
         </div>
