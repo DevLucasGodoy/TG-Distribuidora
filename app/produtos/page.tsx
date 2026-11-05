@@ -11,6 +11,7 @@
 // Estado na URL (?q, ?depto, ?secao): busca e categoria podem ser
 // compartilhadas e o "voltar" do navegador funciona.
 
+import { CartaoSyncro, SeloViaSyncro } from "@/components/loja/SeloSyncro";
 import React, { Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -166,27 +167,30 @@ function Catalogo() {
     <>
       {/* Cabeçalho + busca */}
       <section className="bg-surface-container-low py-10 md:py-16">
-        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between md:items-end gap-6 md:gap-12">
-          <Reveal className="max-w-2xl">
+        {/* Tudo centrado numa coluna só: título, texto, busca (a ação principal,
+            larga) e, embaixo dela, a assinatura do Syncro. */}
+        <div className="max-w-3xl mx-auto px-5 sm:px-6 lg:px-8 flex flex-col items-center text-center gap-6 md:gap-8">
+          <Reveal>
             <span className="text-secondary font-bold tracking-[0.2em] uppercase text-xs mb-3 block">
               Loja TG Distribuidora
             </span>
-            <h1 className="text-3xl md:text-5xl font-headline font-black tracking-tighter text-on-surface mb-3">
+            <h1 className="text-3xl md:text-5xl font-headline font-black tracking-tighter text-on-surface mb-3 md:mb-4">
               Segurança eletrônica <span className="text-primary">a pronta entrega.</span>
             </h1>
-            <p className="text-on-surface-variant md:text-lg">
+            <p className="text-on-surface-variant md:text-lg max-w-2xl mx-auto">
               Câmeras, alarmes, controle de acesso e automatização das marcas em que o instalador
               confia, com estoque em Dourados, Campo Grande, Ponta Porã e Três Lagoas. Monte sua
               lista e um vendedor da sua filial responde com o orçamento pelo WhatsApp.
             </p>
           </Reveal>
+          <div className="w-full max-w-2xl flex flex-col items-center gap-3">
           <form
             role="search"
             onSubmit={(e) => {
               e.preventDefault();
               navegar({ q: texto.trim() });
             }}
-            className="relative w-full md:max-w-md group"
+            className="relative w-full group"
           >
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-400 group-focus-within:text-primary transition-colors" />
             <input
@@ -212,6 +216,10 @@ function Catalogo() {
               </button>
             )}
           </form>
+          <div className="w-full sm:w-auto sm:min-w-[24rem] text-left">
+            <CartaoSyncro />
+          </div>
+          </div>
         </div>
       </section>
 
@@ -315,6 +323,7 @@ function Catalogo() {
                 </span>
               )}
             </h2>
+            {!(q || depto) && <SeloViaSyncro />}
             {(q || depto) && (
               <button
                 type="button"
