@@ -48,7 +48,7 @@ export default function ProdutosPage() {
   return (
     <div className="min-h-screen bg-surface selection:bg-primary/20">
       <Navbar />
-      <main className="pt-24 md:pt-28 pb-24">
+      <main className="pt-20 md:pt-24 pb-24">
         <Suspense fallback={<GradeCarregando />}>
           <Catalogo />
         </Suspense>

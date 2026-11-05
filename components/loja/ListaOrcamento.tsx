@@ -401,16 +401,19 @@ export function Quantidade({
   unidade,
   onChange,
   grande = false,
+  largo = false,
 }: {
   valor: number;
   unidade?: string;
   onChange: (n: number) => void;
   grande?: boolean;
+  /** Ocupa a largura do pai (página do produto, metade da linha com o botão). */
+  largo?: boolean;
 }) {
   const alt = grande ? "h-12" : "h-9";
   return (
-    <div className="flex items-center gap-2">
-      <div className={`inline-flex items-center rounded-full border border-neutral-200 bg-white ${alt}`}>
+    <div className={`flex items-center gap-2 ${largo ? "w-full" : ""}`}>
+      <div className={`inline-flex items-center rounded-full border border-neutral-200 bg-white ${alt} ${largo ? "flex-1 min-w-0 justify-between" : ""}`}>
         <button
           type="button"
           onClick={() => onChange(valor - 1)}
@@ -428,7 +431,7 @@ export function Quantidade({
           value={valor}
           onChange={(e) => onChange(Number(e.target.value) || 1)}
           aria-label="Quantidade"
-          className="w-12 text-center bg-transparent font-bold tabular-nums outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none"
+          className={`${largo ? "flex-1 min-w-0" : "w-12"} text-center bg-transparent font-bold tabular-nums outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none`}
         />
         <button
           type="button"

@@ -4,14 +4,33 @@ import React from "react";
 import FotoProduto from "@/components/loja/FotoProduto";
 import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
-import { ChevronLeft, ChevronRight, ClipboardList, Check, MapPin, Maximize2, ShieldCheck, X } from "lucide-react";
+import Image from "next/image";
+import {
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  ClipboardList,
+  Hash,
+  Layers,
+  MapPin,
+  Maximize2,
+  Package,
+  Send,
+  Share2,
+  Tag,
+  X,
+} from "lucide-react";
 import {
   tituloProduto,
+  hrefProduto,
+  precoBR,
+  TEXTO_DISPONIBILIDADE,
   type FormatoPreco,
+  type ItemVitrine,
   type ProdutoDetalhe as Produto,
 } from "@/lib/vitrine";
 import { Quantidade, useListaOrcamento } from "@/components/loja/ListaOrcamento";
-import { Preco, SeloDisponibilidade, SeloItem } from "@/components/loja/ProdutoCard";
+import { Preco, SeloDisponibilidade } from "@/components/loja/ProdutoCard";
 
 const nomeCategoria = (s: string | null) => (s ? tituloProduto(s) : null);
 
@@ -25,9 +44,11 @@ const FOTO_GRANDE_QUALIDADE = 90;
 export default function ProdutoDetalhe({
   produto,
   formato,
+  relacionados = [],
 }: {
   produto: Produto;
   formato: FormatoPreco;
+  relacionados?: ItemVitrine[];
 }) {
   const { itens, adicionar, abrir } = useListaOrcamento();
   const [qtd, setQtd] = React.useState(1);
@@ -54,85 +75,145 @@ export default function ProdutoDetalhe({
     setTimeout(() => setAcabouDeAdicionar(false), 2000);
   }
 
-  return (
-    <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
-      {/* Trilha */}
-      <nav aria-label="Trilha" className="py-4 md:py-6 text-xs text-on-surface-variant flex flex-wrap items-center gap-1.5">
-        <Link href="/produtos" className="hover:text-primary">
-          Produtos
-        </Link>
-        {departamento && cat?.depto != null && (
-          <>
-            <ChevronRight className="w-3 h-3 text-neutral-300" />
-            <Link href={`/produtos?depto=${cat.depto}`} className="hover:text-primary">
-              {departamento}
-            </Link>
-          </>
-        )}
-        {secao && cat?.depto != null && cat.secao != null && (
-          <>
-            <ChevronRight className="w-3 h-3 text-neutral-300" />
-            <Link href={`/produtos?depto=${cat.depto}&secao=${cat.secao}`} className="hover:text-primary">
-              {secao}
-            </Link>
-          </>
-        )}
-      </nav>
+  const fotos = produto.imagens.length ? produto.imagens : [produto.imagem];
+  const linkSecao =
+    cat?.depto != null
+      ? `/produtos?depto=${cat.depto}${cat.secao != null ? `&secao=${cat.secao}` : ""}`
+      : "/produtos";
+  const etiquetas = [
+    produto.marca && { rotulo: produto.marca, icone: Tag },
+    { rotulo: `Cód. ${produto.codProd}`, icone: Hash },
+    produto.embalagem && { rotulo: `Embalagem ${produto.embalagem}`, icone: Package },
+    (secao || departamento) && { rotulo: (secao || departamento) as string, icone: Layers },
+  ].filter(Boolean) as { rotulo: string; icone: React.ElementType }[];
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 bg-white rounded-3xl border border-neutral-100 p-4 sm:p-6 md:p-10">
-        <div className="lg:col-span-7">
-          <Galeria imagens={produto.imagens.length ? produto.imagens : [produto.imagem]} alt={produto.descricao} />
+  return (
+    <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 pt-4 md:pt-6">
+      {/* Desenho do product-detail-page (@kavikatiyar, 21st.dev): trilha com a
+          ação à direita, foto e dados em duas colunas, dois botões de mesma
+          largura, etiquetas, descrição e o quadro de quem vende no pé. */}
+      <div className="bg-white rounded-2xl border border-neutral-100 shadow-sm p-4 md:p-8">
+        <div className="flex items-center justify-between gap-4 mb-6">
+          <nav aria-label="Trilha" className="min-w-0 flex flex-wrap items-center text-sm text-on-surface-variant">
+            <Link href="/produtos" className="hover:text-primary transition-colors">
+              Produtos
+            </Link>
+            {departamento && cat?.depto != null && (
+              <>
+                <ChevronRight className="h-4 w-4 mx-1 text-neutral-300" />
+                <Link href={`/produtos?depto=${cat.depto}`} className="hover:text-primary transition-colors">
+                  {departamento}
+                </Link>
+              </>
+            )}
+            {secao && cat?.depto != null && cat.secao != null && (
+              <>
+                <ChevronRight className="h-4 w-4 mx-1 text-neutral-300" />
+                <Link href={linkSecao} className="hover:text-primary transition-colors">
+                  {secao}
+                </Link>
+              </>
+            )}
+          </nav>
+          <Compartilhar titulo={tituloProduto(produto.descricao)} />
         </div>
 
-        <div className="lg:col-span-5 flex flex-col">
-          <div className="flex flex-wrap items-center gap-2 mb-4">
-            {produto.marca && (
-              <span className="text-xs font-semibold uppercase tracking-[0.14em] text-neutral-400">
-                {produto.marca}
-              </span>
-            )}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+          <Galeria imagens={fotos} alt={produto.descricao} />
+
+          <div className="flex flex-col">
             {produto.emPromocao && (
-              <span className="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-[11px] font-bold uppercase tracking-widest">
+              <span className="self-start mb-3 px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-[11px] font-bold uppercase tracking-widest">
                 Oferta{produto.promoPct ? ` −${Math.round(produto.promoPct)}%` : ""}
               </span>
             )}
-          </div>
+            <h1 className="text-3xl md:text-4xl font-headline font-bold tracking-tight text-on-surface">
+              {tituloProduto(produto.descricao)}
+            </h1>
 
-          <h1 className="text-2xl md:text-4xl font-headline font-black tracking-tight text-on-surface leading-tight">
-            {tituloProduto(produto.descricao)}
-          </h1>
-          <p className="mt-2 text-sm text-neutral-400 font-medium">
-            Cód. {produto.codProd}
-            {produto.embalagem ? ` · Embalagem ${produto.embalagem}` : ""}
-          </p>
+            {/* Preço logo abaixo do nome, grande, com a nota pequena (no modelo
+                é o frete; aqui é de onde sai o valor). */}
+            <div className="mt-3">
+              {produto.precoAvista != null ? (
+                <>
+                  <Preco item={produto} formato={formato} grande />
+                  <p className="mt-2 text-sm text-on-surface-variant">
+                    Referência da filial principal. O valor final sai no orçamento.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <span className="text-3xl md:text-4xl font-headline font-bold text-on-surface">
+                    Preço sob consulta
+                  </span>
+                  <p className="mt-1 text-sm text-on-surface-variant">
+                    {produto.sobConsulta
+                      ? "Sem estoque na filial principal agora: o vendedor confirma prazo e preço."
+                      : "O vendedor da sua filial envia o preço pelo WhatsApp."}
+                  </p>
+                </>
+              )}
+            </div>
 
-          <div className="mt-6 pb-6 border-b border-neutral-100">
-            {produto.sobConsulta && (
-              <div className="mb-3">
-                <SeloItem item={produto} />
-              </div>
-            )}
-            <Preco item={produto} formato={formato} grande />
-            {produto.sobConsulta && (
-              <p className="mt-2 text-xs text-on-surface-variant">
-                Sem estoque na filial principal agora. Inclua na lista mesmo assim: o vendedor
-                confirma prazo de chegada e preço no orçamento.
-              </p>
-            )}
-            {produto.precoAvista != null && (
-              <p className="mt-2 text-xs text-on-surface-variant">
-                Preço de referência da filial principal. O valor final sai no orçamento com o
-                vendedor.
-              </p>
-            )}
-          </div>
+            <div className="mt-6 flex items-center gap-3">
+              <span className="text-sm font-medium text-on-surface-variant">Quantidade</span>
+              <Quantidade valor={qtd} unidade={produto.unidade} onChange={setQtd} />
+            </div>
 
-          {comEstoque && (
-            <div className="py-6 border-b border-neutral-100">
-              <p className="text-[11px] font-bold uppercase tracking-widest text-on-surface-variant mb-3">
-                Estoque por filial
-              </p>
-              <ul className="space-y-2">
+            {/* Dois botões de mesma largura, como "Buy Now" / "Contact Seller". */}
+            <div className="flex gap-2 mt-4 mb-6">
+              <button
+                type="button"
+                onClick={incluir}
+                aria-label={acabouDeAdicionar ? "Adicionado à lista de orçamento" : "Adicionar à lista de orçamento"}
+                className="flex-1 min-w-0 h-11 px-4 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors"
+              >
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.span
+                    key={acabouDeAdicionar ? "ok" : "add"}
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    className="flex items-center gap-2"
+                  >
+                    {acabouDeAdicionar ? <Check className="h-5 w-5" /> : <ClipboardList className="h-5 w-5" />}
+                    {acabouDeAdicionar ? "Adicionado" : "Adicionar"}
+                  </motion.span>
+                </AnimatePresence>
+              </button>
+              <button
+                type="button"
+                onClick={abrir}
+                className="flex-1 min-w-0 h-11 px-4 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md border border-neutral-200 bg-white text-sm font-semibold text-on-surface hover:bg-neutral-50 transition-colors"
+              >
+                <Send className="h-5 w-5" />
+                {naLista ? `Ver lista (${naLista.qtd})` : "Pedir orçamento"}
+              </button>
+            </div>
+
+            <div className="flex flex-wrap gap-2 mb-6">
+              {etiquetas.map((t) => (
+                <span
+                  key={t.rotulo}
+                  className="inline-flex items-center gap-2 rounded-full bg-neutral-100 text-on-surface text-sm py-1 px-3"
+                >
+                  <t.icone className="h-4 w-4 text-on-surface-variant" />
+                  {t.rotulo}
+                </span>
+              ))}
+            </div>
+
+            <p className="text-on-surface-variant leading-relaxed">
+              {tituloProduto(produto.descricao)}
+              {produto.marca ? `, da ${produto.marca},` : ""} com nota fiscal e garantia do fabricante.
+              Monte a lista com tudo o que precisa e envie de uma vez.
+              <a href="#info-tecnica" className="text-primary font-medium hover:underline ml-2">
+                Ver ficha técnica
+              </a>
+            </p>
+
+            {comEstoque && (
+              <ul className="mt-6 space-y-2">
                 {produto.filiais.map((f) => (
                   <li key={f.codigo} className="flex items-center justify-between gap-3 text-sm">
                     <span className="flex items-center gap-2 text-on-surface">
@@ -144,52 +225,182 @@ export default function ProdutoDetalhe({
                   </li>
                 ))}
               </ul>
-            </div>
-          )}
+            )}
 
-          {/* No fim da coluna (mt-auto): no desktop o botão fecha o quadro, alinhado à base da foto. */}
-          <div className="mt-auto pt-6 space-y-4">
-            <Quantidade valor={qtd} unidade={produto.unidade} onChange={setQtd} grande />
-            <div className="flex flex-col sm:flex-row gap-3">
-              <button
-                type="button"
-                onClick={incluir}
-                className="flex-1 flex items-center justify-center gap-2 py-4 rounded-xl bg-primary text-white font-bold shadow-xl shadow-primary/25 hover:opacity-90 transition-opacity"
-              >
-                <AnimatePresence mode="wait" initial={false}>
-                  <motion.span
-                    key={acabouDeAdicionar ? "ok" : "add"}
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -6 }}
-                    className="flex items-center gap-2"
-                  >
-                    {acabouDeAdicionar ? <Check className="w-5 h-5" /> : <ClipboardList className="w-5 h-5" />}
-                    {acabouDeAdicionar ? "Adicionado à lista" : "Adicionar à lista"}
-                  </motion.span>
-                </AnimatePresence>
-              </button>
-              {naLista && (
-                <button
-                  type="button"
-                  onClick={abrir}
-                  className="sm:w-auto px-6 py-4 rounded-xl border border-neutral-200 font-bold text-sm text-on-surface hover:border-primary hover:text-primary transition-colors"
-                >
-                  Ver lista ({naLista.qtd} {produto.unidade})
-                </button>
-              )}
+            {/* Quem vende: no modelo é o vendedor com nota; aqui é a TG e a
+                promessa real (vendedor da filial no WhatsApp), sem nota inventada. */}
+            <div className="mt-8 pt-6 border-t border-neutral-100">
+              <div className="flex justify-between items-center gap-4">
+                <div className="flex items-center gap-4 min-w-0">
+                  <span className="relative h-12 w-12 shrink-0 rounded-full border border-neutral-100 bg-white overflow-hidden">
+                    <Image src="/logo.png" alt="" fill sizes="48px" className="object-contain p-1.5" />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="font-semibold text-on-surface">TG Distribuidora</p>
+                    <p className="text-sm text-on-surface-variant">Vendedor da sua filial responde pelo WhatsApp</p>
+                  </div>
+                </div>
+                <Link href={linkSecao} className="shrink-0 text-sm font-medium text-primary hover:underline underline-offset-4">
+                  Ver mais &rarr;
+                </Link>
+              </div>
             </div>
-            <p className="flex items-start gap-2 text-xs text-on-surface-variant">
-              <ShieldCheck className="w-4 h-4 shrink-0 text-primary" />
-              Monte a lista com todos os produtos que precisa e envie de uma vez: um vendedor da
-              filial escolhida responde com o orçamento pelo WhatsApp.
-            </p>
           </div>
         </div>
+
+        {/* "Você também pode gostar" do modelo, dentro do mesmo cartão: foto
+            quadrada que cresce no hover e leva ao produto. */}
+        {relacionados.length > 0 && (
+          <section aria-labelledby="relacionados" className="mt-10 md:mt-12">
+            <h2 id="relacionados" className="text-2xl font-headline font-bold tracking-tight text-on-surface">
+              Você também pode gostar
+            </h2>
+            <ul className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+              {relacionados.map((r) => (
+                <li key={r.codProd}>
+                  <Link href={hrefProduto(r)} className="group block">
+                    <span className="relative block bg-neutral-50 rounded-lg aspect-square overflow-hidden">
+                      <FotoProduto
+                        src={r.imagem}
+                        alt={tituloProduto(r.descricao)}
+                        fill
+                        sizes="(max-width: 768px) 50vw, 25vw"
+                        className="object-contain p-4 group-hover:scale-105"
+                      />
+                    </span>
+                    <span className="mt-2 block text-sm font-medium text-on-surface line-clamp-2 group-hover:text-primary transition-colors">
+                      {tituloProduto(r.descricao)}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
       </div>
 
       <InformacoesTecnicas produto={produto} departamento={departamento} secao={secao} />
+      <Comparativo produto={produto} relacionados={relacionados} />
     </div>
+  );
+}
+
+/**
+ * Comparativo com os similares no desenho do comparison-table (Origin UI,
+ * 21st.dev): tabela com fio entre todas as colunas, nome de cada produto na
+ * vertical no cabeçalho, ✓/✕ coloridos e o detalhe pequeno embaixo. Só entra
+ * o que a vitrine traz de todos os produtos (marca, preço, embalagem,
+ * estoque, oferta): nada é preenchido no chute.
+ */
+function Comparativo({
+  produto,
+  relacionados,
+}: {
+  produto: Produto;
+  relacionados: ItemVitrine[];
+}) {
+  if (relacionados.length < 2) return null;
+  const colunas: ItemVitrine[] = [produto, ...relacionados];
+  const comEstoque = colunas.some((c) => c.disponibilidade != null);
+  const comPreco = colunas.some((c) => c.precoAvista != null);
+
+  const Sim = ({ ok, detalhe }: { ok: boolean; detalhe?: string | null }) => (
+    <>
+      {ok ? (
+        <Check className="inline-flex stroke-emerald-600" size={16} strokeWidth={2} aria-hidden />
+      ) : (
+        <X className="inline-flex stroke-red-600" size={16} strokeWidth={2} aria-hidden />
+      )}
+      <span className="sr-only">{ok ? "Sim" : "Não"}</span>
+      {detalhe && <div className="text-xs font-medium text-on-surface-variant">{detalhe}</div>}
+    </>
+  );
+
+  const linhas: { rotulo: string; celula: (c: ItemVitrine) => React.ReactNode }[] = [
+    { rotulo: "Marca", celula: (c) => <span className="text-sm">{c.marca ?? "—"}</span> },
+    ...(comPreco
+      ? [
+          {
+            rotulo: "Preço à vista",
+            celula: (c: ItemVitrine) => (
+              <span className="text-sm font-semibold tabular-nums whitespace-nowrap">
+                {c.precoAvista != null ? precoBR(c.precoAvista) : "Sob consulta"}
+              </span>
+            ),
+          },
+        ]
+      : []),
+    { rotulo: "Embalagem", celula: (c) => <span className="text-sm">{c.embalagem ?? c.unidade}</span> },
+    ...(comEstoque
+      ? [
+          {
+            rotulo: "Em estoque",
+            celula: (c: ItemVitrine) => (
+              <Sim
+                ok={c.disponibilidade === "disponivel" || c.disponibilidade === "ultimas"}
+                detalhe={c.disponibilidade ? TEXTO_DISPONIBILIDADE[c.disponibilidade] : null}
+              />
+            ),
+          },
+        ]
+      : []),
+    {
+      rotulo: "Em oferta",
+      celula: (c) => <Sim ok={c.emPromocao} detalhe={c.promoPct ? `−${Math.round(c.promoPct)}%` : null} />,
+    },
+  ];
+
+  const fio = "*:border-neutral-200 [&>:not(:last-child)]:border-r";
+
+  return (
+    <section
+      aria-labelledby="comparativo"
+      className="mt-6 md:mt-8 bg-white rounded-2xl border border-neutral-100 shadow-sm p-4 md:p-8"
+    >
+      <h2 id="comparativo" className="text-2xl font-headline font-bold tracking-tight text-on-surface">
+        Compare com similares
+      </h2>
+      <div className="mt-6 overflow-x-auto">
+        <table className="w-full caption-bottom text-sm bg-white">
+          <thead>
+            <tr className={`border-b border-neutral-200 ${fio}`}>
+              <td className="p-3" />
+              {colunas.map((c, n) => (
+                <th
+                  key={c.codProd}
+                  scope="col"
+                  className={`h-auto max-h-48 rotate-180 px-2 py-3 align-middle text-left font-medium [writing-mode:vertical-lr] ${
+                    n === 0 ? "text-primary" : "text-on-surface"
+                  }`}
+                >
+                  {n === 0 ? (
+                    <span className="block max-h-44 truncate">{tituloProduto(c.descricao)} (este)</span>
+                  ) : (
+                    <Link href={hrefProduto(c)} className="block max-h-44 truncate hover:text-primary">
+                      {tituloProduto(c.descricao)}
+                    </Link>
+                  )}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {linhas.map((l) => (
+              <tr key={l.rotulo} className={`border-b border-neutral-200 last:border-b-0 hover:bg-neutral-50 ${fio}`}>
+                <th scope="row" className="p-3 text-left font-medium text-on-surface whitespace-nowrap">
+                  {l.rotulo}
+                </th>
+                {colunas.map((c, n) => (
+                  <td key={c.codProd} className={`p-3 space-y-1 text-center ${n === 0 ? "bg-primary/5" : ""}`}>
+                    {l.celula(c)}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
   );
 }
 
@@ -250,8 +461,40 @@ function InformacoesTecnicas({
 }
 
 /**
- * Galeria — foto grande com setas e miniaturas embaixo (como no Commerce).
- * Tocar na foto abre a tela cheia, para ler etiqueta, conector e acabamento.
+ * Compartilhar (ícone à direita da trilha, como no modelo). Celular abre o
+ * menu de compartilhar do sistema; no computador copia o link.
+ */
+function Compartilhar({ titulo }: { titulo: string }) {
+  const [copiado, setCopiado] = React.useState(false);
+  async function compartilhar() {
+    const url = window.location.href;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: titulo, url });
+        return;
+      }
+      await navigator.clipboard.writeText(url);
+      setCopiado(true);
+      setTimeout(() => setCopiado(false), 2000);
+    } catch {
+      /* cancelado pelo usuário */
+    }
+  }
+  return (
+    <button
+      type="button"
+      onClick={compartilhar}
+      className="shrink-0 h-10 inline-flex items-center gap-2 rounded-md px-2.5 text-sm text-on-surface hover:bg-neutral-100 transition-colors"
+    >
+      {copiado ? <Check className="h-5 w-5 text-primary" /> : <Share2 className="h-5 w-5" />}
+      <span className={copiado ? "" : "sr-only"}>{copiado ? "Link copiado" : "Compartilhar"}</span>
+    </button>
+  );
+}
+
+/**
+ * Galeria do modelo: foto grande que desliza ao trocar e pontos embaixo. Tocar na foto abre a tela cheia, para ler
+ * etiqueta, conector e acabamento.
  */
 function Galeria({ imagens, alt }: { imagens: (string | null)[]; alt: string }) {
   const [i, setI] = React.useState(0);
@@ -261,95 +504,64 @@ function Galeria({ imagens, alt }: { imagens: (string | null)[]; alt: string }) 
   const temFoto = !!imagens[i];
 
   return (
-    <div>
-      <div className="relative aspect-square rounded-2xl bg-neutral-50 overflow-hidden">
-        {temFoto && (
-          <button
-            type="button"
-            onClick={() => setAmpliada(true)}
-            aria-label="Ampliar foto"
-            className="absolute inset-0 z-10 cursor-zoom-in"
+    <div className="flex flex-col gap-4">
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3 }}
+          className="relative aspect-square lg:aspect-[4/5] w-full overflow-hidden rounded-xl border border-neutral-100 bg-white"
+        >
+          <FotoProduto
+            src={imagens[i]}
+            alt={total > 1 ? `${alt} — foto ${i + 1} de ${total}` : alt}
+            fill
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            quality={FOTO_GRANDE_QUALIDADE}
+            ampliacaoMax={2}
+            className="object-contain p-6"
+            priority={i === 0}
           />
-        )}
-        {temFoto && (
-          <span
-            aria-hidden
-            className="pointer-events-none absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/90 border border-neutral-200 shadow-sm flex items-center justify-center text-on-surface"
-          >
-            <Maximize2 className="w-4 h-4" />
-          </span>
-        )}
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={i}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="absolute inset-0"
-          >
-            <FotoProduto
-              src={imagens[i]}
-              alt={total > 1 ? `${alt} — foto ${i + 1} de ${total}` : alt}
-              fill
-              sizes="(max-width: 1024px) 100vw, 58vw"
-              quality={FOTO_GRANDE_QUALIDADE}
-              className="object-contain p-6"
-              priority={i === 0}
-            />
-          </motion.div>
-        </AnimatePresence>
-        {total > 1 && (
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center rounded-full bg-white/90 backdrop-blur border border-neutral-200 shadow-sm">
+          {temFoto && (
             <button
               type="button"
-              onClick={() => ir(-1)}
-              aria-label="Foto anterior"
-              className="tap-target w-11 h-11 flex items-center justify-center text-on-surface hover:text-primary"
+              onClick={() => setAmpliada(true)}
+              aria-label="Ampliar foto"
+              className="absolute inset-0 z-10 cursor-zoom-in"
             >
-              <ChevronLeft className="w-5 h-5" />
+              <span className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 border border-neutral-200 flex items-center justify-center text-on-surface">
+                <Maximize2 className="w-4 h-4" />
+              </span>
             </button>
-            <span className="text-xs font-bold tabular-nums text-neutral-400 px-1">
-              {i + 1}/{total}
-            </span>
-            <button
-              type="button"
-              onClick={() => ir(1)}
-              aria-label="Próxima foto"
-              className="tap-target w-11 h-11 flex items-center justify-center text-on-surface hover:text-primary"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
-        )}
-      </div>
+          )}
+        </motion.div>
+      </AnimatePresence>
       {total > 1 && (
-        <ul className="mt-4 flex gap-3 overflow-x-auto no-scrollbar">
-          {imagens.map((src, n) => (
-            <li key={src ?? n}>
+        <div className="flex gap-1">
+          {imagens.map((_, n) => (
+              // Alvo de 24px com o ponto de 8px dentro: só o ponto ficava
+              // pequeno demais para o dedo.
               <button
+                key={n}
                 type="button"
                 onClick={() => setI(n)}
                 aria-label={`Ver foto ${n + 1}`}
                 aria-current={n === i}
-                className={`relative w-20 h-20 rounded-xl overflow-hidden bg-neutral-50 border-2 transition-colors ${
-                  n === i ? "border-primary" : "border-transparent hover:border-neutral-200"
-                }`}
+                className="group h-6 w-6 flex items-center justify-center"
               >
-                <FotoProduto src={src} alt="" fill sizes="80px" className="object-contain p-1.5" />
+                <span
+                  className={`h-2 w-2 rounded-full transition-colors ${
+                    n === i ? "bg-primary" : "bg-neutral-300 group-hover:bg-neutral-400"
+                  }`}
+                />
               </button>
-            </li>
-          ))}
-        </ul>
+            ))}
+        </div>
       )}
       {ampliada && (
-        <FotoAmpliada
-          imagens={imagens}
-          i={i}
-          alt={alt}
-          ir={ir}
-          fechar={() => setAmpliada(false)}
-        />
+        <FotoAmpliada imagens={imagens} i={i} alt={alt} ir={ir} fechar={() => setAmpliada(false)} />
       )}
     </div>
   );
@@ -396,6 +608,7 @@ function FotoAmpliada({
             fill
             sizes="100vw"
             quality={FOTO_GRANDE_QUALIDADE}
+            ampliacaoMax={2}
             className="object-contain"
           />
         </div>

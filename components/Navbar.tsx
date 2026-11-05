@@ -2,264 +2,186 @@
 
 import React from "react";
 import Image from "next/image";
-import { Menu, X, Phone } from "lucide-react";
+import { Phone } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { motion, AnimatePresence } from "motion/react";
 import { ScrollProgress } from "@/components/Motion";
 import { BotaoLista } from "@/components/loja/ListaOrcamento";
 
+/**
+ * Barra do topo no desenho do header-2 (@efferd, 21st.dev): faixa reta no
+ * topo da página que, ao rolar, vira uma barra flutuante mais estreita, com
+ * borda, sombra e vidro. No celular o menu é a tela inteira abaixo da barra,
+ * com os links em cima e as ações no pé, e o ícone ☰ que gira para ✕.
+ */
+const TELEFONE = "tel:+556730323090";
+
+const navItems = [
+  { label: "Início", href: "/" },
+  { label: "Sobre Nós", href: "/sobre" },
+  { label: "Marcas Parceiras", href: "/marcas" },
+  { label: "Produtos", href: "/produtos" },
+];
+
+function useRolou(limite: number) {
+  const [rolou, setRolou] = React.useState(false);
+  React.useEffect(() => {
+    const medir = () => setRolou(window.scrollY > limite);
+    medir();
+    window.addEventListener("scroll", medir, { passive: true });
+    return () => window.removeEventListener("scroll", medir);
+  }, [limite]);
+  return rolou;
+}
+
+/** ☰ que vira ✕ desenhando o traço (MenuToggleIcon do modelo). */
+function IconeMenu({ aberto, className = "" }: { aberto: boolean; className?: string }) {
+  return (
+    <svg
+      strokeWidth={2.5}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 32 32"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+      className={`transition-transform ease-in-out duration-300 ${aberto ? "-rotate-45" : ""} ${className}`}
+    >
+      <path
+        className={`transition-all ease-in-out duration-300 ${
+          aberto ? "[stroke-dasharray:20_300] [stroke-dashoffset:-32.42px]" : "[stroke-dasharray:12_63]"
+        }`}
+        d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22"
+      />
+      <path d="M7 16 27 16" />
+    </svg>
+  );
+}
+
+const botaoFantasma =
+  "inline-flex h-10 items-center justify-center whitespace-nowrap rounded-md px-4 text-sm font-medium transition-colors";
+const botaoContorno =
+  "inline-flex h-10 items-center justify-center gap-2 whitespace-nowrap rounded-md border border-neutral-200 bg-white px-4 text-sm font-medium text-on-surface hover:bg-neutral-50 transition-colors";
+const botaoCheio =
+  "inline-flex h-10 items-center justify-center whitespace-nowrap rounded-md bg-primary px-4 text-sm font-medium text-white hover:bg-primary/90 transition-colors";
+
 export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  // Barra encolhe e ganha sombra depois dos primeiros pixels de rolagem.
-  const [isScrolled, setIsScrolled] = React.useState(false);
+  const [aberto, setAberto] = React.useState(false);
+  const rolou = useRolou(10);
   const pathname = usePathname();
   // "Produtos" continua aceso dentro da página de um produto.
   const ativo = (href: string) =>
     href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
 
   React.useEffect(() => {
-    const onScroll = () => setIsScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    document.body.style.overflow = aberto ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [aberto]);
 
-  const navItems = [
-    { label: "Início", href: "/" },
-    { label: "Sobre Nós", href: "/sobre" },
-    { label: "Marcas Parceiras", href: "/marcas" },
-    { label: "Produtos", href: "/produtos" },
-  ];
+  // Trocar de página fecha o menu do celular.
+  React.useEffect(() => setAberto(false), [pathname]);
+
+  const flutuando = rolou && !aberto;
 
   return (
-    <nav className="fixed top-0 w-full z-50 pointer-events-none">
-      {/* Progresso de leitura da página */}
+    <div className="fixed inset-x-0 top-0 z-50 pointer-events-none">
       <ScrollProgress />
-
-      {/* Main Top Bar */}
-      <div
-        className={`relative z-50 w-full backdrop-blur-md border-b pointer-events-auto transition-[background-color,box-shadow,border-color] duration-500 ${
-          isScrolled
-            ? "bg-white/95 shadow-lg shadow-neutral-900/5 border-neutral-200"
-            : "bg-white/90 shadow-sm border-neutral-100"
+      <header
+        className={`pointer-events-auto mx-auto w-full max-w-7xl border-b md:rounded-md md:border md:transition-all md:ease-out md:duration-300 ${
+          flutuando
+            ? "bg-white/95 supports-[backdrop-filter]:bg-white/60 border-neutral-200 backdrop-blur-lg md:mt-4 md:max-w-4xl md:shadow"
+            : aberto
+              ? "bg-white border-transparent"
+              : "bg-white/90 backdrop-blur-md border-transparent"
         }`}
       >
-        <div
-          className={`relative flex justify-between items-center px-4 md:px-8 py-4 max-w-7xl mx-auto transition-[height] duration-500 ease-out ${
-            isScrolled ? "h-16 md:h-20" : "h-20 md:h-24"
+        <nav
+          className={`flex h-16 w-full items-center justify-between gap-4 px-4 md:transition-all md:ease-out md:duration-300 ${
+            flutuando ? "md:h-14 md:px-2" : "md:px-8"
           }`}
         >
-          {/* Mobile Menu Icon (Left on Mobile) */}
-          <div className="md:hidden flex items-center w-12">
-            <button
-              className="tap-target text-on-surface p-2 hover:bg-neutral-100 rounded-full transition-all active:scale-90 flex items-center justify-center"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-label={isMenuOpen ? "Fechar menu" : "Abrir menu"}
-            >
-              {isMenuOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6" />
-              )}
-            </button>
-          </div>
+          <Link href="/" aria-label="TG Distribuidora — início" className="relative block h-9 w-32 shrink-0">
+            <Image
+              alt="TG Distribuidora"
+              fill
+              sizes="128px"
+              className="object-contain object-left"
+              src="/logo.png"
+              priority
+            />
+          </Link>
 
-          {/* Logo (Centered on Mobile, Left on Desktop) */}
-          <div className="flex-shrink-0 absolute left-1/2 -translate-x-1/2 md:relative md:left-0 md:translate-x-0">
-            <Link href="/" className="block group">
-              <div className="relative h-10 w-40 md:h-12 md:w-48 transition-transform group-hover:scale-105">
-                <Image
-                  alt="TG Distribuidora"
-                  fill
-                  sizes="(max-width: 768px) 160px, 192px"
-                  className="object-contain object-center md:object-left"
-                  src="/logo.png"
-                  priority
-                />
-              </div>
+          <div className="hidden items-center gap-2 md:flex">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={ativo(item.href) ? "page" : undefined}
+                className={`${botaoFantasma} ${
+                  ativo(item.href) ? "bg-primary/10 text-primary" : "text-on-surface hover:bg-neutral-100"
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+            <BotaoLista />
+            <a href={TELEFONE} aria-label="Ligar para a TG Distribuidora" className={botaoContorno}>
+              <Phone className="h-4 w-4" />
+              <span className={flutuando ? "hidden" : "hidden lg:inline"}>67 3032-3090</span>
+            </a>
+            <Link href="/contato" className={botaoCheio}>
+              Fale Conosco
             </Link>
           </div>
 
-          {/* Desktop Navigation Items */}
-          <div className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+          <div className="flex items-center gap-2 md:hidden">
+            <BotaoLista />
+            <button
+              type="button"
+              onClick={() => setAberto(!aberto)}
+              aria-label={aberto ? "Fechar menu" : "Abrir menu"}
+              aria-expanded={aberto}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-neutral-200 bg-white text-on-surface hover:bg-neutral-50"
+            >
+              <IconeMenu aberto={aberto} className="size-5" />
+            </button>
+          </div>
+        </nav>
+      </header>
+
+      {/* Menu do celular: a tela inteira abaixo da barra. */}
+      <div
+        className={`pointer-events-auto fixed top-16 right-0 bottom-0 left-0 z-50 flex-col overflow-hidden border-y border-neutral-200 bg-white/95 backdrop-blur-lg md:hidden ${
+          aberto ? "flex" : "hidden"
+        }`}
+      >
+        <div className="flex h-full w-full flex-col justify-between gap-y-2 p-4 animate-[menuEntra_200ms_ease-out]">
+          <div className="grid gap-y-2">
             {navItems.map((item) => (
               <Link
-                key={item.label}
+                key={item.href}
                 href={item.href}
-                className={`text-sm font-headline font-bold tracking-tight transition-all duration-300 relative group overflow-hidden ${ativo(item.href) ? "text-primary" : "text-neutral-600 hover:text-primary"}`}
+                aria-current={ativo(item.href) ? "page" : undefined}
+                className={`${botaoFantasma} justify-start text-base ${
+                  ativo(item.href) ? "bg-primary/10 text-primary" : "text-on-surface hover:bg-neutral-100"
+                }`}
               >
                 {item.label}
-                <span
-                  className={`absolute bottom-0 left-0 w-full h-0.5 bg-primary transition-transform duration-300 ${ativo(item.href) ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}`}
-                />
               </Link>
             ))}
           </div>
-
-          {/* Action Button (Right) */}
-          <div className="flex items-center gap-1 sm:gap-4 justify-end">
-            <BotaoLista />
-            {/* No celular o botão de texto não cabe: vira atalho de ligação. */}
-            <a
-              href="tel:+556730323090"
-              aria-label="Ligar para a TG Distribuidora"
-              className="tap-target sm:hidden flex items-center justify-center rounded-full text-primary hover:bg-primary/10 transition-colors active:scale-90"
-            >
-              <Phone className="w-5 h-5" />
+          <div className="flex flex-col gap-2">
+            <a href={TELEFONE} className={`${botaoContorno} w-full`}>
+              <Phone className="h-4 w-4" /> 67 3032-3090
             </a>
-
-            <motion.div
-              whileHover={{ y: -2, scale: 1.03 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 380, damping: 20 }}
-              className="hidden sm:block"
-            >
-              <Link
-                href="/contato"
-                className="group relative block bg-primary text-white px-6 py-2.5 rounded-lg font-bold shadow-xl shadow-primary/25 overflow-hidden"
-              >
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 bg-white/25 skew-x-12 opacity-0 group-hover:opacity-100 group-hover:animate-shimmer"
-                />
-                <span className="relative">Fale Conosco</span>
-              </Link>
-            </motion.div>
+            <Link href="/contato" className={`${botaoCheio} w-full`}>
+              Fale Conosco
+            </Link>
           </div>
         </div>
       </div>
-
-      {/* Mobile Menu Drawer */}
-      <AnimatePresence>
-        {isMenuOpen && (
-          <>
-            {/* Backdrop Overlay */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsMenuOpen(false)}
-              className="fixed inset-0 bg-neutral-950/60 backdrop-blur-lg z-40 md:hidden pointer-events-auto"
-            />
-
-            <motion.div
-              initial={{ x: "-100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
-              transition={{ type: "spring", damping: 30, stiffness: 200 }}
-              className="fixed top-0 left-0 bottom-0 w-[85%] max-w-sm bg-surface z-[60] shadow-[25px_0_80px_-20px_rgba(0,0,0,0.4)] md:hidden flex flex-col border-r border-neutral-100 overflow-hidden pointer-events-auto"
-            >
-              {/* Subtle background decoration */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none" />
-              <div className="absolute bottom-0 left-0 w-48 h-48 bg-secondary/5 rounded-full blur-3xl -ml-24 -mb-24 pointer-events-none" />
-
-              <div className="relative flex justify-between items-center p-6 sm:p-8 border-b border-neutral-100 bg-white/80 backdrop-blur-sm z-10">
-                <div className="relative h-8 w-32">
-                  <Image
-                    alt="TG Distribuidora"
-                    fill
-                    sizes="128px"
-                    className="object-contain object-left"
-                    src="/logo.png"
-                    priority
-                  />
-                </div>
-                <button
-                  onClick={() => setIsMenuOpen(false)}
-                  className="tap-target flex items-center justify-center p-2.5 bg-neutral-100/80 hover:bg-neutral-200 rounded-full transition-all active:scale-90 shadow-sm border border-neutral-200"
-                >
-                  <X className="w-5 h-5 text-primary" />
-                </button>
-              </div>
-
-              <div className="relative flex flex-col p-6 sm:p-8 gap-1 flex-grow overflow-y-auto bg-white/30 backdrop-blur-xs">
-                {navItems.map((item, i) => (
-                  <motion.div
-                    key={item.label}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.05 + 0.1 }}
-                  >
-                    <Link
-                      href={item.href}
-                      onClick={() => setIsMenuOpen(false)}
-                      className={`group flex items-center justify-between py-5 text-2xl font-headline font-bold transition-all border-b border-neutral-50 ${ativo(item.href) ? "text-primary" : "text-neutral-600 hover:text-primary"}`}
-                    >
-                      <span className="relative">
-                        {item.label}
-                        <span
-                          className={`absolute -bottom-1 left-0 h-0.5 bg-primary transition-all duration-300 ${ativo(item.href) ? "w-full" : "w-0 group-hover:w-full"}`}
-                        />
-                      </span>
-                      <motion.div
-                        animate={{ x: ativo(item.href) ? 5 : 0 }}
-                        className={`opacity-0 transition-all ${ativo(item.href) ? "opacity-100 text-primary" : "group-hover:opacity-100"}`}
-                      >
-                        <div className="w-2 h-2 rounded-full bg-current" />
-                      </motion.div>
-                    </Link>
-                  </motion.div>
-                ))}
-
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.4 }}
-                  className="mt-auto pt-12"
-                >
-                  <Link
-                    href="/contato"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="group relative block w-full bg-primary text-white px-6 py-5 rounded-2xl font-bold text-center shadow-2xl shadow-primary/30 active:scale-95 transition-all text-xl overflow-hidden"
-                  >
-                    <span className="relative z-10 flex items-center justify-center gap-2">
-                      Solicitar Orçamento
-                      <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center group-hover:translate-x-1 transition-transform">
-                        <Menu className="w-3 h-3 rotate-[-45deg]" />
-                      </div>
-                    </span>
-                    <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                  </Link>
-                </motion.div>
-              </div>
-
-              <div className="relative p-8 sm:p-12 bg-neutral-50/90 border-t border-neutral-100">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center relative overflow-hidden group">
-                    <div className="w-2.5 h-2.5 rounded-full bg-primary animate-ping absolute" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-primary relative z-10" />
-                  </div>
-                  <div>
-                    <p className="text-[10px] text-neutral-400 font-bold uppercase tracking-[0.2em] mb-1">
-                      Central de Atendimento
-                    </p>
-                    <p className="text-lg font-black text-on-surface tracking-tight">
-                      67 3032-3090
-                    </p>
-                  </div>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <p className="text-[10px] text-neutral-500 font-bold uppercase tracking-widest opacity-40">
-                    TG Distribuidora © 2026
-                  </p>
-                  <p className="text-[9px] text-neutral-400 font-body opacity-50">
-                    Todos os direitos reservados. Desenvolvido por{" "}
-                    <Link
-                      href="/first-class-dev"
-                      onClick={() => setIsMenuOpen(false)}
-                      className="underline underline-offset-2"
-                    >
-                      First Class Dev
-                    </Link>
-                    .
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-    </nav>
+    </div>
   );
 }

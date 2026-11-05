@@ -80,7 +80,7 @@ export default function ContatoPage() {
       </Suspense>
       <Navbar />
 
-      <main className="pt-24">
+      <main className="pt-16">
         {/* Hero Section */}
         <section className="relative px-5 sm:px-6 lg:px-8 py-10 md:py-24 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-center md:items-end">
           <Stagger className="lg:col-span-7 text-center lg:text-left" step={0.12}>

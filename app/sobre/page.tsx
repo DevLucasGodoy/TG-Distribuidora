@@ -24,7 +24,7 @@ export default function SobrePage() {
     <div className="min-h-screen bg-surface selection:bg-primary/20">
       <Navbar />
 
-      <main className="pt-24">
+      <main className="pt-16">
         {/* Hero Section */}
         <section className="relative min-h-[380px] md:h-[600px] flex items-center overflow-hidden bg-surface-container-low py-14 md:py-0">
           {/* Fachada esticada na largura toda, atrás do texto. A foto é vertical

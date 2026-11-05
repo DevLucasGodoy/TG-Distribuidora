@@ -21,10 +21,22 @@ export default function FotoProduto({
   src,
   alt,
   className = "",
+  ampliacaoMax,
+  style,
   ...resto
-}: Omit<ImageProps, "src"> & { src: string | null }) {
+}: Omit<ImageProps, "src"> & {
+  src: string | null;
+  /**
+   * Teto de ampliação sobre o tamanho real do arquivo (ex.: 1.6 = até 160%).
+   * Foto pequena no cadastro (há fotos de 225px) esticada numa vitrine de
+   * 530px fica borrada e mostra a compressão; com teto ela aparece menor e
+   * nítida, centrada no quadro.
+   */
+  ampliacaoMax?: number;
+}) {
   const [falhou, setFalhou] = React.useState(false);
   const [carregada, setCarregada] = React.useState(false);
+  const [real, setReal] = React.useState<{ w: number; h: number } | null>(null);
   const ref = React.useRef<HTMLImageElement>(null);
 
   React.useEffect(() => {
@@ -32,7 +44,9 @@ export default function FotoProduto({
     // Foto já em cache pode terminar antes da hidratação, e aí o onLoad não
     // dispara: sem esta conferência ela ficaria invisível para sempre.
     const img = ref.current;
-    setCarregada(!!img && img.complete && img.naturalWidth > 0);
+    const pronta = !!img && img.complete && img.naturalWidth > 0;
+    setCarregada(pronta);
+    setReal(pronta ? { w: img.naturalWidth, h: img.naturalHeight } : null);
   }, [src]);
 
   if (!src || falhou) {
@@ -55,8 +69,16 @@ export default function FotoProduto({
         ref={ref}
         alt={alt}
         src={src}
-        onLoad={() => setCarregada(true)}
+        onLoad={(e) => {
+          setCarregada(true);
+          setReal({ w: e.currentTarget.naturalWidth, h: e.currentTarget.naturalHeight });
+        }}
         onError={() => setFalhou(true)}
+        style={
+          ampliacaoMax && real
+            ? { ...style, maxWidth: real.w * ampliacaoMax, maxHeight: real.h * ampliacaoMax, margin: "auto" }
+            : style
+        }
         className={`mix-blend-multiply transition-[opacity,transform] duration-500 ${carregada ? "opacity-100" : "opacity-0"} ${className}`}
       />
     </>

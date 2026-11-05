@@ -24,6 +24,7 @@ import {
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { FaixaMaisVendidos } from "@/components/loja/GaleriaCircular";
 import { Reveal, Stagger, StaggerItem, CountUp } from "@/components/Motion";
 
 export default function HomePage() {
@@ -147,7 +148,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-surface selection:bg-primary/20">
       <Navbar />
 
-      <main className="pt-24 md:pt-28 lg:pt-20">
+      <main className="pt-16">
         {/* Hero Section — empilhado até o lg; lado a lado só no desktop */}
         <section className="relative lg:min-h-[800px] flex items-center overflow-hidden bg-surface py-8 md:py-12 lg:py-0">
           {/* Halos decorativos que respiram atrás do conteúdo */}
@@ -253,6 +254,8 @@ export default function HomePage() {
             </motion.div>
           </div>
         </section>
+
+        <FaixaMaisVendidos />
 
         {/* Locations Section */}
         <section className="py-14 md:py-24 bg-surface-container-low">

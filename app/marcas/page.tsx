@@ -8,12 +8,8 @@ import {
   ArrowRight,
   ShieldCheck,
   PhoneCall,
-  Menu,
-  X,
-  Globe,
   Shield,
-  Send,
-  MoreHorizontal,
+  Plus,
 } from "lucide-react";
 
 import Navbar from "@/components/Navbar";
@@ -108,6 +104,7 @@ export default function MarcasPage() {
       desc: "Distribuição de fios e cabos especiais para setores de segurança eletrônica.",
       img: "https://falasegura.com.br/content/images/2025/08/Condutti_logo-baixa-1024x724.jpg",
       fundo: "#4fba49",
+      escala: 1.6,
     },
     {
       name: "Continente Motores",
@@ -120,6 +117,7 @@ export default function MarcasPage() {
       category: "Controle de Acesso",
       desc: "Travas elétricas, fechos magnéticos e acessórios para portas.",
       img: "https://claumon.com.br/wp-content/uploads/2021/10/logo-travatec.jpg",
+      escala: 1.8,
     },
     {
       name: "Confiseg",
@@ -148,6 +146,14 @@ export default function MarcasPage() {
       destaque: true,
       capa: true,
     },
+    {
+      name: "Vertys",
+      category: "Fontes e Energia",
+      desc: "Energia solar fotovoltaica: painéis, inversores e kits completos.",
+      img: "/marcas/vertys.png",
+      fundo: "#0f1e7b",
+      escala: 2.2,
+    },
   ];
 
   const categories = [
@@ -162,19 +168,17 @@ export default function MarcasPage() {
     "Proteção Perimetral",
   ];
 
-  // As marcas em destaque já têm faixa própria acima; na grade elas só
-  // aparecem quando o filtro é a categoria delas.
+  // As marcas em destaque têm faixa própria acima E continuam na grade:
+  // quem rola direto para a lista completa também as encontra (05/11/2026).
   const featured = partners.filter((p) => p.destaque);
   const filteredPartners =
-    activeFilter === "Todos"
-      ? partners.filter((p) => !p.destaque)
-      : partners.filter((p) => p.category === activeFilter);
+    activeFilter === "Todos" ? partners : partners.filter((p) => p.category === activeFilter);
 
   return (
     <div className="min-h-screen bg-surface selection:bg-primary/20">
       <Navbar />
 
-      <main className="pt-24">
+      <main className="pt-16">
         {/* Hero Section */}
         <section className="relative py-12 md:py-24 overflow-hidden">
           <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-center">
@@ -225,7 +229,7 @@ export default function MarcasPage() {
         </section>
 
         {/* Partners Grid */}
-        <section className="py-14 md:py-24 bg-surface-container-low">
+        <section className="py-14 md:py-24 bg-surface-container-low overflow-x-clip">
           <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
             {/* Marcas em destaque — Garen e Rossi */}
             <Reveal className="mb-14 md:mb-20">
@@ -332,103 +336,7 @@ export default function MarcasPage() {
               </div>
             </Reveal>
 
-            <motion.div
-              layout
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6"
-            >
-              {/* popLayout: os cards que saem do filtro deixam de ocupar espaço
-                  enquanto animam, então os restantes reposicionam sem salto. */}
-              <AnimatePresence mode="popLayout">
-              {filteredPartners.map((partner, i) => (
-                <motion.div
-                  layout
-                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  key={partner.name}
-                  whileHover={{ y: -10, scale: 1.02 }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 300,
-                    damping: 24,
-                    delay: Math.min(i * 0.04, 0.4),
-                  }}
-                  className="group bg-white rounded-xl border border-neutral-100 hover:shadow-2xl transition-shadow duration-500 cursor-pointer overflow-hidden"
-                >
-                  {/* Fundo do quadro = fundo do logo (branco quando não informado):
-                      a maioria dos logos é JPG com fundo branco, e o degradê cinza
-                      antigo deixava o retângulo da imagem à mostra. */}
-                  <div
-                    className="h-32 sm:h-40 w-full flex items-center justify-center relative overflow-hidden border-b border-neutral-100"
-                    style={{ backgroundColor: partner.fundo ?? "#ffffff" }}
-                  >
-                    {partner.img ? (
-                      /* Caixa fixa para todo logo: o largo enche a largura, o
-                         quadrado enche a altura, e todos ocupam o mesmo espaço. */
-                      <div
-                        className="relative h-20 sm:h-24"
-                        style={{
-                          width: "60%",
-                          transform: partner.escala ? `scale(${partner.escala})` : undefined,
-                        }}
-                      >
-                        <Image
-                          src={partner.img}
-                          alt={partner.name}
-                          fill
-                          sizes="(max-width: 640px) 70vw, 240px"
-                          className="object-contain transition-transform duration-500 group-hover:scale-110"
-                          loading="lazy"
-                          referrerPolicy="no-referrer"
-                        />
-                      </div>
-                    ) : (
-                      <div className="text-[11px] font-bold text-neutral-300 font-label tracking-wide text-center px-4">
-                        LOGO EM BREVE
-                      </div>
-                    )}
-                  </div>
-                  <div className="p-6 sm:p-8">
-                    <div className="mb-2">
-                      <span className="text-[10px] font-bold font-label tracking-widest text-primary bg-primary/5 px-2 py-1 rounded">
-                        {partner.category.toUpperCase()}
-                      </span>
-                    </div>
-                    <h3 className="text-xl font-headline font-bold mb-2">
-                      {partner.name}
-                    </h3>
-                    <p className="text-sm text-on-surface-variant leading-relaxed">
-                      {partner.desc}
-                    </p>
-                    {/* Botão "Ver Produtos" desativado enquanto a página de produtos está oculta.
-                        Para reativar, descomente o bloco abaixo. */}
-                    {/* <Link
-                      href={`/produtos?brand=${encodeURIComponent(partner.name)}`}
-                      className="mt-6 inline-flex items-center text-primary font-label text-[10px] font-bold tracking-widest opacity-0 group-hover:opacity-100 transition-opacity hover:text-primary/80"
-                    >
-                      VER PRODUTOS <ArrowRight className="ml-2 w-3 h-3" />
-                    </Link> */}
-                  </div>
-                </motion.div>
-              ))}
-              </AnimatePresence>
-              {activeFilter === "Todos" && (
-                <motion.div
-                  layout
-                  whileHover={{ y: -10, scale: 1.02 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  className="group bg-white p-6 sm:p-8 rounded-xl border border-neutral-100 hover:shadow-2xl transition-all duration-500 flex flex-col justify-center items-center text-center cursor-pointer"
-                >
-                  <MoreHorizontal className="w-10 h-10 text-neutral-300 mb-4 group-hover:text-primary transition-colors" />
-                  <h3 className="text-lg font-headline font-bold mb-1">
-                    E muito mais
-                  </h3>
-                  <p className="text-xs text-on-surface-variant">
-                    Consulte nosso catálogo completo para marcas especializadas.
-                  </p>
-                </motion.div>
-              )}
-            </motion.div>
+            <GradeLogos marcas={filteredPartners} />
           </div>
         </section>
 
@@ -505,6 +413,126 @@ export default function MarcasPage() {
       </main>
 
       <Footer />
+    </div>
+  );
+}
+
+type Marca = {
+  name: string;
+  category: string;
+  img: string;
+  fundo?: string;
+  escala?: number;
+  capa?: boolean;
+};
+
+/**
+ * Grade de logos no desenho do logo-cloud-2 (@efferd, 21st.dev): células
+ * coladas com fio de 1px, xadrez de fundo claro/cinza, "+" nos cruzamentos
+ * internos e fios que vazam até a borda da tela em cima e embaixo. Cada logo
+ * fica no quadro com a cor do próprio arquivo (logo raster com fundo) e leva
+ * aos produtos da marca. A última linha fecha com células vazias e o
+ * "E muito mais", para a grade não terminar dentada.
+ */
+function GradeLogos({ marcas }: { marcas: Marca[] }) {
+  const celulas: (Marca | "mais" | null)[] = [...marcas, "mais"];
+  const completar = (n: number) => {
+    const c = [...celulas];
+    while (c.length % n) c.push(null);
+    return c;
+  };
+  // A grade é de 2 colunas no celular e 4 no computador: as duas listas
+  // diferem só nas células vazias do fim.
+  const md = completar(4);
+  const cel = completar(2);
+  const total = Math.max(md.length, cel.length);
+  const lista = md.length >= cel.length ? md : cel;
+
+  return (
+    <div className="relative grid grid-cols-2 md:grid-cols-4 border-x border-neutral-200">
+      <div className="-translate-x-1/2 -top-px pointer-events-none absolute left-1/2 w-screen border-t border-neutral-200" />
+      {lista.slice(0, total).map((c, i) => {
+        const col2 = i % 2, lin2 = Math.floor(i / 2), linhas2 = cel.length / 2;
+        const col4 = i % 4, lin4 = Math.floor(i / 4), linhas4 = md.length / 4;
+        // Some no celular a célula vazia que só existe para fechar a grade de 4.
+        const soMd = i >= cel.length;
+        const xadrez2 = (col2 + lin2) % 2 === 0;
+        const xadrez4 = (col4 + lin4) % 2 === 0;
+        const borda = [
+          col2 < 1 ? "border-r" : "",
+          lin2 < linhas2 - 1 ? "border-b" : "",
+          col4 < 3 ? "md:border-r" : "md:border-r-0",
+          lin4 < linhas4 - 1 ? "md:border-b" : "md:border-b-0",
+        ].join(" ");
+        const fundo = `${xadrez2 ? "bg-neutral-50" : "bg-white"} ${xadrez4 ? "md:bg-neutral-50" : "md:bg-white"}`;
+        const mais2 = col2 < 1 && lin2 < linhas2 - 1;
+        const mais4 = col4 < 3 && lin4 < linhas4 - 1;
+        return (
+          <div
+            key={c && c !== "mais" ? c.name : `vazio-${i}`}
+            className={`relative border-neutral-200 ${borda} ${fundo} ${soMd ? "hidden md:block" : ""}`}
+          >
+            {c === "mais" ? (
+              <Link
+                href="/produtos"
+                className="flex h-full min-h-40 flex-col items-center justify-center gap-1 px-4 py-8 text-center group"
+              >
+                <span className="font-headline font-bold text-on-surface group-hover:text-primary transition-colors">
+                  E muito mais
+                </span>
+                <span className="text-xs text-on-surface-variant">Ver o catálogo completo →</span>
+              </Link>
+            ) : c ? (
+              <Link
+                href={`/produtos?q=${encodeURIComponent(c.name)}`}
+                className="group flex h-full min-h-40 flex-col items-center justify-center gap-3 px-4 py-8 md:p-8"
+              >
+                <span
+                  className="relative flex h-16 w-32 md:h-20 md:w-40 items-center justify-center overflow-hidden rounded-md"
+                  style={{ backgroundColor: c.fundo ?? "#ffffff" }}
+                >
+                  {c.img ? (
+                    <span
+                      className="relative h-full"
+                      style={{
+                        width: c.capa ? "100%" : "70%",
+                        transform: c.escala && !c.capa ? `scale(${c.escala})` : undefined,
+                      }}
+                    >
+                      <Image
+                        src={c.img}
+                        alt={`Logo ${c.name}`}
+                        fill
+                        sizes="320px"
+                        className={`${c.capa ? "object-cover" : "object-contain"} select-none transition-transform duration-300 group-hover:scale-105`}
+                        loading="lazy"
+                        referrerPolicy="no-referrer"
+                      />
+                    </span>
+                  ) : (
+                    <span className="font-headline font-black text-lg text-neutral-400">{c.name}</span>
+                  )}
+                </span>
+                <span className="text-center">
+                  <span className="block text-sm font-semibold text-on-surface group-hover:text-primary transition-colors">
+                    {c.name}
+                  </span>
+                  <span className="block text-xs text-on-surface-variant">{c.category}</span>
+                </span>
+              </Link>
+            ) : (
+              <div className="h-full min-h-40" />
+            )}
+            {mais2 && (
+              <Plus className="-right-[12.5px] -bottom-[12.5px] absolute z-10 size-6 text-neutral-400 md:hidden" strokeWidth={1} />
+            )}
+            {mais4 && (
+              <Plus className="-right-[12.5px] -bottom-[12.5px] absolute z-10 hidden size-6 text-neutral-400 md:block" strokeWidth={1} />
+            )}
+          </div>
+        );
+      })}
+      <div className="-translate-x-1/2 -bottom-px pointer-events-none absolute left-1/2 w-screen border-b border-neutral-200" />
     </div>
   );
 }
