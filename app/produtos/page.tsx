@@ -26,6 +26,7 @@ import {
   MessageCircle,
   ClipboardList,
   Tag,
+  Sparkles,
 } from "lucide-react";
 
 import Navbar from "@/components/Navbar";
@@ -312,7 +313,26 @@ function Catalogo() {
 
         {/* Grade */}
         <section className="flex-1 min-w-0" aria-live="polite">
-          {inicio && <FaixaOfertas />}
+          {inicio && (
+            <>
+              <FaixaDestaque
+                destaque="promocao"
+                selo="Em promoção"
+                titulo="Ofertas"
+                icone={<Tag className="w-3.5 h-3.5" />}
+                rotuloAnterior="Ofertas anteriores"
+                rotuloProximo="Próximas ofertas"
+              />
+              <FaixaDestaque
+                destaque="novidades"
+                selo="Acabou de chegar"
+                titulo="Novidades"
+                icone={<Sparkles className="w-3.5 h-3.5" />}
+                rotuloAnterior="Novidades anteriores"
+                rotuloProximo="Próximas novidades"
+              />
+            </>
+          )}
           <div className="flex flex-wrap items-baseline justify-between gap-2 mb-6">
             <h2 className="text-xl font-headline font-bold text-on-surface">
               {titulo}
@@ -375,23 +395,39 @@ function Catalogo() {
 }
 
 /**
- * Ofertas — promoção vigente no WinThor (política de desconto), fila que rola
- * de lado. Some quando não há promoção: faixa vazia não vende nada.
+ * Faixa da página inicial que rola de lado, uma por destaque do Syncro:
+ *   - promocao   Ofertas: promoção vigente no WinThor (política de desconto);
+ *   - novidades  produto novo que já chegou na filial e tem estoque.
+ * Some quando vem vazia: faixa vazia não vende nada.
  */
-function FaixaOfertas() {
+function FaixaDestaque({
+  destaque,
+  selo,
+  titulo,
+  icone,
+  rotuloAnterior,
+  rotuloProximo,
+}: {
+  destaque: "promocao" | "novidades";
+  selo: string;
+  titulo: string;
+  icone: React.ReactNode;
+  rotuloAnterior: string;
+  rotuloProximo: string;
+}) {
   const [itens, setItens] = React.useState<ItemVitrine[] | null>(null);
   const [formato, setFormato] = React.useState<FormatoPreco>("um");
   const trilho = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     if (!lojaConfigurada) return;
-    buscarVitrine({ destaque: "promocao", limit: 16 })
+    buscarVitrine({ destaque, limit: 16 })
       .then((r) => {
         setItens(r.itens);
         setFormato(r.formatoPreco);
       })
       .catch(() => setItens([]));
-  }, []);
+  }, [destaque]);
 
   if (!itens?.length) return null;
   const rolar = (dir: number) =>
@@ -402,16 +438,16 @@ function FaixaOfertas() {
       <div className="flex items-end justify-between gap-4 mb-4">
         <div>
           <span className="inline-flex items-center gap-1.5 text-secondary font-bold tracking-[0.2em] uppercase text-[11px]">
-            <Tag className="w-3.5 h-3.5" />
-            Em promoção
+            {icone}
+            {selo}
           </span>
-          <h2 className="mt-1 text-xl font-headline font-bold text-on-surface">Ofertas</h2>
+          <h2 className="mt-1 text-xl font-headline font-bold text-on-surface">{titulo}</h2>
         </div>
         <div className="hidden sm:flex gap-2">
           <button
             type="button"
             onClick={() => rolar(-1)}
-            aria-label="Ofertas anteriores"
+            aria-label={rotuloAnterior}
             className="w-10 h-10 rounded-full border border-neutral-200 bg-white flex items-center justify-center hover:border-primary hover:text-primary"
           >
             <ChevronLeft className="w-5 h-5" />
@@ -419,7 +455,7 @@ function FaixaOfertas() {
           <button
             type="button"
             onClick={() => rolar(1)}
-            aria-label="Próximas ofertas"
+            aria-label={rotuloProximo}
             className="w-10 h-10 rounded-full border border-neutral-200 bg-white flex items-center justify-center hover:border-primary hover:text-primary"
           >
             <ChevronRight className="w-5 h-5" />

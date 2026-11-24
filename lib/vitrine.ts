@@ -99,8 +99,12 @@ export type FiltroVitrine = {
   q?: string;
   depto?: number;
   secao?: number;
-  /** Faixas da página inicial. Ignorado quando há busca ou categoria. */
-  destaque?: "promocao" | "mais_vendidos";
+  /**
+   * Faixas da página inicial. Ignorado quando há busca ou categoria.
+   * `novidades`: produto cadastrado há pouco que já chegou na filial e tem
+   * estoque, o mais recente primeiro (o prazo é configurado no Syncro).
+   */
+  destaque?: "promocao" | "mais_vendidos" | "novidades";
   cursor?: number;
   limit?: number;
 };
