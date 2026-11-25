@@ -49,7 +49,7 @@ export default function HomePage() {
         "https://maps.google.com/?q=Av.+Salgado+Filho,+1756,+Campo+Grande,+MS",
       phone: "67 3043-3090",
       phone2: "67 3042-3091",
-      whatsapp: "67 99285-6510",
+      whatsapp: "67 3043-3090",
       hours: "Seg - Sex: 08:00 - 18:00",
       img: "/lojas/campo-grande.jpg",
     },

@@ -52,7 +52,7 @@ export const UNITS: Unit[] = [
     street: 'Av. Salgado Filho, 1756',
     city: 'Campo Grande',
     phone: '+556730433090',
-    whatsapp: '+5567992856510',
+    whatsapp: '+556730433090',
     lat: -20.4697,
     lng: -54.6201,
   },
