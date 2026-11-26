@@ -6,3 +6,7 @@ coverage/
 .env*
 !.env.example
 tsconfig.tsbuildinfo
+
+# Ferramentas locais (graphify / Claude Code)
+graphify-out/
+.claude/
